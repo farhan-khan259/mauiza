@@ -1,1 +1,2 @@
-@media(max-width:760px){.container{width:min(100% - 32px,1160px)}.section{padding:76px 0}.lead{font-size:15px}h1{font-size:3.2rem}}
+img{max-width:100%}input,select,textarea{max-width:100%}@media(max-width:760px){.container{width:min(100% - 32px,1160px)}.section{padding:68px 0}.lead{font-size:15px}h1{font-size:clamp(2.55rem,12vw,3.2rem)}h2{font-size:clamp(2.05rem,10vw,2.8rem)}.hero-actions{flex-wrap:wrap}.hero-actions .button{flex:1 1 170px}.footer-bottom{gap:12px}}
+@media(max-width:480px){.container{width:calc(100% - 28px)}.section{padding:56px 0}.hero-actions{align-items:stretch;flex-direction:column}.hero-actions .button{width:100%}.intro-float{right:8px;left:8px;justify-content:center;padding:16px}.registration-form{padding:22px 18px}}
