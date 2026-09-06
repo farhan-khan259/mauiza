@@ -124,7 +124,7 @@ export default function Home() {
           >
             <img
               src={images.learning}
-              alt="Student learning from an online lesson"
+                alt="Open Quran for Islamic study"
             />
             <div className="intro-float">
               <span>01</span>
