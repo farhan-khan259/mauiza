@@ -77,7 +77,7 @@ export default function Home() {
             </p>
             <div className="hero-actions">
               <Button to="/courses">Explore Courses</Button>
-              <Button to="/registration" variant="outline">
+              <Button to="/registration" >
                 Enroll Now
               </Button>
             </div>
