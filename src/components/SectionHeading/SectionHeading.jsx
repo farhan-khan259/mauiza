@@ -1,0 +1,2 @@
+import {motion} from 'framer-motion';import './SectionHeading.css';
+export default function SectionHeading({eyebrow,title,description,center=false}){return <motion.div className={`section-heading ${center?'center':''}`} initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.3}} transition={{duration:.55}}><div className="eyebrow">{eyebrow}</div><h2>{title}</h2>{description&&<p className="lead">{description}</p>}</motion.div>}

@@ -1,0 +1,2 @@
+import {motion} from 'framer-motion';import './PageHero.css';
+export default function PageHero({title,subtitle,image}){return <section className="page-hero"><div className="page-hero-image" style={{backgroundImage:`url(${image})`}}/><div className="container page-hero-content"><motion.div initial={{opacity:0,y:25}} animate={{opacity:1,y:0}} transition={{duration:.6}}><div className="eyebrow">MAUIZA ONLINE ACADEMY</div><h1>{title}</h1><p>{subtitle}</p></motion.div><div className="hero-arch">۞</div></div></section>}
