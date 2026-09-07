@@ -182,6 +182,7 @@ export default function About() {
         title="Begin Your Journey With Us"
         description="Whether you're learning from the beginning or looking to strengthen your existing knowledge, we're here to support your next step."
         button="Explore Courses"
+        to="/courses"
       />
     </main>
   );
