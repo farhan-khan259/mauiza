@@ -1,1 +1,16 @@
-:root{--primary:#0B5D4B;--primary-dark:#063D32;--secondary:#12B8B0;--gold:#D6A84F;--background:#F8FAF8;--soft-green:#EAF6F2;--dark:#101C2C;--text:#344054;--muted:#667085;--white:#fff;--line:rgba(11,93,75,.13);--serif:'DM Serif Display',Georgia,serif;--sans:'Manrope',Arial,sans-serif;--shadow:0 20px 50px rgba(6,61,50,.10)}
+:root {
+  --primary: #0b5d4b;
+  --primary-dark: #063d32;
+  --secondary: #12b8b0;
+  --gold: #d6a84f;
+  --background: #f8faf8;
+  --soft-green: #eaf6f2;
+  --dark: #101c2c;
+  --text: #344054;
+  --muted: #667085;
+  --white: #fff;
+  --line: rgba(11, 93, 75, 0.13);
+  --serif: "DM Serif Display", Georgia, serif;
+  --sans: "Manrope", Arial, sans-serif;
+  --shadow: 0 20px 50px rgba(6, 61, 50, 0.1);
+}

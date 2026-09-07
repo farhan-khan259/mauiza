@@ -82,7 +82,7 @@ export default function Home() {
               </Button>
             </div>
             <div className="trust-line">
-              <Check /> Online Learning <i /> Qualified Instructors <i />{" "}
+              <Check /> Online Learning <Check /> Qualified Instructors <Check />{" "}
               Flexible Schedule
             </div>
           </motion.div>
