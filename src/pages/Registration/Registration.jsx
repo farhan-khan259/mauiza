@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckCircle2 } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import PageHero from "../../components/PageHero/PageHero";
 import { images } from "../../data/images";
 import "./Registration.css";
 
 export default function Registration() {
+	const location = useLocation();
 	const [sent, setSent] = useState(false);
+	const [selectedCourse, setSelectedCourse] = useState(location.state?.selectedCourse || "");
 	const [schedule, setSchedule] = useState({ start: "", end: "" });
+
+	useEffect(() => {
+		if (location.state?.selectedCourse) {
+			setSelectedCourse(location.state.selectedCourse);
+		}
+	}, [location.state]);
 
 	function formatTimeForDisplay(value) {
 		if (!value) return "";
@@ -24,6 +33,7 @@ export default function Registration() {
 		if (schedule.end <= schedule.start) return;
 		setSent(true);
 		event.currentTarget.reset();
+		setSelectedCourse("");
 		setSchedule({ start: "", end: "" });
 	}
 
@@ -77,12 +87,17 @@ export default function Registration() {
 							</label>
 							<label>
 								Preferred Course
-								<select required name="course" defaultValue="">
+								<select
+									required
+									name="course"
+									value={selectedCourse}
+									onChange={(event) => setSelectedCourse(event.target.value)}
+								>
 									<option value="" disabled>Select a course</option>
-									<option>Namaz Course</option>
-									<option>Quran Memorization</option>
-									<option>Tajweed Course</option>
-									<option>Arabic Reading Course</option>
+									<option value="Namaz Course">Namaz Course</option>
+									<option value="Quran Memorization">Quran Memorization</option>
+									<option value="Tajweed Course">Tajweed Course</option>
+									<option value="Arabic Reading Course">Arabic Reading Course</option>
 								</select>
 							</label>
 						</div>
