@@ -100,6 +100,48 @@ const additionalTranslations = {
 };
 
 Object.entries(additionalTranslations).forEach(([language, dictionary]) => Object.assign(translations[language], dictionary));
+Object.assign(urdu, {
+  "Your registration has been submitted successfully.": "آپ کی رجسٹریشن کامیابی سے جمع ہو گئی ہے۔",
+  "Thank you for choosing Mauiza. Our team will contact you soon.": "مویزا کا انتخاب کرنے کے لیے شکریہ۔ ہماری ٹیم جلد آپ سے رابطہ کرے گی۔",
+  "Your message has been sent successfully.": "آپ کا پیغام کامیابی سے بھیج دیا گیا ہے۔",
+  "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "مویزا سے رابطہ کرنے کے لیے شکریہ۔ ہم جلد آپ سے رابطہ کریں گے۔",
+  "Contact on WhatsApp": "واٹس ایپ پر رابطہ کریں"
+});
+Object.assign(arabic, {
+  "Your registration has been submitted successfully.": "تم إرسال تسجيلك بنجاح.",
+  "Thank you for choosing Mauiza. Our team will contact you soon.": "شكرًا لاختيارك موعظة. سيتواصل معك فريقنا قريبًا.",
+  "Your message has been sent successfully.": "تم إرسال رسالتك بنجاح.",
+  "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "شكرًا لتواصلك مع موعظة. سنتواصل معك قريبًا.",
+  "Contact on WhatsApp": "تواصل عبر واتساب"
+});
+Object.assign(translations.sv, {
+  "Your registration has been submitted successfully.": "Din registrering har skickats in.",
+  "Thank you for choosing Mauiza. Our team will contact you soon.": "Tack för att du valde Mauiza. Vårt team kontaktar dig snart.",
+  "Your message has been sent successfully.": "Ditt meddelande har skickats.",
+  "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "Tack för att du kontaktade Mauiza. Vi hör av oss snart.",
+  "Contact on WhatsApp": "Kontakta oss på WhatsApp"
+});
+Object.assign(translations.tr, {
+  "Your registration has been submitted successfully.": "Kaydınız başarıyla gönderildi.",
+  "Thank you for choosing Mauiza. Our team will contact you soon.": "Mauiza'yı seçtiğiniz için teşekkür ederiz. Ekibimiz sizinle yakında iletişime geçecek.",
+  "Your message has been sent successfully.": "Mesajınız başarıyla gönderildi.",
+  "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "Mauiza ile iletişime geçtiğiniz için teşekkür ederiz. Yakında size dönüş yapacağız.",
+  "Contact on WhatsApp": "WhatsApp'tan iletişime geçin"
+});
+Object.assign(translations.fr, {
+  "Your registration has been submitted successfully.": "Votre inscription a été envoyée avec succès.",
+  "Thank you for choosing Mauiza. Our team will contact you soon.": "Merci d’avoir choisi Mauiza. Notre équipe vous contactera bientôt.",
+  "Your message has been sent successfully.": "Votre message a été envoyé avec succès.",
+  "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "Merci d’avoir contacté Mauiza. Nous vous répondrons bientôt.",
+  "Contact on WhatsApp": "Nous contacter sur WhatsApp"
+});
+Object.assign(spanish, {
+  "Your registration has been submitted successfully.": "Tu registro se ha enviado correctamente.",
+  "Thank you for choosing Mauiza. Our team will contact you soon.": "Gracias por elegir Mauiza. Nuestro equipo se pondrá en contacto contigo pronto.",
+  "Your message has been sent successfully.": "Tu mensaje se ha enviado correctamente.",
+  "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "Gracias por contactar con Mauiza. Nos pondremos en contacto contigo pronto.",
+  "Contact on WhatsApp": "Contactar por WhatsApp"
+});
 Object.assign(translations.sv, {
   "Enroll Now":"Anmäl dig nu","Explore Courses":"Utforska kurser","Learn More":"Läs mer","Learn More About Us":"Läs mer om oss","View All Courses":"Visa alla kurser","Start Learning Today":"Börja lära idag","Online Learning":"Lärande online","Qualified Instructors":"Kvalificerade lärare","Flexible Schedule":"Flexibelt schema","Personalized Support":"Personligt stöd","Learn From Anywhere":"Lär varifrån som helst","Structured Learning":"Strukturerat lärande","Flexible Learning":"Flexibelt lärande","Learn & Grow":"Lär och väx","OUR PURPOSE":"VÅRT SYFTE","WHY CHOOSE US":"VARFÖR VÄLJA OSS","OUR COURSES":"VÅRA KURSER","HOW IT WORKS":"SÅ FUNGERAR DET","ABOUT US":"OM OSS","Learn the Quran.":"Lär dig Koranen.","Strengthen Your Faith.":"Stärk din tro.","Transform Your Life.":"Förändra ditt liv.","READ. REFLECT.":"LÄS. REFLEKTERA.","GROW.":"VÄX.","YOUR JOURNEY BEGINS":"DIN RESA BÖRJAR","Accessible Islamic education designed to help you learn, understand and practice the teachings of the Quran from the comfort of your home.":"Tillgänglig islamisk utbildning som hjälper dig att lära, förstå och tillämpa Koranens läror hemifrån.","Your Journey Towards Quranic Learning Starts Here":"Din resa mot att lära Koranen börjar här","Learning Designed Around Your Journey":"Lärande utformat för din resa","Explore Our Islamic Education Courses":"Utforska våra kurser i islamisk utbildning","Start Learning in 3 Simple Steps":"Börja lära i 3 enkla steg","Choose Your Course":"Välj din kurs","Register Online":"Registrera dig online","Begin Your Learning Journey":"Börja din läranderesa","About Our Islamic Education Platform":"Om vår plattform för islamisk utbildning","Making Quranic and Islamic education more accessible through modern online learning.":"Gör koranisk och islamisk utbildning mer tillgänglig genom modernt lärande online.","Our Mission":"Vårt uppdrag","Our Vision":"Vår vision","Learning With Purpose":"Lärande med syfte","What We Stand For":"Det vi står för","Explore Our Courses":"Utforska våra kurser","Choose a course that matches your current level and learning goals.":"Välj en kurs som passar din nuvarande nivå och dina lärandemål.","What You'll Learn":"Det här lär du dig","Submit Registration":"Skicka registrering","Full Name":"Fullständigt namn","Email Address":"E-postadress","Phone Number":"Telefonnummer","Age Group":"Åldersgrupp","Preferred Course":"Önskad kurs","Preferred Schedule":"Önskat schema","Learning Goals":"Lärandemål","Select age group":"Välj åldersgrupp","Select a course":"Välj en kurs","Select a preference":"Välj ett alternativ",Child:"Barn",Teen:"Tonåring",Adult:"Vuxen",Flexible:"Flexibel",Weekends:"Helger","Weekday mornings":"Vardagsmorgnar","Weekday evenings":"Vardagskvällar","Namaz Course":"Bönekurs","Quran Memorization":"Koranmemorering","Tajweed Course":"Tajwidkurs","Arabic Reading Course":"Kurs i arabisk läsning"
 });

@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import PageHero from "../../components/PageHero/PageHero";
+import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
 import "./Registration.css";
 
 export default function Registration() {
 	const location = useLocation();
 	const [sent, setSent] = useState(false);
+	const [successMessage, setSuccessMessage] = useState("");
 	const [selectedCourse, setSelectedCourse] = useState(location.state?.selectedCourse || "");
 	const [schedule, setSchedule] = useState({ start: "", end: "" });
 
@@ -27,14 +29,49 @@ export default function Registration() {
 
 	const scheduleSummary = schedule.start && schedule.end ? `${formatTimeForDisplay(schedule.start)} to ${formatTimeForDisplay(schedule.end)}` : "";
 
-	function submit(event) {
+	async function submit(event) {
 		event.preventDefault();
 		if (!schedule.start || !schedule.end) return;
 		if (schedule.end <= schedule.start) return;
-		setSent(true);
-		event.currentTarget.reset();
-		setSelectedCourse("");
-		setSchedule({ start: "", end: "" });
+
+		const form = event.currentTarget;
+		const formData = new FormData(form);
+		const courseValue = formData.get("course") || selectedCourse;
+		const payload = {
+			fullName: formData.get("name"),
+			email: formData.get("email"),
+			phone: formData.get("phone"),
+			ageGroup: formData.get("ageGroup"),
+			gender: formData.get("gender"),
+			course: courseValue,
+			startTime: schedule.start,
+			endTime: schedule.end,
+			schedule: `${formatTimeForDisplay(schedule.start)} to ${formatTimeForDisplay(schedule.end)}`,
+			goals: formData.get("goals") || ""
+		};
+
+		try {
+			const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/registration`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(payload)
+			});
+
+			const data = await response.json();
+			if (!response.ok) {
+				throw new Error(data.message || "Registration failed");
+			}
+
+			const whatsappMessage = `Hello Mauiza, I have submitted my registration for ${courseValue}. My name is ${payload.fullName} and my email is ${payload.email}. I would like to continue the conversation.`;
+			setSuccessMessage(whatsappMessage);
+			setSent(true);
+			form.reset();
+			setSelectedCourse("");
+			setSchedule({ start: "", end: "" });
+		} catch (error) {
+			console.error("Registration error:", error);
+			alert(error.message || "Failed to submit registration. Please try again.");
+		}
 	}
 
 	return (
@@ -136,10 +173,27 @@ export default function Registration() {
 							<textarea name="goals" rows="4" placeholder="Tell us briefly what you would like to learn..." />
 						</label>
 						<button type="submit">Submit Registration <span>→</span></button>
-						{sent && <p className="form-success"><CheckCircle2 /> Thank you. Your registration has been received.</p>}
 					</form>
 				</div>
 			</section>
+			{sent && (
+				<div className="success-modal-backdrop" onClick={() => setSent(false)}>
+					<div className="success-modal" onClick={(event) => event.stopPropagation()}>
+						<div className="success-modal-icon"><CheckCircle2 /></div>
+						<h3>Your registration has been submitted successfully.</h3>
+						<p>Thank you for choosing Mauiza. Our team will contact you soon.</p>
+						<a
+							className="whatsapp-cta"
+							href={`https://wa.me/447460020357?text=${encodeURIComponent(successMessage)}`}
+							target="_blank"
+							rel="noreferrer"
+						>
+							<WhatsAppIcon />
+							Contact on WhatsApp
+						</a>
+					</div>
+				</div>
+			)}
 		</main>
 	);
 }
