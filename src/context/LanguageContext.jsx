@@ -88,7 +88,8 @@ function translateDocument(language, originalText) {
       originalText.current.set(node, original);
       const leading = original.match(/^\s*/)[0];
       const trailing = original.match(/\s*$/)[0];
-      node.textContent = `${leading}${translate(original)}${trailing}`;
+      const translated = `${leading}${translate(original)}${trailing}`;
+      if (node.textContent !== translated) node.textContent = translated;
     }
   }
   ["placeholder", "alt", "aria-label", "title"].forEach((attribute) => {
@@ -97,7 +98,10 @@ function translateDocument(language, originalText) {
       const original = element.dataset[dataKey] || element.getAttribute(attribute);
       if (original) {
         element.dataset[dataKey] = original;
-        element.setAttribute(attribute, translate(original));
+        const translated = translate(original);
+        if (element.getAttribute(attribute) !== translated) {
+          element.setAttribute(attribute, translated);
+        }
       }
     });
   });
