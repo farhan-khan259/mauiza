@@ -26,7 +26,7 @@ html[dir="rtl"] .section-heading.center,
 html[dir="rtl"] .cta-section,
 html[dir="rtl"] .courses-intro > .container > .lead,
 html[dir="rtl"] .section-link {
-  text-align: center;
+  text-align: left;
 }
 
 html[dir="rtl"] .section-heading:not(.center) .eyebrow,
