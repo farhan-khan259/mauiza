@@ -14,7 +14,7 @@ import quranMemorization3 from "../../pictures/Quran Memorization3.pdf";
 import arabicReading1 from "../../pictures/Arabic Reading Course1.pdf";
 import arabicReading2 from "../../pictures/Arabic Reading Course2.pdf";
 import arabicReading4 from "../../pictures/Arabic Reading Course4.pdf";
-import arabicReading3 from "../../pictures/Arabic Reading Course3.pptx?url";
+import arabicReading3 from "../../pictures/Arabic Reading Course3.pdf";
 import tajweed from "../../pictures/Tajweed.pdf";
 import "./Resources.css";
 
@@ -22,7 +22,7 @@ const resourceGroups = [
   { title: "Revert Guide", description: "A gentle collection of practical guides for those beginning their journey in Islam.", icon: HeartHandshake, documents: [["Revert Guide 1", revertGuide1], ["Revert Guide 2", revertGuide2], ["Revert Guide 3", revertGuide3]] },
   { title: "Prayer Memorization", description: "Build confidence in your prayer by learning the essential words and supplications.", icon: BookOpen, documents: [["Prayer Memorization 1", prayerMemorization1], ["Prayer Memorization 2", prayerMemorization2], ["Prayer Memorization 3", prayerMemorization3]] },
   { title: "Quran Memorization", description: "Helpful materials to support a steady and meaningful Quran memorization routine.", icon: GraduationCap, documents: [["Quran Memorization 1", quranMemorization1], ["Quran Memorization 2", quranMemorization2], ["Quran Memorization 3", quranMemorization3]] },
-  { title: "Arabic Reading", description: "Step-by-step resources for recognizing Arabic letters, sounds, and Quranic words.", icon: Languages, documents: [["Arabic Reading Course 1", arabicReading1], ["Arabic Reading Course 2", arabicReading2], ["Arabic Reading Course 3", arabicReading3, "presentation"], ["Arabic Reading Course 4", arabicReading4]] },
+  { title: "Arabic Reading", description: "Step-by-step resources for recognizing Arabic letters, sounds, and Quranic words.", icon: Languages, documents: [["Arabic Reading Course 1", arabicReading1], ["Arabic Reading Course 2", arabicReading2], ["Arabic Reading Course 3", arabicReading3, "pdf"], ["Arabic Reading Course 4", arabicReading4]] },
   { title: "Tajweed", description: "A clear reference for strengthening pronunciation and reciting the Quran with care.", icon: Sparkles, documents: [["Tajweed", tajweed]] },
 ];
 
