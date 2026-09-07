@@ -41,7 +41,7 @@ export default function Registration() {
 							<label>Email Address<input required type="email" name="email" placeholder="you@example.com" /></label>
 						</div>
 						<div className="form-row">
-							<label>Phone Number<input required name="phone" placeholder="Your phone number" /></label>
+							<label>WhatsApp Number<input required name="phone" placeholder="Your WhatsApp number" /></label>
 							<label>
 								Age Group
 								<select required name="ageGroup" defaultValue="">
