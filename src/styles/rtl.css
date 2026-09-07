@@ -1,0 +1,109 @@
+html[dir="rtl"] {
+  direction: rtl;
+}
+
+html[dir="rtl"] body {
+  text-align: right;
+  overflow-x: hidden;
+}
+
+html[dir="rtl"] .navbar nav,
+html[dir="rtl"] .nav-inner,
+html[dir="rtl"] .hero-actions,
+html[dir="rtl"] .trust-line,
+html[dir="rtl"] .register-points p,
+html[dir="rtl"] .contact-form button {
+  direction: rtl;
+}
+
+html[dir="rtl"] .navbar .logo,
+html[dir="rtl"] .menu-button,
+html[dir="rtl"] .language-picker {
+  direction: ltr;
+}
+
+html[dir="rtl"] .section-heading.center,
+html[dir="rtl"] .cta-section,
+html[dir="rtl"] .courses-intro > .container > .lead,
+html[dir="rtl"] .section-link {
+  text-align: center;
+}
+
+html[dir="rtl"] .section-heading:not(.center) .eyebrow,
+html[dir="rtl"] .page-hero .eyebrow {
+  justify-content: flex-start;
+}
+
+html[dir="rtl"] .hero-copy,
+html[dir="rtl"] .intro-grid > div:last-child,
+html[dir="rtl"] .about-grid > div:first-child,
+html[dir="rtl"] .welcome,
+html[dir="rtl"] .mission-card,
+html[dir="rtl"] .contact-layout,
+html[dir="rtl"] .register-layout,
+html[dir="rtl"] .detailed-content,
+html[dir="rtl"] .resource-group,
+html[dir="rtl"] .footer-grid {
+  text-align: right;
+}
+
+html[dir="rtl"] .course-image span {
+  left: auto;
+  right: 15px;
+}
+
+html[dir="rtl"] .hero-arch {
+  right: auto;
+  left: 5%;
+}
+
+html[dir="rtl"] .scroll-note {
+  right: auto;
+  left: 0;
+}
+
+html[dir="rtl"] .intro-float {
+  right: auto;
+  left: -30px;
+}
+
+html[dir="rtl"] .contact-info-grid > div,
+html[dir="rtl"] .contact-form label,
+html[dir="rtl"] .registration-form label {
+  text-align: right;
+}
+
+html[dir="rtl"] .contact-form button svg,
+html[dir="rtl"] .register-points svg,
+html[dir="rtl"] .trust-line svg {
+  margin-inline-end: 0;
+  margin-inline-start: 7px;
+}
+
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  text-align: right;
+  direction: rtl;
+}
+
+html[dir="rtl"] .language-picker select {
+  direction: ltr;
+  text-align: left;
+}
+
+html[dir="rtl"] .footer-bottom {
+  text-align: right;
+}
+
+@media (max-width: 800px) {
+  html[dir="rtl"] .intro-float {
+    right: 8px;
+    left: 8px;
+  }
+
+  html[dir="rtl"] .hero-actions,
+  html[dir="rtl"] .contact-form button {
+    align-items: stretch;
+  }
+}

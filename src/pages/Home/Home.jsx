@@ -108,9 +108,9 @@ export default function Home() {
               <small>YOUR JOURNEY BEGINS</small>
             </div>
             <div className="hero-ring" />
-            <div className="scroll-note">
+            {/* <div className="scroll-note">
               <ArrowDown size={15} /> SCROLL TO EXPLORE
-            </div>
+            </div> */}
           </motion.div>
         </div>
       </section>
