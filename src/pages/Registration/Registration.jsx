@@ -6,11 +6,25 @@ import "./Registration.css";
 
 export default function Registration() {
 	const [sent, setSent] = useState(false);
+	const [schedule, setSchedule] = useState({ start: "", end: "" });
+
+	function formatTimeForDisplay(value) {
+		if (!value) return "";
+		const [hours, minutes] = value.split(":").map(Number);
+		const suffix = hours >= 12 ? "PM" : "AM";
+		const hour = hours % 12 || 12;
+		return `${hour}:${String(minutes).padStart(2, "0")} ${suffix}`;
+	}
+
+	const scheduleSummary = schedule.start && schedule.end ? `${formatTimeForDisplay(schedule.start)} to ${formatTimeForDisplay(schedule.end)}` : "";
 
 	function submit(event) {
 		event.preventDefault();
+		if (!schedule.start || !schedule.end) return;
+		if (schedule.end <= schedule.start) return;
 		setSent(true);
 		event.currentTarget.reset();
+		setSchedule({ start: "", end: "" });
 	}
 
 	return (
@@ -74,13 +88,33 @@ export default function Registration() {
 						</div>
 						<label>
 							Preferred Schedule
-							<select required name="schedule" defaultValue="">
-								<option value="" disabled>Select a preference</option>
-								<option>Weekday mornings</option>
-								<option>Weekday evenings</option>
-								<option>Weekends</option>
-								<option>Flexible</option>
-							</select>
+							<div className="time-range-wrap">
+								<label className="time-range-field">
+									<span>From</span>
+									<input
+										required
+										type="time"
+										name="startTime"
+										step="1800"
+										value={schedule.start}
+										onChange={(event) => setSchedule((current) => ({ ...current, start: event.target.value }))}
+									/>
+								</label>
+								<span className="time-range-separator">to</span>
+								<label className="time-range-field">
+									<span>To</span>
+									<input
+										required
+										type="time"
+										name="endTime"
+										step="1800"
+										min={schedule.start || undefined}
+										value={schedule.end}
+										onChange={(event) => setSchedule((current) => ({ ...current, end: event.target.value }))}
+									/>
+								</label>
+							</div>
+							<input type="hidden" name="schedule" value={scheduleSummary} />
 						</label>
 						<label>
 							Learning Goals
