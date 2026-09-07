@@ -52,7 +52,7 @@ export default function Registration() {
 					<form onSubmit={submit} className="registration-form">
 						<div className="form-row">
 							<label>Full Name<input required name="name" placeholder="Your full name" /></label>
-							<label>Email Address<input required type="email" name="email" placeholder="you@example.com" /></label>
+							<label>Email Address<input required type="email" name="email" placeholder="mauizainstitute@gmail.com" /></label>
 						</div>
 						<div className="form-row">
 							<label>WhatsApp Number<input required name="phone" placeholder="Your WhatsApp number" /></label>
