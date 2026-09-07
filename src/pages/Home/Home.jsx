@@ -177,6 +177,7 @@ export default function Home() {
       <section className="section courses-preview">
         <div className="container">
           <SectionHeading
+            center
             eyebrow="OUR COURSES"
             title="Explore Our Islamic Education Courses"
             description="Start learning with courses designed to develop essential Quranic and Islamic knowledge."

@@ -1,0 +1,55 @@
+/* Keep the small section labels visually consistent across every page. */
+.eyebrow,
+.section-heading .eyebrow,
+.section-heading.center .eyebrow,
+.page-hero .eyebrow,
+html[dir="rtl"] .section-heading:not(.center) .eyebrow,
+html[dir="rtl"] .page-hero .eyebrow {
+  justify-content: center;
+  text-align: center;
+}
+
+.section-heading.center,
+.section-heading.center h2 {
+  text-align: center;
+}
+
+.section-heading.center h2,
+.section-heading.center .lead {
+  margin-inline: auto;
+}
+
+.page-hero-content,
+.page-hero h1,
+.page-hero p {
+  text-align: center;
+}
+
+.page-hero h1,
+.page-hero p {
+  margin-inline: auto;
+}
+
+/* Center the text-led panels that sit beside visual or form content. */
+.welcome > div:first-child,
+.about-grid > div:first-child,
+.contact-layout > div:first-child,
+.cta-inner,
+.cta-inner h2,
+.cta-inner p {
+  text-align: center;
+}
+
+.welcome > div:first-child .section-heading h2,
+.about-grid > div:first-child .section-heading h2,
+.contact-layout > div:first-child h2 {
+  text-align: center;
+}
+
+.welcome > div:first-child .section-heading h2,
+.about-grid > div:first-child .section-heading h2,
+.welcome > div:first-child p,
+.about-grid > div:first-child > p,
+.contact-layout > div:first-child > p:not(.eyebrow) {
+  margin-inline: auto;
+}
