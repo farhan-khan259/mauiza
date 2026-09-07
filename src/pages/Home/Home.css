@@ -54,6 +54,7 @@
   .home-hero .hero-actions {
     flex-direction: row;
     flex-wrap: nowrap;
+    justify-content: center;
     gap: 8px;
   }
   .home-hero .hero-actions .button {
@@ -65,6 +66,15 @@
   }
   .home-hero .hero-actions .button span {
     font-size: 15px;
+  }
+}
+@media (max-width: 480px) {
+  .home-hero .hero-actions {
+    justify-content: center;
+    width: 100%;
+  }
+  .home-hero .hero-actions .button {
+    min-width: 0;
   }
 }
 .trust-line {
