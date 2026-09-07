@@ -39,7 +39,7 @@ export default function Navbar() {
               {label}
             </NavLink>
           ))}
-          <Button to="/registration" className="nav-cta">
+          <Button to="/registration" className="nav-cta" onClick={() => setOpen(false)}>
             Enroll Now
           </Button>
           <label className="language-picker">
