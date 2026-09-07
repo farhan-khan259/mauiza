@@ -1,5 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const languages = [
   { code: "en", label: "English", nativeLabel: "English", direction: "ltr" },
@@ -110,18 +109,14 @@ function translateDocument(language, originalText) {
 
 export function LanguageProvider({ children }) {
   const [language, setLanguage] = useState(() => localStorage.getItem("mauiza-language") || "en");
-  const originalText = useRef(new WeakMap());
   const selected = languages.find((item) => item.code === language) || languages[0];
-  const { pathname } = useLocation();
 
   useEffect(() => {
     localStorage.setItem("mauiza-language", language);
     document.documentElement.lang = language;
     document.documentElement.dir = selected.direction;
     document.body.classList.toggle("rtl-language", selected.direction === "rtl");
-    const frame = requestAnimationFrame(() => translateDocument(language, originalText));
-    return () => cancelAnimationFrame(frame);
-  }, [language, pathname, selected.direction]);
+  }, [language, selected.direction]);
 
   return <LanguageContext.Provider value={{ language, setLanguage, selected }}>{children}</LanguageContext.Provider>;
 }
