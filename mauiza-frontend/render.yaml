@@ -4,6 +4,9 @@ services:
     runtime: static
     buildCommand: npm ci && npm run build
     staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://mauiza-backend.onrender.com
     routes:
       - type: rewrite
         source: /*
