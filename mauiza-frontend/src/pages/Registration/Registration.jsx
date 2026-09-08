@@ -161,7 +161,7 @@ export default function Registration() {
 										required
 										type="time"
 										name="startTime"
-										step="1800"
+										step="60"
 										max="23:00"
 										value={schedule.start}
 										onChange={(event) => {
@@ -177,7 +177,7 @@ export default function Registration() {
 										required
 										type="time"
 										name="endTime"
-										step="1800"
+										step="60"
 										min={schedule.start || undefined}
 										value={schedule.end}
 										onChange={(event) => setSchedule((current) => ({ ...current, end: event.target.value }))}
