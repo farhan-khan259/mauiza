@@ -59,7 +59,7 @@ export default function Contact() {
                 if (Object.values(payload).some((value) => !value)) return;
                 try {
                   const response = await fetch(
-                    `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/contact`,
+                    `${import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com"}/api/contact`,
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },

@@ -60,7 +60,7 @@ export default function Registration() {
 		if (Object.values(payload).some((value) => !value) || schedule.end <= schedule.start) return;
 
 		try {
-			const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/registration`, {
+			const response = await fetch(`${import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com"}/api/registration`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(payload)
