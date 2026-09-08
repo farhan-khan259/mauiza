@@ -27,6 +27,15 @@ export default function Registration() {
 		return `${hour}:${String(minutes).padStart(2, "0")} ${suffix}`;
 	}
 
+	function getHalfHourLater(value) {
+		if (!value) return "";
+		const [hours, minutes] = value.split(":").map(Number);
+		const totalMinutes = hours * 60 + minutes + 30;
+		const nextHours = Math.floor(totalMinutes / 60);
+		const nextMinutes = totalMinutes % 60;
+		return `${String(nextHours).padStart(2, "0")}:${String(nextMinutes).padStart(2, "0")}`;
+	}
+
 	const scheduleSummary = schedule.start && schedule.end ? `${formatTimeForDisplay(schedule.start)} to ${formatTimeForDisplay(schedule.end)}` : "";
 
 	async function submit(event) {
@@ -105,8 +114,6 @@ export default function Registration() {
 						<div className="form-row">
 							<label>WhatsApp Number<input required name="phone" placeholder="Your WhatsApp number" /></label>
 							<label>Country<input required name="country" placeholder="Your country" /></label>
-						</div>
-						<div className="form-row">
 							<label>
 								Age Group
 								<select required name="ageGroup" defaultValue="">
@@ -152,8 +159,12 @@ export default function Registration() {
 										type="time"
 										name="startTime"
 										step="1800"
+										max="23:00"
 										value={schedule.start}
-										onChange={(event) => setSchedule((current) => ({ ...current, start: event.target.value }))}
+										onChange={(event) => {
+											const start = event.target.value;
+											setSchedule({ start, end: getHalfHourLater(start) });
+									}}
 									/>
 								</label>
 								<span className="time-range-separator">to</span>
