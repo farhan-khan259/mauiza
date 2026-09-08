@@ -58,15 +58,24 @@ export default function Contact() {
                 };
                 if (Object.values(payload).some((value) => !value)) return;
                 try {
+                  const apiBaseUrl = (
+                    import.meta.env.VITE_API_URL ||
+                    "https://mauiza-backend.onrender.com"
+                  ).replace(/\/+$/, "");
                   const response = await fetch(
-                    `${import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com"}/api/contact`,
+                    `${apiBaseUrl}/api/contact`,
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify(payload),
                     },
                   );
-                  const data = await response.json();
+                  const contentType = response.headers.get("content-type") || "";
+                  const data = contentType.includes("application/json")
+                    ? await response.json()
+                    : {
+                        message: `Contact request failed (${response.status}). Please try again.`,
+                      };
                   if (!response.ok)
                     throw new Error(data.message || "Failed to send message");
                   const whatsappMessage = `Hello Mauiza, I have sent a message through your contact form. My name is ${payload.name} and my email is ${payload.email}. I would like to follow up regarding: ${payload.subject}.`;

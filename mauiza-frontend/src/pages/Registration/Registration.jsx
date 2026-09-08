@@ -60,13 +60,17 @@ export default function Registration() {
 		if (Object.values(payload).some((value) => !value) || schedule.end <= schedule.start) return;
 
 		try {
-			const response = await fetch(`${import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com"}/api/registration`, {
+			const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
+			const response = await fetch(`${apiBaseUrl}/api/registration`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(payload)
 			});
 
-			const data = await response.json();
+			const contentType = response.headers.get("content-type") || "";
+			const data = contentType.includes("application/json")
+				? await response.json()
+				: { message: `Registration request failed (${response.status}). Please try again.` };
 			if (!response.ok) {
 				throw new Error(data.message || "Registration failed");
 			}
