@@ -40,25 +40,24 @@ export default function Registration() {
 
 	async function submit(event) {
 		event.preventDefault();
-		if (!schedule.start || !schedule.end) return;
-		if (schedule.end <= schedule.start) return;
 
 		const form = event.currentTarget;
 		const formData = new FormData(form);
 		const courseValue = formData.get("course") || selectedCourse;
 		const payload = {
-			fullName: formData.get("name"),
-			email: formData.get("email"),
-			phone: formData.get("phone"),
-			country: formData.get("country"),
-			ageGroup: formData.get("ageGroup"),
-			gender: formData.get("gender"),
+			fullName: formData.get("name")?.trim(),
+			email: formData.get("email")?.trim(),
+			phone: formData.get("phone")?.trim(),
+			country: formData.get("country")?.trim(),
+			ageGroup: formData.get("ageGroup")?.trim(),
+			gender: formData.get("gender")?.trim(),
 			course: courseValue,
 			startTime: schedule.start,
 			endTime: schedule.end,
 			schedule: `${formatTimeForDisplay(schedule.start)} to ${formatTimeForDisplay(schedule.end)}`,
-			goals: formData.get("goals") || ""
+			goals: formData.get("goals")?.trim()
 		};
+		if (Object.values(payload).some((value) => !value) || schedule.end <= schedule.start) return;
 
 		try {
 			const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/registration`, {
@@ -185,7 +184,7 @@ export default function Registration() {
 						</label>
 						<label>
 							Learning Goals
-							<textarea name="goals" rows="4" placeholder="Tell us briefly what you would like to learn..." />
+							<textarea required name="goals" rows="4" placeholder="Tell us briefly what you would like to learn..." />
 						</label>
 						<button type="submit">Submit Registration <span>→</span></button>
 					</form>

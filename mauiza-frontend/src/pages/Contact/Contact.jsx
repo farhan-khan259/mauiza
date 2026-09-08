@@ -51,11 +51,12 @@ export default function Contact() {
                 const form = e.currentTarget;
                 const formData = new FormData(form);
                 const payload = {
-                  name: formData.get("name"),
-                  email: formData.get("email"),
-                  subject: formData.get("subject"),
-                  message: formData.get("message"),
+                  name: formData.get("name")?.trim(),
+                  email: formData.get("email")?.trim(),
+                  subject: formData.get("subject")?.trim(),
+                  message: formData.get("message")?.trim(),
                 };
+                if (Object.values(payload).some((value) => !value)) return;
                 try {
                   const response = await fetch(
                     `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/contact`,
