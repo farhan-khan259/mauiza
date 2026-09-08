@@ -8,6 +8,11 @@ export const languages = [
   { code: "tr", label: "Turkish", nativeLabel: "Türkçe", direction: "ltr" },
   { code: "fr", label: "French", nativeLabel: "Français", direction: "ltr" },
   { code: "es", label: "Spanish", nativeLabel: "Español", direction: "ltr" },
+  { code: "zh-CN", label: "Mandarin Chinese", nativeLabel: "中文（普通话）", direction: "ltr" },
+  { code: "pt", label: "Portuguese", nativeLabel: "Português", direction: "ltr" },
+  { code: "fil", label: "Filipino", nativeLabel: "Filipino", direction: "ltr" },
+  { code: "hi", label: "Hindi", nativeLabel: "हिन्दी", direction: "ltr" },
+  { code: "ru", label: "Russian", nativeLabel: "Русский", direction: "ltr" },
 ];
 
 const urdu = {
@@ -52,6 +57,28 @@ const translations = {
   fr: { Home: "Accueil", "About Us": "À propos", Courses: "Cours", "Contact Us": "Contactez-nous", Registration: "Inscription" },
   es: spanish,
 };
+
+// These languages use their own complete UI catalogue. Keeping the source text as
+// the key lets the DOM translator also cover text added after a route change.
+const newLanguageTranslations = {
+  "zh-CN": {
+    Home: "首页", "About Us": "关于我们", Courses: "课程", Resources: "学习资源", "Contact Us": "联系我们", Registration: "报名", "Enroll Now": "立即报名", "Explore Courses": "浏览课程", "Learn More": "了解更多", "Learn More About Us": "了解我们", "View All Courses": "查看全部课程", "Start Learning Today": "今天开始学习", "Online Learning": "在线学习", "Qualified Instructors": "专业教师", "Flexible Schedule": "灵活时间", "Personalized Support": "个性化支持", "Learn From Anywhere": "随时随地学习", "Structured Learning": "系统化学习", "Flexible Learning": "灵活学习", "Learn & Grow": "学习与成长", "Learn the Quran.": "学习《古兰经》。", "Strengthen Your Faith.": "坚定你的信仰。", "Transform Your Life.": "改变你的人生。", "READ. REFLECT.": "阅读。思考。", "GROW.": "成长。", "YOUR JOURNEY BEGINS": "你的旅程从这里开始", "Your Journey Towards Quranic Learning Starts Here": "你的《古兰经》学习之旅从这里开始", "Learning Designed Around Your Journey": "为你的学习旅程量身设计", "Explore Our Islamic Education Courses": "探索我们的伊斯兰教育课程", "Explore Our Courses": "探索我们的课程", "Start Learning in 3 Simple Steps": "通过三个简单步骤开始学习", "What You'll Learn": "你将学习什么", "ONLINE COURSE": "在线课程", "Namaz Course": "礼拜课程", "Quran Memorization": "《古兰经》背诵", "Tajweed Course": "泰吉威德课程", "Arabic Reading Course": "阿拉伯语阅读课程", "Enroll in": "报名参加", "Begin Your Learning Journey": "开始你的学习之旅", "Learning Resources": "学习资源", "Learn at your own pace.": "按自己的节奏学习。", "Submit Registration": "提交报名", "Full Name": "姓名", "Email Address": "电子邮箱", "Phone Number": "电话号码", "WhatsApp Number": "WhatsApp 号码", Country: "国家", "Age Group": "年龄组", Gender: "性别", "Preferred Course": "首选课程", "Preferred Schedule": "首选时间", "Learning Goals": "学习目标", "Select age group": "选择年龄组", "Select gender": "选择性别", "Select a course": "选择课程", Child: "儿童", Teen: "青少年", Adult: "成人", Male: "男", Female: "女", From: "从", To: "至", "Your name": "你的姓名", "Your full name": "你的全名", "Your WhatsApp number": "你的 WhatsApp 号码", "Your country": "你的国家", "Tell us briefly what you would like to learn...": "请简要说明你想学习什么……", "Your Name": "你的姓名", Subject: "主题", "Your Message": "你的留言", "Send Message": "发送消息", "Website language": "网站语言", "Toggle menu": "切换菜单", "Mauiza logo": "Mauiza 标志", View: "查看", Download: "下载", "Contact on WhatsApp": "通过 WhatsApp 联系", "We’re Here to Help": "我们随时为你提供帮助", "Let’s Start a Conversation.": "让我们开始交流。", "Thank you — your message has been sent.": "感谢你，消息已发送。", "Your message has been sent successfully.": "你的消息已成功发送。", "Your registration has been submitted successfully.": "你的报名已成功提交。", "Thank you for choosing Mauiza. Our team will contact you soon.": "感谢选择 Mauiza。我们的团队将很快与你联系。", "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "感谢联系 Mauiza。我们很快会回复你。", "Online, worldwide": "在线，面向全球", "Our Classroom": "我们的课堂", Availability: "可用时间", "Flexible online learning": "灵活的在线学习", Explore: "探索", Connect: "联系", "Learn with purpose.": "带着目标学习。", "MAUIZA ONLINE ACADEMY": "MAUIZA 在线学院", "REGISTRATION": "报名", "STUDY LIBRARY": "学习资料库", "RESOURCE COLLECTION": "资源合集"
+  },
+  pt: {
+    Home: "Início", "About Us": "Sobre nós", Courses: "Cursos", Resources: "Recursos", "Contact Us": "Contacte-nos", Registration: "Inscrição", "Enroll Now": "Inscreva-se agora", "Explore Courses": "Explorar cursos", "Learn More": "Saiba mais", "Learn More About Us": "Saiba mais sobre nós", "View All Courses": "Ver todos os cursos", "Start Learning Today": "Comece a aprender hoje", "Online Learning": "Aprendizagem online", "Qualified Instructors": "Instrutores qualificados", "Flexible Schedule": "Horário flexível", "Personalized Support": "Apoio personalizado", "Learn From Anywhere": "Aprenda de qualquer lugar", "Structured Learning": "Aprendizagem estruturada", "Flexible Learning": "Aprendizagem flexível", "Learn & Grow": "Aprenda e cresça", "Learn the Quran.": "Aprenda o Alcorão.", "Strengthen Your Faith.": "Fortaleça a sua fé.", "Transform Your Life.": "Transforme a sua vida.", "READ. REFLECT.": "LEIA. REFLITA.", "GROW.": "CRESÇA.", "YOUR JOURNEY BEGINS": "A SUA JORNADA COMEÇA", "Your Journey Towards Quranic Learning Starts Here": "A sua jornada de aprendizagem do Alcorão começa aqui", "Learning Designed Around Your Journey": "Aprendizagem pensada para a sua jornada", "Explore Our Islamic Education Courses": "Explore os nossos cursos de educação islâmica", "Explore Our Courses": "Explore os nossos cursos", "Start Learning in 3 Simple Steps": "Comece a aprender em 3 passos simples", "What You'll Learn": "O que vai aprender", "ONLINE COURSE": "CURSO ONLINE", "Namaz Course": "Curso de Salah", "Quran Memorization": "Memorização do Alcorão", "Tajweed Course": "Curso de Tajweed", "Arabic Reading Course": "Curso de leitura árabe", "Enroll in": "Inscreva-se em", "Begin Your Learning Journey": "Comece a sua jornada de aprendizagem", "Learning Resources": "Recursos de aprendizagem", "Learn at your own pace.": "Aprenda ao seu próprio ritmo.", "Submit Registration": "Enviar inscrição", "Full Name": "Nome completo", "Email Address": "E-mail", "Phone Number": "Número de telefone", "WhatsApp Number": "Número de WhatsApp", Country: "País", "Age Group": "Faixa etária", Gender: "Género", "Preferred Course": "Curso preferido", "Preferred Schedule": "Horário preferido", "Learning Goals": "Objetivos de aprendizagem", "Select age group": "Selecione a faixa etária", "Select gender": "Selecione o género", "Select a course": "Selecione um curso", Child: "Criança", Teen: "Adolescente", Adult: "Adulto", Male: "Masculino", Female: "Feminino", From: "De", To: "Até", "Your name": "O seu nome", "Your full name": "O seu nome completo", "Your WhatsApp number": "O seu número de WhatsApp", "Your country": "O seu país", "Tell us briefly what you would like to learn...": "Diga-nos brevemente o que gostaria de aprender...", "Your Name": "O seu nome", Subject: "Assunto", "Your Message": "A sua mensagem", "Send Message": "Enviar mensagem", "Website language": "Idioma do site", "Toggle menu": "Alternar menu", "Mauiza logo": "Logótipo Mauiza", View: "Ver", Download: "Transferir", "Contact on WhatsApp": "Contactar pelo WhatsApp", "We’re Here to Help": "Estamos aqui para ajudar", "Let’s Start a Conversation.": "Vamos iniciar uma conversa.", "Thank you — your message has been sent.": "Obrigado — a sua mensagem foi enviada.", "Your message has been sent successfully.": "A sua mensagem foi enviada com sucesso.", "Your registration has been submitted successfully.": "A sua inscrição foi enviada com sucesso.", "Thank you for choosing Mauiza. Our team will contact you soon.": "Obrigado por escolher a Mauiza. A nossa equipa entrará em contacto em breve.", "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "Obrigado por contactar a Mauiza. Falaremos consigo em breve.", "Online, worldwide": "Online, em todo o mundo", "Our Classroom": "A nossa sala de aula", Availability: "Disponibilidade", "Flexible online learning": "Aprendizagem online flexível", Explore: "Explorar", Connect: "Contactar", "Learn with purpose.": "Aprenda com propósito.", "MAUIZA ONLINE ACADEMY": "ACADEMIA ONLINE MAUIZA", "REGISTRATION": "INSCRIÇÃO", "STUDY LIBRARY": "BIBLIOTECA DE ESTUDO", "RESOURCE COLLECTION": "COLEÇÃO DE RECURSOS"
+  },
+  fil: {
+    Home: "Tahanan", "About Us": "Tungkol sa Amin", Courses: "Mga Kurso", Resources: "Mga Sanggunian", "Contact Us": "Makipag-ugnayan", Registration: "Pagpaparehistro", "Enroll Now": "Magpatala Ngayon", "Explore Courses": "Tingnan ang Mga Kurso", "Learn More": "Alamin Pa", "Learn More About Us": "Alamin Pa Tungkol sa Amin", "View All Courses": "Tingnan ang Lahat ng Kurso", "Start Learning Today": "Simulang Matuto Ngayon", "Online Learning": "Online na Pag-aaral", "Qualified Instructors": "Kuwalipikadong Guro", "Flexible Schedule": "Maluwag na Iskedyul", "Personalized Support": "Personal na Suporta", "Learn From Anywhere": "Matuto Kahit Saan", "Structured Learning": "Organisadong Pag-aaral", "Flexible Learning": "Maluwag na Pag-aaral", "Learn & Grow": "Matuto at Lumago", "Learn the Quran.": "Pag-aralan ang Quran.", "Strengthen Your Faith.": "Patatagin ang Iyong Pananampalataya.", "Transform Your Life.": "Baguhin ang Iyong Buhay.", "READ. REFLECT.": "BASAHIN. PAGNILAYAN.", "GROW.": "LUMAGO.", "YOUR JOURNEY BEGINS": "DITO NAGSISIMULA ANG IYONG PAGLALAKBAY", "Your Journey Towards Quranic Learning Starts Here": "Dito nagsisimula ang iyong paglalakbay sa pag-aaral ng Quran", "Learning Designed Around Your Journey": "Pag-aaral na idinisenyo para sa iyong paglalakbay", "Explore Our Islamic Education Courses": "Tuklasin ang aming mga kursong pang-edukasyong Islamiko", "Explore Our Courses": "Tuklasin ang aming mga kurso", "Start Learning in 3 Simple Steps": "Simulang matuto sa 3 simpleng hakbang", "What You'll Learn": "Ang Matututunan Mo", "ONLINE COURSE": "ONLINE NA KURSO", "Namaz Course": "Kurso sa Salah", "Quran Memorization": "Pagsasaulo ng Quran", "Tajweed Course": "Kurso sa Tajweed", "Arabic Reading Course": "Kurso sa Pagbasa ng Arabic", "Enroll in": "Magpatala sa", "Begin Your Learning Journey": "Simulan ang Iyong Paglalakbay sa Pag-aaral", "Learning Resources": "Mga Sanggunian sa Pag-aaral", "Learn at your own pace.": "Matuto sa sarili mong bilis.", "Submit Registration": "Isumite ang Pagpaparehistro", "Full Name": "Buong Pangalan", "Email Address": "Email Address", "Phone Number": "Numero ng Telepono", "WhatsApp Number": "Numero ng WhatsApp", Country: "Bansa", "Age Group": "Pangkat ng Edad", Gender: "Kasarian", "Preferred Course": "Napiling Kurso", "Preferred Schedule": "Napiling Iskedyul", "Learning Goals": "Mga Layunin sa Pag-aaral", "Select age group": "Piliin ang pangkat ng edad", "Select gender": "Piliin ang kasarian", "Select a course": "Pumili ng kurso", Child: "Bata", Teen: "Tinedyer", Adult: "Nasa hustong gulang", Male: "Lalaki", Female: "Babae", From: "Mula", To: "Hanggang", "Your name": "Iyong pangalan", "Your full name": "Iyong buong pangalan", "Your WhatsApp number": "Iyong numero sa WhatsApp", "Your country": "Iyong bansa", "Tell us briefly what you would like to learn...": "Sabihin sa amin nang maikli kung ano ang gusto mong matutuhan...", "Your Name": "Iyong Pangalan", Subject: "Paksa", "Your Message": "Iyong Mensahe", "Send Message": "Ipadala ang Mensahe", "Website language": "Wika ng website", "Toggle menu": "I-toggle ang menu", "Mauiza logo": "Logo ng Mauiza", View: "Tingnan", Download: "I-download", "Contact on WhatsApp": "Makipag-ugnayan sa WhatsApp", "We’re Here to Help": "Narito Kami Para Tumulong", "Let’s Start a Conversation.": "Magsimula tayo ng usapan.", "Thank you — your message has been sent.": "Salamat — naipadala ang iyong mensahe.", "Your message has been sent successfully.": "Matagumpay na naipadala ang iyong mensahe.", "Your registration has been submitted successfully.": "Matagumpay na naisumite ang iyong pagpaparehistro.", "Thank you for choosing Mauiza. Our team will contact you soon.": "Salamat sa pagpili sa Mauiza. Makikipag-ugnayan sa iyo ang aming pangkat sa lalong madaling panahon.", "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "Salamat sa pakikipag-ugnayan sa Mauiza. Makikipag-ugnayan kami sa iyo sa lalong madaling panahon.", "Online, worldwide": "Online, sa buong mundo", "Our Classroom": "Ang Aming Silid-aralan", Availability: "Pagiging available", "Flexible online learning": "Maluwag na online na pag-aaral", Explore: "Tuklasin", Connect: "Makipag-ugnayan", "Learn with purpose.": "Matutong may layunin.", "MAUIZA ONLINE ACADEMY": "MAUIZA ONLINE ACADEMY", "REGISTRATION": "PAGPAPAREHISTRO", "STUDY LIBRARY": "AKLATAN SA PAG-AARAL", "RESOURCE COLLECTION": "KOLEKSIYON NG SANGGUNIAN"
+  },
+  hi: {
+    Home: "होम", "About Us": "हमारे बारे में", Courses: "पाठ्यक्रम", Resources: "संसाधन", "Contact Us": "संपर्क करें", Registration: "पंजीकरण", "Enroll Now": "अभी नामांकन करें", "Explore Courses": "पाठ्यक्रम देखें", "Learn More": "और जानें", "Learn More About Us": "हमारे बारे में और जानें", "View All Courses": "सभी पाठ्यक्रम देखें", "Start Learning Today": "आज सीखना शुरू करें", "Online Learning": "ऑनलाइन शिक्षा", "Qualified Instructors": "योग्य शिक्षक", "Flexible Schedule": "लचीला समय", "Personalized Support": "व्यक्तिगत सहायता", "Learn From Anywhere": "कहीं से भी सीखें", "Structured Learning": "सुव्यवस्थित शिक्षा", "Flexible Learning": "लचीली शिक्षा", "Learn & Grow": "सीखें और बढ़ें", "Learn the Quran.": "क़ुरआन सीखें।", "Strengthen Your Faith.": "अपने ईमान को मज़बूत करें।", "Transform Your Life.": "अपना जीवन बदलें।", "READ. REFLECT.": "पढ़ें। मनन करें।", "GROW.": "बढ़ें।", "YOUR JOURNEY BEGINS": "आपकी यात्रा शुरू होती है", "Your Journey Towards Quranic Learning Starts Here": "आपकी क़ुरआनी शिक्षा की यात्रा यहाँ से शुरू होती है", "Learning Designed Around Your Journey": "आपकी यात्रा के अनुरूप शिक्षा", "Explore Our Islamic Education Courses": "हमारे इस्लामी शिक्षा पाठ्यक्रम देखें", "Explore Our Courses": "हमारे पाठ्यक्रम देखें", "Start Learning in 3 Simple Steps": "3 आसान चरणों में सीखना शुरू करें", "What You'll Learn": "आप क्या सीखेंगे", "ONLINE COURSE": "ऑनलाइन पाठ्यक्रम", "Namaz Course": "नमाज़ पाठ्यक्रम", "Quran Memorization": "क़ुरआन याद करना", "Tajweed Course": "तजवीद पाठ्यक्रम", "Arabic Reading Course": "अरबी पढ़ने का पाठ्यक्रम", "Enroll in": "में नामांकन करें", "Begin Your Learning Journey": "अपनी शिक्षा यात्रा शुरू करें", "Learning Resources": "शिक्षण संसाधन", "Learn at your own pace.": "अपनी गति से सीखें।", "Submit Registration": "पंजीकरण जमा करें", "Full Name": "पूरा नाम", "Email Address": "ईमेल पता", "Phone Number": "फ़ोन नंबर", "WhatsApp Number": "व्हाट्सऐप नंबर", Country: "देश", "Age Group": "आयु वर्ग", Gender: "लिंग", "Preferred Course": "पसंदीदा पाठ्यक्रम", "Preferred Schedule": "पसंदीदा समय", "Learning Goals": "सीखने के लक्ष्य", "Select age group": "आयु वर्ग चुनें", "Select gender": "लिंग चुनें", "Select a course": "पाठ्यक्रम चुनें", Child: "बच्चा", Teen: "किशोर", Adult: "वयस्क", Male: "पुरुष", Female: "महिला", From: "से", To: "तक", "Your name": "आपका नाम", "Your full name": "आपका पूरा नाम", "Your WhatsApp number": "आपका व्हाट्सऐप नंबर", "Your country": "आपका देश", "Tell us briefly what you would like to learn...": "संक्षेप में बताएं कि आप क्या सीखना चाहते हैं...", "Your Name": "आपका नाम", Subject: "विषय", "Your Message": "आपका संदेश", "Send Message": "संदेश भेजें", "Website language": "वेबसाइट की भाषा", "Toggle menu": "मेनू बदलें", "Mauiza logo": "मौइज़ा लोगो", View: "देखें", Download: "डाउनलोड करें", "Contact on WhatsApp": "व्हाट्सऐप पर संपर्क करें", "We’re Here to Help": "हम आपकी सहायता के लिए यहाँ हैं", "Let’s Start a Conversation.": "आइए बातचीत शुरू करें।", "Thank you — your message has been sent.": "धन्यवाद — आपका संदेश भेज दिया गया है।", "Your message has been sent successfully.": "आपका संदेश सफलतापूर्वक भेज दिया गया है।", "Your registration has been submitted successfully.": "आपका पंजीकरण सफलतापूर्वक जमा कर दिया गया है।", "Thank you for choosing Mauiza. Our team will contact you soon.": "मौइज़ा चुनने के लिए धन्यवाद। हमारी टीम जल्द ही आपसे संपर्क करेगी।", "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "मौइज़ा से संपर्क करने के लिए धन्यवाद। हम जल्द ही आपसे संपर्क करेंगे।", "Online, worldwide": "ऑनलाइन, दुनिया भर में", "Our Classroom": "हमारी कक्षा", Availability: "उपलब्धता", "Flexible online learning": "लचीली ऑनलाइन शिक्षा", Explore: "खोजें", Connect: "संपर्क", "Learn with purpose.": "उद्देश्य के साथ सीखें।", "MAUIZA ONLINE ACADEMY": "मौइज़ा ऑनलाइन अकादमी", "REGISTRATION": "पंजीकरण", "STUDY LIBRARY": "अध्ययन पुस्तकालय", "RESOURCE COLLECTION": "संसाधन संग्रह"
+  },
+  ru: {
+    Home: "Главная", "About Us": "О нас", Courses: "Курсы", Resources: "Ресурсы", "Contact Us": "Связаться с нами", Registration: "Регистрация", "Enroll Now": "Записаться", "Explore Courses": "Посмотреть курсы", "Learn More": "Подробнее", "Learn More About Us": "Узнать о нас", "View All Courses": "Все курсы", "Start Learning Today": "Начните учиться сегодня", "Online Learning": "Онлайн-обучение", "Qualified Instructors": "Квалифицированные преподаватели", "Flexible Schedule": "Гибкое расписание", "Personalized Support": "Персональная поддержка", "Learn From Anywhere": "Учитесь откуда угодно", "Structured Learning": "Структурированное обучение", "Flexible Learning": "Гибкое обучение", "Learn & Grow": "Учитесь и развивайтесь", "Learn the Quran.": "Изучайте Коран.", "Strengthen Your Faith.": "Укрепляйте веру.", "Transform Your Life.": "Меняйте свою жизнь.", "READ. REFLECT.": "ЧИТАЙТЕ. РАЗМЫШЛЯЙТЕ.", "GROW.": "РАЗВИВАЙТЕСЬ.", "YOUR JOURNEY BEGINS": "ВАШ ПУТЬ НАЧИНАЕТСЯ", "Your Journey Towards Quranic Learning Starts Here": "Ваш путь к изучению Корана начинается здесь", "Learning Designed Around Your Journey": "Обучение, созданное для вашего пути", "Explore Our Islamic Education Courses": "Ознакомьтесь с нашими курсами исламского образования", "Explore Our Courses": "Ознакомьтесь с нашими курсами", "Start Learning in 3 Simple Steps": "Начните учиться за 3 простых шага", "What You'll Learn": "Чему вы научитесь", "ONLINE COURSE": "ОНЛАЙН-КУРС", "Namaz Course": "Курс намаза", "Quran Memorization": "Заучивание Корана", "Tajweed Course": "Курс таджвида", "Arabic Reading Course": "Курс чтения на арабском", "Enroll in": "Записаться на", "Begin Your Learning Journey": "Начните свой путь обучения", "Learning Resources": "Учебные материалы", "Learn at your own pace.": "Учитесь в своём темпе.", "Submit Registration": "Отправить регистрацию", "Full Name": "Полное имя", "Email Address": "Адрес электронной почты", "Phone Number": "Номер телефона", "WhatsApp Number": "Номер WhatsApp", Country: "Страна", "Age Group": "Возрастная группа", Gender: "Пол", "Preferred Course": "Предпочтительный курс", "Preferred Schedule": "Предпочтительное расписание", "Learning Goals": "Цели обучения", "Select age group": "Выберите возрастную группу", "Select gender": "Выберите пол", "Select a course": "Выберите курс", Child: "Ребёнок", Teen: "Подросток", Adult: "Взрослый", Male: "Мужской", Female: "Женский", From: "С", To: "До", "Your name": "Ваше имя", "Your full name": "Ваше полное имя", "Your WhatsApp number": "Ваш номер WhatsApp", "Your country": "Ваша страна", "Tell us briefly what you would like to learn...": "Кратко расскажите, чему вы хотели бы научиться...", "Your Name": "Ваше имя", Subject: "Тема", "Your Message": "Ваше сообщение", "Send Message": "Отправить сообщение", "Website language": "Язык сайта", "Toggle menu": "Переключить меню", "Mauiza logo": "Логотип Mauiza", View: "Открыть", Download: "Скачать", "Contact on WhatsApp": "Связаться в WhatsApp", "We’re Here to Help": "Мы готовы помочь", "Let’s Start a Conversation.": "Давайте начнём разговор.", "Thank you — your message has been sent.": "Спасибо — ваше сообщение отправлено.", "Your message has been sent successfully.": "Ваше сообщение успешно отправлено.", "Your registration has been submitted successfully.": "Ваша регистрация успешно отправлена.", "Thank you for choosing Mauiza. Our team will contact you soon.": "Спасибо, что выбрали Mauiza. Наша команда скоро свяжется с вами.", "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "Спасибо за обращение в Mauiza. Мы скоро с вами свяжемся.", "Online, worldwide": "Онлайн, по всему миру", "Our Classroom": "Наш класс", Availability: "Доступность", "Flexible online learning": "Гибкое онлайн-обучение", Explore: "Обзор", Connect: "Связь", "Learn with purpose.": "Учитесь целенаправленно.", "MAUIZA ONLINE ACADEMY": "ОНЛАЙН-АКАДЕМИЯ MAUIZA", "REGISTRATION": "РЕГИСТРАЦИЯ", "STUDY LIBRARY": "УЧЕБНАЯ БИБЛИОТЕКА", "RESOURCE COLLECTION": "КОЛЛЕКЦИЯ МАТЕРИАЛОВ"
+  },
+};
+
+Object.assign(translations, newLanguageTranslations);
 
 Object.assign(translations.sv, swedishScreenshotTranslations);
 Object.assign(translations.tr, turkishScreenshotTranslations);
@@ -155,11 +182,225 @@ Object.assign(spanish, {
   "Website language": "Idioma del sitio web", "Toggle menu": "Alternar menú", "Mauiza logo": "Logotipo de Mauiza", "MAUIZA ONLINE ACADEMY": "ACADEMIA MAUIZA EN LÍNEA", "Thank you. Your registration has been received.": "Gracias. Hemos recibido tu registro.", "you@example.com": "tu@ejemplo.com", "COURSE 01": "CURSO 01", "COURSE 02": "CURSO 02", "COURSE 03": "CURSO 03", "COURSE 04": "CURSO 04", "Open Quran resting on a wooden stand": "Corán abierto sobre un soporte de madera", "Open Quran for Islamic study": "Corán abierto para el estudio islámico", "Peaceful mosque interior": "Interior tranquilo de una mezquita"
 });
 
+Object.assign(translations.hi, {
+  "BISMILLAHIR RAHMANIR RAHEEM": "अल्लाह के नाम से, जो बड़ा मेहरबान और निहायत रहम वाला है",
+  "Accessible Islamic education designed to help you learn, understand and practice the teachings of the Quran from the comfort of your home.": "घर के आराम से क़ुरआन की शिक्षाओं को सीखने, समझने और अपनाने में मदद करने वाली सुलभ इस्लामी शिक्षा।",
+  "Making Quranic Education More Accessible": "क़ुरआनी शिक्षा को अधिक सुलभ बनाना",
+  "Begin a meaningful": "एक सार्थक",
+  "learning journey": "शिक्षा यात्रा शुरू करें",
+  "MAUIZA ONLINE ACADEMY": "मौइज़ा ऑनलाइन अकादमी",
+  "LEARN WITH PURPOSE": "उद्देश्य के साथ सीखें",
+  "OUR PURPOSE": "हमारा उद्देश्य",
+  "WHY CHOOSE US": "हमें क्यों चुनें",
+  "OUR COURSES": "हमारे पाठ्यक्रम",
+  "HOW IT WORKS": "यह कैसे काम करता है",
+  "ABOUT US": "हमारे बारे में",
+  "OUR APPROACH": "हमारा दृष्टिकोण",
+  "OUR VALUES": "हमारे मूल्य",
+  "WHO WE ARE": "हम कौन हैं",
+  "STUDY LIBRARY": "अध्ययन पुस्तकालय",
+  "RESOURCE COLLECTION": "संसाधन संग्रह",
+  "REGISTRATION": "पंजीकरण",
+  "GET IN TOUCH": "संपर्क करें",
+  "Choose Your Course": "अपना पाठ्यक्रम चुनें",
+  "Explore our courses and select the one that matches your learning goals.": "हमारे पाठ्यक्रम देखें और अपने सीखने के लक्ष्यों के अनुसार पाठ्यक्रम चुनें।",
+  "Register Online": "ऑनलाइन पंजीकरण करें",
+  "Complete the simple registration form with your contact details, preferred schedule and course selection.": "अपनी संपर्क जानकारी, पसंदीदा समय और पाठ्यक्रम के चयन के साथ सरल पंजीकरण फ़ॉर्म पूरा करें।",
+  "Our team will review your registration and contact you with the next steps.": "हमारी टीम आपके पंजीकरण की समीक्षा करेगी और अगले चरणों के लिए आपसे संपर्क करेगी।",
+  "Learning the Quran is a journey that brings knowledge, guidance and spiritual growth into our lives.": "क़ुरआन सीखना एक ऐसी यात्रा है जो हमारे जीवन में ज्ञान, मार्गदर्शन और आध्यात्मिक विकास लाती है।",
+  "Our online Islamic education platform is designed to make Quranic learning accessible to students of different ages and learning levels. Through structured lessons, dedicated instructors and a flexible learning environment, we help students build a stronger connection with the Quran and Islamic teachings.": "हमारा ऑनलाइन इस्लामी शिक्षा मंच अलग-अलग उम्र और स्तर के विद्यार्थियों के लिए क़ुरआनी शिक्षा को सुलभ बनाने के लिए बनाया गया है। व्यवस्थित पाठों, समर्पित शिक्षकों और लचीले वातावरण के माध्यम से हम विद्यार्थियों को क़ुरआन और इस्लामी शिक्षाओं से मजबूत संबंध बनाने में मदद करते हैं।",
+  "We believe Islamic education should be accessible, structured and meaningful.": "हम मानते हैं कि इस्लामी शिक्षा सुलभ, व्यवस्थित और सार्थक होनी चाहिए।",
+  "Start learning with courses designed to develop essential Quranic and Islamic knowledge.": "ज़रूरी क़ुरआनी और इस्लामी ज्ञान विकसित करने के लिए बनाए गए पाठ्यक्रमों से सीखना शुरू करें।",
+  "Learn from dedicated instructors who are committed to helping students improve their Quranic knowledge and understanding.": "ऐसे समर्पित शिक्षकों से सीखें जो विद्यार्थियों के क़ुरआनी ज्ञान और समझ को बेहतर बनाने के लिए प्रतिबद्ध हैं।",
+  "Access your learning journey from the comfort of your home, wherever you are in the world.": "दुनिया में आप कहीं भी हों, अपने घर के आराम से अपनी शिक्षा यात्रा जारी रखें।",
+  "Follow carefully organized courses designed to make learning easier and more progressive.": "सीखने को आसान और क्रमिक बनाने के लिए सावधानी से व्यवस्थित किए गए पाठ्यक्रमों का पालन करें।",
+  "Every student has different learning needs. Our approach focuses on providing guidance suited to the learner.": "हर विद्यार्थी की सीखने की ज़रूरतें अलग होती हैं। हमारा दृष्टिकोण विद्यार्थी के अनुरूप मार्गदर्शन देने पर केंद्रित है।",
+  "Choose a suitable learning schedule and make Quranic education part of your daily routine.": "उपयुक्त अध्ययन समय चुनें और क़ुरआनी शिक्षा को अपनी दैनिक दिनचर्या का हिस्सा बनाएं।",
+  "Go beyond simply reading. Develop knowledge, confidence and a deeper connection with Islamic teachings.": "सिर्फ़ पढ़ने से आगे बढ़ें। ज्ञान, आत्मविश्वास और इस्लामी शिक्षाओं से गहरा संबंध विकसित करें।",
+  "Understanding": "समझ",
+  "Practice": "अभ्यास",
+  "Consistency": "निरंतरता",
+  "Guidance": "मार्गदर्शन",
+  "Accessibility": "सुलभता",
+  "Knowledge": "ज्ञान",
+  "Excellence": "उत्कृष्टता",
+  "Respect": "सम्मान",
+  "Our Mission": "हमारा मिशन",
+  "Our Vision": "हमारा दृष्टिकोण",
+  "Our Approach": "हमारा तरीका",
+  "Welcome to a New Way of Learning": "सीखने के एक नए तरीके में आपका स्वागत है",
+  "About Our Islamic Education Platform": "हमारे इस्लामी शिक्षा मंच के बारे में",
+  "Making Quranic and Islamic education more accessible through modern online learning.": "आधुनिक ऑनलाइन शिक्षा के माध्यम से क़ुरआनी और इस्लामी शिक्षा को अधिक सुलभ बनाना।",
+  "We are an online Islamic education platform dedicated to helping students develop their Quranic knowledge through accessible and structured learning.": "हम एक ऑनलाइन इस्लामी शिक्षा मंच हैं जो सुलभ और व्यवस्थित शिक्षा के माध्यम से विद्यार्थियों का क़ुरआनी ज्ञान विकसित करने के लिए समर्पित है।",
+  "Our goal is to bring together the timeless teachings of the Quran and the convenience of modern technology, allowing students to learn from the comfort of their homes.": "हमारा लक्ष्य क़ुरआन की शाश्वत शिक्षाओं को आधुनिक तकनीक की सुविधा के साथ जोड़ना है ताकि विद्यार्थी अपने घर के आराम से सीख सकें।",
+  "Whether you are taking your first steps in Quranic learning or looking to improve your existing skills, our courses provide a supportive environment where learning can become a consistent part of your life.": "चाहे आप क़ुरआनी शिक्षा में पहला कदम रख रहे हों या अपने मौजूदा कौशल को बेहतर बनाना चाहते हों, हमारे पाठ्यक्रम सहायक वातावरण देते हैं जहाँ सीखना आपके जीवन का नियमित हिस्सा बन सकता है।",
+  "Our mission is to make Islamic education accessible, meaningful and convenient for learners of different ages and backgrounds.": "हमारा मिशन अलग-अलग उम्र और पृष्ठभूमि के विद्यार्थियों के लिए इस्लामी शिक्षा को सुलभ, सार्थक और सुविधाजनक बनाना है।",
+  "We aim to create an environment where students can learn at their own pace, receive proper guidance and develop a lasting connection with the Quran and Islamic teachings.": "हम ऐसा वातावरण बनाना चाहते हैं जहाँ विद्यार्थी अपनी गति से सीखें, उचित मार्गदर्शन पाएँ और क़ुरआन तथा इस्लामी शिक्षाओं से स्थायी संबंध विकसित करें।",
+  "To build a trusted online learning platform where people around the world can access quality Quranic and Islamic education and make learning an integral part of their everyday lives.": "एक भरोसेमंद ऑनलाइन शिक्षा मंच बनाना जहाँ दुनिया भर के लोग गुणवत्तापूर्ण क़ुरआनी और इस्लामी शिक्षा प्राप्त कर सकें और सीखना अपने दैनिक जीवन का अभिन्न हिस्सा बना सकें।",
+  "We believe effective Islamic education is more than simply completing lessons.": "हम मानते हैं कि प्रभावी इस्लामी शिक्षा केवल पाठ पूरे करने से कहीं अधिक है।",
+  "What We Stand For": "हम किन मूल्यों के लिए खड़े हैं",
+  "We value authentic and meaningful Islamic learning.": "हम प्रामाणिक और सार्थक इस्लामी शिक्षा को महत्व देते हैं।",
+  "We strive to maintain a professional and organized learning experience.": "हम पेशेवर और व्यवस्थित सीखने का अनुभव बनाए रखने का प्रयास करते हैं।",
+  "We believe Quranic education should be accessible to learners wherever they are.": "हम मानते हैं कि क़ुरआनी शिक्षा विद्यार्थियों के लिए, वे जहाँ भी हों, सुलभ होनी चाहिए।",
+  "We create a welcoming environment for students from different backgrounds.": "हम अलग-अलग पृष्ठभूमि के विद्यार्थियों के लिए स्वागतपूर्ण वातावरण बनाते हैं।",
+  "We encourage students to make learning a regular part of their lives.": "हम विद्यार्थियों को सीखने को अपने जीवन का नियमित हिस्सा बनाने के लिए प्रोत्साहित करते हैं।",
+  "Simple online registration": "सरल ऑनलाइन पंजीकरण",
+  "Choose a suitable course": "उपयुक्त पाठ्यक्रम चुनें",
+  "Flexible schedule preferences": "लचीले समय की पसंद",
+  "Preferred Course": "पसंदीदा पाठ्यक्रम",
+  "Preferred Schedule": "पसंदीदा समय",
+  "Learning Goals": "सीखने के लक्ष्य",
+  "Your name": "आपका नाम",
+  "Your full name": "आपका पूरा नाम",
+  "Your country": "आपका देश",
+  "Tell us briefly what you would like to learn...": "आप क्या सीखना चाहते हैं, संक्षेप में बताएं...",
+  "Select age group": "आयु वर्ग चुनें",
+  "Select gender": "लिंग चुनें",
+  "Select a course": "पाठ्यक्रम चुनें",
+  Child: "बच्चा",
+  Teen: "किशोर",
+  Adult: "वयस्क",
+  Male: "पुरुष",
+  Female: "महिला",
+  From: "से",
+  To: "तक",
+  to: "तक",
+  "Your registration has been submitted successfully.": "आपका पंजीकरण सफलतापूर्वक जमा हो गया है।",
+  "Thank you for choosing Mauiza. Our team will contact you soon.": "मौइज़ा को चुनने के लिए धन्यवाद। हमारी टीम जल्द आपसे संपर्क करेगी।",
+  "Your message has been sent successfully.": "आपका संदेश सफलतापूर्वक भेज दिया गया है।",
+  "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "मौइज़ा से संपर्क करने के लिए धन्यवाद। हम जल्द आपसे संपर्क करेंगे।",
+  "Contact on WhatsApp": "व्हाट्सऐप पर संपर्क करें",
+  "We’re Here to Help": "हम आपकी सहायता के लिए यहाँ हैं",
+  "Have a question about a course or your learning journey? Get in touch with us.": "पाठ्यक्रम या अपनी शिक्षा यात्रा के बारे में कोई सवाल है? हमसे संपर्क करें।",
+  "Let’s Start a Conversation.": "आइए बातचीत शुरू करें।",
+  "We would be happy to answer your questions and help you find a course that suits your goals.": "हमें आपके सवालों का जवाब देने और आपके लक्ष्यों के अनुसार पाठ्यक्रम खोजने में खुशी होगी।",
+  "Send us a message and our team will get back to you as soon as possible.": "हमें संदेश भेजें और हमारी टीम जल्द से जल्द आपसे संपर्क करेगी।",
+  "Your Name": "आपका नाम",
+  Subject: "विषय",
+  "Your Message": "आपका संदेश",
+  "Write your message here...": "अपना संदेश यहाँ लिखें...",
+  "Send Message": "संदेश भेजें",
+  "Email Us": "हमें ईमेल करें",
+  Availability: "उपलब्धता",
+  "Flexible online learning": "लचीली ऑनलाइन शिक्षा",
+  "Our Classroom": "हमारी कक्षा",
+  "Online, worldwide": "ऑनलाइन, पूरी दुनिया में",
+  Explore: "देखें",
+  Connect: "संपर्क",
+  "Thoughtful online Quranic education for meaningful, consistent learning.": "सार्थक और नियमित शिक्षा के लिए विचारशील ऑनलाइन क़ुरआनी शिक्षा।",
+  "Learn with purpose.": "उद्देश्य के साथ सीखें।",
+  "Revert Guide": "इस्लाम अपनाने वालों के लिए मार्गदर्शिका",
+  "Prayer Memorization": "नमाज़ याद करना",
+  "Arabic Reading": "अरबी पढ़ना",
+  Tajweed: "तजवीद",
+  "A gentle collection of practical guides for those beginning their journey in Islam.": "इस्लाम की यात्रा शुरू करने वालों के लिए उपयोगी मार्गदर्शिकाओं का सरल संग्रह।",
+  "Build confidence in your prayer by learning the essential words and supplications.": "ज़रूरी शब्द और दुआएँ सीखकर अपनी नमाज़ में आत्मविश्वास बढ़ाएं।",
+  "Helpful materials to support a steady and meaningful Quran memorization routine.": "क़ुरआन याद करने की स्थिर और सार्थक दिनचर्या में मदद देने वाली उपयोगी सामग्री।",
+  "Step-by-step resources for recognizing Arabic letters, sounds, and Quranic words.": "अरबी अक्षरों, ध्वनियों और क़ुरआनी शब्दों को पहचानने के लिए चरणबद्ध संसाधन।",
+  "A clear reference for strengthening pronunciation and reciting the Quran with care.": "उच्चारण बेहतर करने और क़ुरआन को ध्यानपूर्वक पढ़ने के लिए स्पष्ट संदर्भ।",
+  "“The best investment is the one that brings you closer to knowledge.”": "“सबसे अच्छा निवेश वह है जो आपको ज्ञान के करीब ले जाए।”",
+  "Learning With Purpose": "उद्देश्य के साथ सीखना",
+  "Build a strong foundation and develop a meaningful understanding of what you learn.": "मजबूत आधार बनाएं और जो सीखते हैं उसकी सार्थक समझ विकसित करें।",
+  "Encourage students to apply their learning consistently in everyday life.": "विद्यार्थियों को अपनी शिक्षा को दैनिक जीवन में लगातार लागू करने के लिए प्रोत्साहित करें।",
+  "Small, regular learning efforts can create lasting progress.": "छोटे और नियमित सीखने के प्रयास स्थायी प्रगति ला सकते हैं।",
+  "Learn with structured instruction and support throughout your journey.": "अपनी पूरी यात्रा में व्यवस्थित शिक्षा और सहायता के साथ सीखें।",
+  "Make learning possible from home through a convenient online environment.": "सुविधाजनक ऑनलाइन वातावरण के माध्यम से घर से सीखना संभव बनाएं।",
+  "Begin Your Journey With Us": "हमारे साथ अपनी यात्रा शुरू करें",
+  "Whether you're learning from the beginning or looking to strengthen your existing knowledge, we're here to support your next step.": "चाहे आप शुरुआत से सीख रहे हों या अपने मौजूदा ज्ञान को मजबूत करना चाहते हों, हम आपके अगले कदम में सहायता के लिए यहाँ हैं।",
+  "Make Time for What Matters": "जो महत्वपूर्ण है उसके लिए समय निकालें",
+  "A few minutes of learning every day can become a lifelong journey of knowledge.": "हर दिन सीखने के कुछ मिनट ज्ञान की आजीवन यात्रा बन सकते हैं।",
+  "Start your Quranic learning journey today.": "आज ही अपनी क़ुरआनी शिक्षा यात्रा शुरू करें।",
+  "Discover Our Story": "हमारी कहानी जानें",
+  "How can we help?": "हम आपकी कैसे सहायता कर सकते हैं?",
+  "Revert Guide 1": "इस्लाम अपनाने वालों की मार्गदर्शिका 1",
+  "Revert Guide 2": "इस्लाम अपनाने वालों की मार्गदर्शिका 2",
+  "Revert Guide 3": "इस्लाम अपनाने वालों की मार्गदर्शिका 3",
+  "Prayer Memorization 1": "नमाज़ याद करने की सामग्री 1",
+  "Prayer Memorization 2": "नमाज़ याद करने की सामग्री 2",
+  "Prayer Memorization 3": "नमाज़ याद करने की सामग्री 3",
+  "Quran Memorization 1": "क़ुरआन याद करने की सामग्री 1",
+  "Quran Memorization 2": "क़ुरआन याद करने की सामग्री 2",
+  "Quran Memorization 3": "क़ुरआन याद करने की सामग्री 3",
+  "Arabic Reading Course 1": "अरबी पढ़ने का पाठ्यक्रम 1",
+  "Arabic Reading Course 2": "अरबी पढ़ने का पाठ्यक्रम 2",
+  "Arabic Reading Course 3": "अरबी पढ़ने का पाठ्यक्रम 3",
+  "Arabic Reading Course 4": "अरबी पढ़ने का पाठ्यक्रम 4",
+  View: "देखें",
+  Download: "डाउनलोड करें",
+  "What You'll Learn": "आप क्या सीखेंगे",
+  "Structured Islamic education designed to help you build knowledge, improve your skills and grow in your Quranic journey.": "आपके ज्ञान को बढ़ाने, कौशल सुधारने और क़ुरआनी यात्रा में आगे बढ़ने में मदद करने वाली व्यवस्थित इस्लामी शिक्षा।",
+  "Choose a course that matches your current level and learning goals.": "अपने वर्तमान स्तर और सीखने के लक्ष्यों के अनुसार पाठ्यक्रम चुनें।",
+  "Memorization techniques": "याद करने की तकनीकें",
+  "Regular revision": "नियमित दोहराई",
+  "Recitation practice": "पाठ का अभ्यास",
+  "Building consistency": "निरंतरता बनाना",
+  "Guided learning and progress": "मार्गदर्शित शिक्षा और प्रगति",
+  "Core Tajweed rules": "तजवीद के मूल नियम",
+  "Correct pronunciation": "सही उच्चारण",
+  "Listening and correction": "सुनना और सुधार",
+  "Confident Quran reading": "आत्मविश्वास से क़ुरआन पढ़ना",
+  "Arabic letter recognition": "अरबी अक्षरों की पहचान",
+  "Joining letters and words": "अक्षरों और शब्दों को जोड़ना",
+  "Sound and pronunciation": "ध्वनि और उच्चारण",
+  "Reading practice": "पढ़ने का अभ्यास",
+  "Quranic vocabulary foundations": "क़ुरआनी शब्दावली की बुनियाद",
+  "Fundamentals of Salah": "नमाज़ की बुनियाद",
+  "Essential steps of prayer": "नमाज़ के ज़रूरी चरण",
+  "Proper preparation for Salah": "नमाज़ की सही तैयारी",
+  "Important aspects of daily prayers": "दैनिक नमाज़ के महत्वपूर्ण पहलू",
+  "Practical guidance for developing consistency": "निरंतरता विकसित करने के लिए व्यावहारिक मार्गदर्शन",
+  "Complete the form below and take your next step towards meaningful Quranic learning.": "नीचे दिया गया फ़ॉर्म पूरा करें और सार्थक क़ुरआनी शिक्षा की ओर अपना अगला कदम बढ़ाएं।",
+  "Let’s Find the Right Learning Path for You.": "आइए आपके लिए सही शिक्षा मार्ग खोजें।",
+  "Share a few details about your learning goals and preferred schedule. Our team will review your registration and contact you with the next steps.": "अपने सीखने के लक्ष्यों और पसंदीदा समय के बारे में कुछ जानकारी साझा करें। हमारी टीम आपके पंजीकरण की समीक्षा करेगी और अगले चरणों के लिए आपसे संपर्क करेगी।",
+  "Learning Resources": "शिक्षण संसाधन",
+  "Explore and keep useful study materials for every step of your Quranic learning journey.": "अपनी क़ुरआनी शिक्षा यात्रा के हर चरण के लिए उपयोगी अध्ययन सामग्री देखें और सुरक्षित रखें।",
+  "Open a resource whenever you need it, or download it to keep learning offline. Each collection is organized around a focused part of your journey.": "जब भी ज़रूरत हो कोई संसाधन खोलें या ऑफ़लाइन सीखने के लिए डाउनलोड करें। हर संग्रह आपकी यात्रा के एक विशेष भाग के अनुसार व्यवस्थित है।",
+  "Open Quran resting on a wooden stand": "लकड़ी के स्टैंड पर रखा खुला क़ुरआन",
+  "Open Quran for Islamic study": "इस्लामी अध्ययन के लिए खुला क़ुरआन",
+  "Peaceful mosque interior": "शांत मस्जिद का आंतरिक दृश्य",
+  "Build confidence in your daily Salah.": "अपनी दैनिक नमाज़ में आत्मविश्वास बढ़ाएं।",
+  "Learn the essential aspects of Salah and build confidence in performing your daily prayers correctly.": "नमाज़ के आवश्यक पहलू सीखें और अपनी दैनिक नमाज़ सही ढंग से पढ़ने का आत्मविश्वास बढ़ाएं।",
+  "Turn your memorization goals into a consistent learning journey.": "अपने हिफ़्ज़ के लक्ष्यों को नियमित शिक्षा यात्रा में बदलें।",
+  "Build a consistent memorization routine and work towards memorizing selected portions of the Holy Quran with proper guidance.": "नियमित याद करने की दिनचर्या बनाएं और उचित मार्गदर्शन के साथ पवित्र क़ुरआन के चुने हुए हिस्से याद करें।",
+  "Recite the Quran with greater clarity.": "क़ुरआन को अधिक स्पष्टता से पढ़ें।",
+  "Improve your Quran recitation by learning the principles and rules of Tajweed for more accurate and confident reading.": "अधिक सही और आत्मविश्वासपूर्ण पाठ के लिए तजवीद के सिद्धांत और नियम सीखकर क़ुरआन पढ़ने में सुधार करें।",
+  "Read Quranic Arabic with confidence.": "क़ुरआनी अरबी आत्मविश्वास से पढ़ें।",
+  "Develop the ability to recognize, read and pronounce Arabic letters and Quranic words with greater confidence.": "अरबी अक्षरों और क़ुरआनी शब्दों को पहचानने, पढ़ने और उच्चारित करने की क्षमता आत्मविश्वास के साथ विकसित करें।"
+});
+
 const LanguageContext = createContext(null);
 
 function translateDocument(language, originalText) {
   const dictionary = translations[language] || {};
-  const translate = (value) => dictionary[value.trim().replace(/\s+/g, " ")] || value;
+  const translate = (value) => {
+    const normalized = value.trim().replace(/\s+/g, " ");
+    if (dictionary[normalized]) return dictionary[normalized];
+
+    if (normalized.startsWith("Enroll in ")) {
+      const courseName = normalized.slice("Enroll in ".length);
+      const translatedCourse = dictionary[courseName] || courseName;
+      return `${dictionary["Enroll in"] || "में नामांकन करें"} ${translatedCourse}`;
+    }
+
+    const courseNumber = normalized.match(/^COURSE (\d+)$/);
+    if (courseNumber) return `${dictionary.Courses || "पाठ्यक्रम"} ${courseNumber[1]}`;
+
+    // Resource action labels include a document name (for example, "View
+    // Revert Guide 1"), so they cannot be stored as one fixed dictionary key.
+    // Translate both parts to keep these accessible labels localized too.
+    for (const action of ["View", "Download"]) {
+      const prefix = `${action} `;
+      if (normalized.startsWith(prefix)) {
+        const documentName = normalized.slice(prefix.length);
+        const translatedAction = dictionary[action] || action;
+        const translatedDocument = dictionary[documentName]
+          || documentName.replace(/^(.*?)(\s+\d+)$/, (_, name, number) => `${dictionary[name] || name}${number}`);
+        return `${translatedAction} ${translatedDocument}`;
+      }
+    }
+
+    return value;
+  };
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let node;
   while ((node = walker.nextNode())) {
