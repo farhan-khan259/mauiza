@@ -6,7 +6,7 @@ import { images } from "../../data/images";
 import "./Contact.css";
 const infos = [
   [Mail, "Email Us", "mauizainstitute@gmail.com"],
-  [WhatsAppIcon, "WhatsApp Number", "+44 7460 020357"],
+  [WhatsAppIcon, "WhatsApp Number", "+12 3456 7891011"],
   [Clock, "Availability", "Flexible online learning"],
   [MapPin, "Our Classroom", "Online, worldwide"],
 ];
@@ -137,7 +137,7 @@ export default function Contact() {
             <p>Thank you for reaching out to Mauiza. We’ll be in touch soon.</p>
             <a
               className="whatsapp-cta"
-              href={`https://wa.me/447460020357?text=${encodeURIComponent(successMessage)}`}
+              href={`https://wa.me/1234567891011?text=${encodeURIComponent(successMessage)}`}
               target="_blank"
               rel="noreferrer"
             >
