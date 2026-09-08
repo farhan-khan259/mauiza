@@ -41,6 +41,7 @@ export default function Registration() {
 			fullName: formData.get("name"),
 			email: formData.get("email"),
 			phone: formData.get("phone"),
+			country: formData.get("country"),
 			ageGroup: formData.get("ageGroup"),
 			gender: formData.get("gender"),
 			course: courseValue,
@@ -103,6 +104,9 @@ export default function Registration() {
 						</div>
 						<div className="form-row">
 							<label>WhatsApp Number<input required name="phone" placeholder="Your WhatsApp number" /></label>
+							<label>Country<input required name="country" placeholder="Your country" /></label>
+						</div>
+						<div className="form-row">
 							<label>
 								Age Group
 								<select required name="ageGroup" defaultValue="">
