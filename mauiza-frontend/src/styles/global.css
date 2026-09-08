@@ -4,6 +4,12 @@
 html {
   scroll-behavior: smooth;
 }
+@media (max-width: 800px) {
+  html {
+    /* Keep touch navigation responsive instead of animating each scroll jump. */
+    scroll-behavior: auto;
+  }
+}
 body {
   margin: 0;
   background: var(--background);
