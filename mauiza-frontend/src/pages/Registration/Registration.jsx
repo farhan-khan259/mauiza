@@ -42,22 +42,33 @@ export default function Registration() {
 		event.preventDefault();
 
 		const form = event.currentTarget;
+		if (!form.checkValidity()) {
+			form.reportValidity();
+			return;
+		}
 		const formData = new FormData(form);
-		const courseValue = formData.get("course") || selectedCourse;
+		const courseValue = String(formData.get("course") || selectedCourse).trim();
 		const payload = {
-			fullName: formData.get("name")?.trim(),
-			email: formData.get("email")?.trim(),
-			phone: formData.get("phone")?.trim(),
-			country: formData.get("country")?.trim(),
-			ageGroup: formData.get("ageGroup")?.trim(),
-			gender: formData.get("gender")?.trim(),
+			fullName: String(formData.get("name") || "").trim(),
+			email: String(formData.get("email") || "").trim(),
+			phone: String(formData.get("phone") || "").trim(),
+			country: String(formData.get("country") || "").trim(),
+			ageGroup: String(formData.get("ageGroup") || "").trim(),
+			gender: String(formData.get("gender") || "").trim(),
 			course: courseValue,
 			startTime: schedule.start,
 			endTime: schedule.end,
 			schedule: `${formatTimeForDisplay(schedule.start)} to ${formatTimeForDisplay(schedule.end)}`,
-			goals: formData.get("goals")?.trim()
+			goals: String(formData.get("goals") || "").trim()
 		};
-		if (Object.values(payload).some((value) => !value) || schedule.end <= schedule.start) return;
+		if (Object.values(payload).some((value) => !value)) {
+			alert("Please complete all required registration fields.");
+			return;
+		}
+		if (!schedule.start || !schedule.end || schedule.end <= schedule.start) {
+			alert("Please choose a valid preferred schedule.");
+			return;
+		}
 
 		try {
 			const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
