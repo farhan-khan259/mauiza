@@ -33,7 +33,7 @@ export default function Resources() {
       <div className="container">
         <div className="resources-intro">
           <div className="eyebrow">STUDY LIBRARY</div>
-          <h2>Learn at your own pace.</h2>
+          <h2 className="resource-title22">Learn at your own pace.</h2>
           <p className="lead">Open a resource whenever you need it, or download it to keep learning offline. Each collection is organized around a focused part of your journey.</p>
         </div>
         <div className="resource-groups">

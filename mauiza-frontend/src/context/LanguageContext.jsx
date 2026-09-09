@@ -457,6 +457,55 @@ const registrationFieldTranslations = {
 
 Object.entries(registrationFieldTranslations).forEach(([language, dictionary]) => Object.assign(translations[language], dictionary));
 
+const aboutWelcomeTranslations = {
+  ur: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "ایک غیر منافع بخش آن لائن ادارہ جس کا مقصد جدید ٹیکنالوجی کو روایتی تدریسی طریقوں کے ساتھ ملا کر مسلمانوں اور قرآن کے درمیان فاصلے کو ختم کرنا ہے۔",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "ہمارے ادارے کا مقصد اللہ کی خاطر باشعور مسلمانوں کو ایک پلیٹ فارم پر متحد کرنا اور انہیں احادیث کی روشنی میں غوطہ زن ہونے کا موقع دینا ہے۔ جیسا کہ کہا گیا ہے، تم میں بہترین وہ ہیں جو قرآن سیکھیں اور اسے سکھائیں۔"
+  },
+  ar: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "مؤسسة إلكترونية غير ربحية تهدف إلى سد الفجوة بين المسلمين والقرآن من خلال الجمع بين التقنيات الحديثة وطرق التدريس التقليدية.",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "يتمثل هدف مؤسستنا في توحيد المسلمين الواعين على منصة واحدة في سبيل الله، وإتاحة الفرصة لهم للانغماس في نور الحديث. وكما يُقال، خيركم من تعلم القرآن وعلمه."
+  },
+  sv: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "En ideell onlineinstitution som strävar efter att överbrygga klyftan mellan muslimer och Koranen genom att förena modern teknik med traditionella undervisningsmetoder.",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "Vår institutions syfte är att förena medvetna muslimer på en plattform för Allahs skull och ge dem möjlighet att fördjupa sig i hadithens ljus. Som det sägs: De bästa av er är de som lär sig Koranen och lär ut den."
+  },
+  tr: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "Modern teknolojileri geleneksel öğretim yöntemleriyle birleştirerek Müslümanlar ile Kur'an arasındaki boşluğu kapatmayı amaçlayan kâr amacı gütmeyen bir çevrim içi kurum.",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "Kurumumuzun amacı, Allah rızası için bilinçli Müslümanları tek bir platformda bir araya getirmek ve onlara Hadis ışığına dalma fırsatı sunmaktır. Söylendiği gibi: Sizin en hayırlınız Kur'an'ı öğrenen ve öğreteninizdir."
+  },
+  fr: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "Une institution en ligne à but non lucratif qui vise à rapprocher les musulmans du Coran en combinant les technologies modernes avec les méthodes d’enseignement traditionnelles.",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "Notre institution a pour vocation d’unir des musulmans conscients sur une même plateforme pour la cause d’Allah et de leur offrir la possibilité de s’imprégner de la lumière des hadiths. Comme le dit le hadith : Les meilleurs d’entre vous sont ceux qui apprennent le Coran et l’enseignent."
+  },
+  es: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "Una institución en línea sin fines de lucro que busca reducir la distancia entre los musulmanes y el Corán combinando las tecnologías modernas con los métodos de enseñanza tradicionales.",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "El propósito de nuestra institución es unir a musulmanes conscientes en una sola plataforma por la causa de Allah y ofrecerles la oportunidad de sumergirse en la luz del Hadiz. Como dice el dicho: Los mejores de vosotros son quienes aprenden el Corán y lo enseñan."
+  },
+  "zh-CN": {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "这是一个非营利性在线机构，旨在将现代技术与传统教学方法相结合，弥合穆斯林与《古兰经》之间的距离。",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "本机构旨在为真诚的穆斯林提供一个平台，为了真主而团结在一起，并让他们有机会沉浸在圣训的光明中。正如谚语所说：你们中最好的人，是学习《古兰经》并传授它的人。"
+  },
+  pt: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "Uma instituição online sem fins lucrativos que procura aproximar os muçulmanos do Alcorão, combinando tecnologias modernas com métodos tradicionais de ensino.",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "O propósito da nossa instituição é unir muçulmanos conscientes numa única plataforma pela causa de Allah, oferecendo-lhes a oportunidade de mergulhar na luz dos hadiths. Como se diz: Os melhores de vós são os que aprendem o Alcorão e o ensinam."
+  },
+  fil: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "Isang online na institusyong walang layuning kumita na naglalayong paglapitin ang mga Muslim at ang Quran sa pamamagitan ng pagsasama ng makabagong teknolohiya at tradisyonal na mga paraan ng pagtuturo.",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "Layunin ng aming institusyon na pag-isahin ang mga mulat na Muslim sa iisang plataporma alang-alang kay Allah at bigyan sila ng pagkakataong malubog sa liwanag ng Hadith. Gaya ng kasabihan: Ang pinakamabuti sa inyo ay ang natututo ng Quran at nagtuturo nito."
+  },
+  hi: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "एक गैर-लाभकारी ऑनलाइन संस्था, जिसका उद्देश्य आधुनिक तकनीकों को पारंपरिक शिक्षण विधियों के साथ जोड़कर मुसलमानों और क़ुरआन के बीच की दूरी को कम करना है।",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "हमारी संस्था का उद्देश्य अल्लाह की खातिर जागरूक मुसलमानों को एक मंच पर एकजुट करना और उन्हें हदीस की रोशनी में डूबने का अवसर देना है। जैसा कि कहा गया है: तुममें सबसे अच्छे वे हैं जो क़ुरआन सीखते हैं और उसे सिखाते हैं।"
+  },
+  ru: {
+    "A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.": "Некоммерческое онлайн-учреждение, стремящееся сократить расстояние между мусульманами и Кораном, сочетая современные технологии с традиционными методами обучения.",
+    "Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.": "Цель нашего учреждения — объединить сознательных мусульман на одной платформе ради Аллаха и дать им возможность погрузиться в свет хадисов. Как говорится: Лучшие из вас — те, кто изучает Коран и обучает ему."
+  }
+};
+
+Object.entries(aboutWelcomeTranslations).forEach(([language, dictionary]) => Object.assign(translations[language], dictionary));
+
 const LanguageContext = createContext(null);
 
 function translateDocument(language, originalText) {
