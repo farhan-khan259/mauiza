@@ -443,41 +443,11 @@ Object.assign(translations.ar, {
 
 const LanguageContext = createContext(null);
 
-const pendingFallbackTranslations = new Set();
-
-function requestFallbackTranslation(language, sourceText, originalText) {
-  const requestKey = `${language}:${sourceText}`;
-  if (language === "en" || pendingFallbackTranslations.has(requestKey) || typeof window === "undefined") return;
-
-  pendingFallbackTranslations.add(requestKey);
-  fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(sourceText)}&langpair=en|${encodeURIComponent(language)}`)
-    .then((response) => response.ok ? response.json() : null)
-    .then((data) => {
-      const translatedText = data?.responseData?.translatedText?.trim();
-      if (!translatedText || translatedText === sourceText) return;
-
-      translations[language][sourceText] = translatedText;
-      const cacheKey = `mauiza-translations-${language}`;
-      const cachedTranslations = JSON.parse(localStorage.getItem(cacheKey) || "{}");
-      cachedTranslations[sourceText] = translatedText;
-      localStorage.setItem(cacheKey, JSON.stringify(cachedTranslations));
-      translateDocument(language, originalText);
-    })
-    .catch(() => undefined)
-    .finally(() => pendingFallbackTranslations.delete(requestKey));
-}
-
 function translateDocument(language, originalText) {
   const dictionary = translations[language] || {};
   const translate = (value) => {
     const normalized = value.trim().replace(/\s+/g, " ");
     if (dictionary[normalized]) return dictionary[normalized];
-
-    // Existing dictionaries remain the primary source. This fallback closes
-    // catalog gaps and caches the result so a label never stays in English.
-    if (normalized && /[A-Za-z]/.test(normalized)) {
-      requestFallbackTranslation(language, normalized, originalText);
-    }
 
     if (normalized.startsWith("Enroll in ")) {
       const courseName = normalized.slice("Enroll in ".length);
@@ -541,8 +511,6 @@ export function LanguageProvider({ children }) {
 
   useEffect(() => {
     localStorage.setItem("mauiza-language", language);
-    const cachedTranslations = JSON.parse(localStorage.getItem(`mauiza-translations-${language}`) || "{}");
-    Object.assign(translations[language] || {}, cachedTranslations);
     document.documentElement.lang = language;
     document.documentElement.dir = selected.direction;
     document.body.classList.toggle("rtl-language", selected.direction === "rtl");
