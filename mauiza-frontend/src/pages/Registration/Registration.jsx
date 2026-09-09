@@ -36,6 +36,8 @@ export default function Registration() {
 	const location = useLocation();
 	const [sent, setSent] = useState(false);
 	const [successMessage, setSuccessMessage] = useState("");
+	const [submitting, setSubmitting] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 	const [selectedCourse, setSelectedCourse] = useState(location.state?.selectedCourse || "");
 	const [schedule, setSchedule] = useState({ start: "", end: "" });
 	const languageDisplayNames = new Intl.DisplayNames([language], { type: "language" });
@@ -93,15 +95,17 @@ export default function Registration() {
 			goals: String(formData.get("goals") || "").trim()
 		};
 		if (Object.values(payload).some((value) => !value)) {
-			alert("Please complete all required registration fields.");
+			setErrorMessage("Please complete all required registration fields.");
 			return;
 		}
 		if (!schedule.start || !schedule.end || schedule.end <= schedule.start) {
-			alert("Please choose a valid preferred schedule.");
+			setErrorMessage("Please choose a valid preferred schedule.");
 			return;
 		}
 
 		try {
+			setSubmitting(true);
+			setErrorMessage("");
 			const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
 			const response = await fetch(`${apiBaseUrl}/api/registration`, {
 				method: "POST",
@@ -125,7 +129,9 @@ export default function Registration() {
 			setSchedule({ start: "", end: "" });
 		} catch (error) {
 			console.error("Registration error:", error);
-			alert(error.message || "Failed to submit registration. Please try again.");
+			setErrorMessage(error.message || "Failed to submit registration. Please try again.");
+		} finally {
+			setSubmitting(false);
 		}
 	}
 
@@ -264,7 +270,8 @@ export default function Registration() {
 							Learning Goals
 							<textarea required name="goals" rows="4" placeholder="Tell us briefly what you would like to learn..." />
 						</label>
-						<button type="submit">Submit Registration <span>→</span></button>
+						{errorMessage && <p className="form-error" role="alert">{errorMessage}</p>}
+						<button type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Registration"} <span>→</span></button>
 					</form>
 				</div>
 			</section>

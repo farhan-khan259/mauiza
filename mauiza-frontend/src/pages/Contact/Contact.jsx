@@ -13,6 +13,8 @@ const infos = [
 export default function Contact() {
   const [sent, setSent] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   return (
     <main className="page">
       <PageHero
@@ -56,8 +58,13 @@ export default function Contact() {
                   subject: formData.get("subject")?.trim(),
                   message: formData.get("message")?.trim(),
                 };
-                if (Object.values(payload).some((value) => !value)) return;
+                if (Object.values(payload).some((value) => !value)) {
+                  setErrorMessage("Please complete all required fields.");
+                  return;
+                }
                 try {
+                  setSubmitting(true);
+                  setErrorMessage("");
                   const apiBaseUrl = (
                     import.meta.env.VITE_API_URL ||
                     "https://mauiza-backend.onrender.com"
@@ -84,10 +91,9 @@ export default function Contact() {
                   form.reset();
                 } catch (error) {
                   console.error("Contact form error:", error);
-                  alert(
-                    error.message ||
-                      "Failed to send message. Please try again.",
-                  );
+                  setErrorMessage(error.message || "Failed to send message. Please try again.");
+                } finally {
+                  setSubmitting(false);
                 }
               }}
             >
@@ -117,8 +123,9 @@ export default function Contact() {
                   placeholder="Write your message here..."
                 />
               </label>
-              <button>
-                <Send /> Send Message
+              {errorMessage && <p className="contact-error" role="alert">{errorMessage}</p>}
+              <button type="submit" disabled={submitting}>
+                <Send /> {submitting ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
