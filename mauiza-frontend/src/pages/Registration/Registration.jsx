@@ -6,6 +6,7 @@ import PageHero from "../../components/PageHero/PageHero";
 import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
 import { useLanguage } from "../../context/LanguageContext";
+import { countryCodes } from "../../data/countries";
 import "./Registration.css";
 
 const instructionLanguages = [
@@ -38,6 +39,7 @@ export default function Registration() {
 	const [selectedCourse, setSelectedCourse] = useState(location.state?.selectedCourse || "");
 	const [schedule, setSchedule] = useState({ start: "", end: "" });
 	const languageDisplayNames = new Intl.DisplayNames([language], { type: "language" });
+	const countryDisplayNames = new Intl.DisplayNames([language], { type: "region" });
 
 	useEffect(() => {
 		if (location.state?.selectedCourse) {
@@ -156,7 +158,13 @@ export default function Registration() {
 						</div>
 						<div className="form-row">
 							<label>WhatsApp Number<input required name="phone" placeholder="Your WhatsApp number" /></label>
-							<label>Country<input required name="country" placeholder="Your country" /></label>
+							<label>
+								Country
+								<select required name="country" defaultValue="">
+									<option value="" disabled>Select country</option>
+									{countryCodes.map((code) => <option key={code} value={code}>{countryDisplayNames.of(code) || code}</option>)}
+								</select>
+							</label>
 						</div>
 						<div className="form-row">
 							<label>

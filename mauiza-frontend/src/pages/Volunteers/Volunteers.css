@@ -1,0 +1,270 @@
+.volunteer-layout {
+  display: grid;
+  grid-template-columns: 0.78fr 1.22fr;
+  gap: 72px;
+  align-items: start;
+}
+.volunteer-intro h2 {
+  font-size: 42px;
+  line-height: 1.04;
+  margin: 13px 0 18px;
+}
+.volunteer-intro > p:not(.eyebrow) {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.volunteer-points {
+  margin-top: 30px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+.volunteer-points p {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+.volunteer-points svg {
+  width: 17px;
+  color: var(--gold);
+}
+.volunteer-form {
+  padding: 30px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 17px;
+}
+.volunteer-form-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 6px;
+}
+.volunteer-form-heading h2 {
+  font-size: 27px;
+  margin: 7px 0 0;
+}
+.form-step {
+  color: var(--secondary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.volunteer-role-step {
+  display: grid;
+  gap: 24px;
+  padding-top: 12px;
+}
+.role-choice-intro {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px;
+  border-radius: 11px;
+  background: #f3fbf9;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.role-choice-intro svg {
+  width: 22px;
+  flex: 0 0 auto;
+  color: var(--secondary);
+}
+.role-choice-intro p {
+  margin: 0;
+}
+.selected-role-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfc;
+  color: var(--muted);
+  font-size: 12px;
+}
+.selected-role-strip strong {
+  color: var(--primary);
+  font-size: 13px;
+}
+.selected-role-strip button {
+  margin-left: auto;
+  padding: 0;
+  background: transparent;
+  color: var(--secondary);
+  font-size: 12px;
+  text-decoration: underline;
+}
+.volunteer-step-actions {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+}
+.volunteer-step-actions .volunteer-back-button {
+  padding-inline: 20px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary);
+}
+.volunteer-form label {
+  display: grid;
+  gap: 7px;
+  color: var(--dark);
+  font-size: 11px;
+  font-weight: 800;
+}
+.volunteer-form input,
+.volunteer-form select,
+.volunteer-form textarea {
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid #d8e2df;
+  border-radius: 8px;
+  background: #fbfcfc;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  outline: none;
+  resize: vertical;
+}
+.volunteer-form input:focus,
+.volunteer-form select:focus,
+.volunteer-form textarea:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(18, 184, 176, 0.1);
+}
+.volunteer-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+.role-panel {
+  display: grid;
+  gap: 14px;
+  padding: 19px;
+  border: 1px solid rgba(18, 184, 176, 0.35);
+  border-left: 4px solid var(--secondary);
+  border-radius: 11px;
+  background: #f3fbf9;
+}
+.role-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 14px;
+}
+.role-panel-header h3 {
+  margin: 5px 0 0;
+  font-size: 22px;
+  color: var(--primary);
+}
+.role-panel-header svg {
+  width: 20px;
+  color: var(--secondary);
+}
+.role-panel > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.role-kicker {
+  color: var(--secondary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+.volunteer-error {
+  margin: 0;
+  color: #a52525;
+  font-size: 13px;
+  font-weight: 700;
+}
+.volunteer-form button {
+  border: 0;
+  border-radius: 9px;
+  background: var(--primary);
+  color: #fff;
+  padding: 14px;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+}
+.volunteer-form button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.volunteer-form button span {
+  margin-left: 9px;
+  font-size: 18px;
+}
+.success-modal button {
+  border: 0;
+  border-radius: 9px;
+  background: var(--primary);
+  color: #fff;
+  padding: 11px 22px;
+  font-weight: 800;
+  cursor: pointer;
+}
+@media (max-width: 900px) {
+  .volunteer-layout {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+  .volunteer-intro h2 {
+    font-size: 36px;
+  }
+  .volunteer-points {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .volunteer-points p {
+    font-size: 12px;
+    align-items: start;
+  }
+}
+@media (max-width: 560px) {
+  .volunteer-form {
+    padding: 22px 18px;
+  }
+  .volunteer-form-row {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+  .volunteer-form-heading h2 {
+    font-size: 23px;
+  }
+  .volunteer-intro h2 {
+    font-size: 32px;
+  }
+  .volunteer-points {
+    display: block;
+  }
+  .volunteer-points p {
+    font-size: 13px;
+  }
+  .role-panel {
+    padding: 16px;
+  }
+  .role-panel-header h3 {
+    font-size: 20px;
+  }
+  .volunteer-step-actions {
+    grid-template-columns: 1fr;
+  }
+  .volunteer-step-actions .volunteer-back-button {
+    order: 2;
+  }
+}

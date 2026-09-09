@@ -10,6 +10,7 @@ const links = [
   ["/about", "About Us"],
   ["/courses", "Courses"],
   ["/resources", "Resources"],
+  ["/volunteers", "Volunteers"],
   ["/contact", "Contact Us"],
 ];
 export default function Navbar() {
