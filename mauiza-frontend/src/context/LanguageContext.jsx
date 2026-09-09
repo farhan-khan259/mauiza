@@ -601,11 +601,11 @@ function translateDocument(language, originalText) {
     if (normalized.startsWith("Enroll in ")) {
       const courseName = normalized.slice("Enroll in ".length);
       const translatedCourse = dictionary[courseName] || courseName;
-      return `${dictionary["Enroll in"] || "में नामांकन करें"} ${translatedCourse}`;
+      return `${dictionary["Enroll in"] || "Enroll in"} ${translatedCourse}`;
     }
 
     const courseNumber = normalized.match(/^COURSE (\d+)$/);
-    if (courseNumber) return `${dictionary.Courses || "पाठ्यक्रम"} ${courseNumber[1]}`;
+    if (courseNumber) return `${dictionary.Courses || "Courses"} ${courseNumber[1]}`;
 
     // Resource action labels include a document name (for example, "View
     // Revert Guide 1"), so they cannot be stored as one fixed dictionary key.
