@@ -123,8 +123,7 @@ export default function Volunteers() {
     try {
       setSubmitting(true);
       setErrorMessage("");
-      const preferredApiUrl = import.meta.env.VITE_API_URL || (window.location.hostname === "localhost" ? "http://localhost:5001" : "https://mauiza-backend.onrender.com");
-      const apiBaseUrl = preferredApiUrl.replace(/\/+$/, "");
+      const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza.com").replace(/\/+$/, "");
       const response = await fetch(`${apiBaseUrl}/api/volunteers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
