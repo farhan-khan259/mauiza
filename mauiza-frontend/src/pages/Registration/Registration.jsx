@@ -1,17 +1,43 @@
 import { useEffect, useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { timeZonesNames } from "@vvo/tzdb";
 import PageHero from "../../components/PageHero/PageHero";
 import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
+import { useLanguage } from "../../context/LanguageContext";
 import "./Registration.css";
 
+const instructionLanguages = [
+	["ab", "Abkhazian"], ["af", "Afrikaans"], ["sq", "Albanian"], ["am", "Amharic"], ["ar", "Arabic"],
+	["hy", "Armenian"], ["as", "Assamese"], ["az", "Azerbaijani"], ["eu", "Basque"], ["be", "Belarusian"],
+	["bn", "Bengali"], ["bs", "Bosnian"], ["bg", "Bulgarian"], ["my", "Burmese"], ["ca", "Catalan"],
+	["zh", "Chinese"], ["hr", "Croatian"], ["cs", "Czech"], ["da", "Danish"], ["nl", "Dutch"],
+	["en", "English"], ["et", "Estonian"], ["fa", "Persian"], ["fi", "Finnish"], ["fr", "French"],
+	["gl", "Galician"], ["ka", "Georgian"], ["de", "German"], ["el", "Greek"], ["gu", "Gujarati"],
+	["ha", "Hausa"], ["he", "Hebrew"], ["hi", "Hindi"], ["hu", "Hungarian"], ["is", "Icelandic"],
+	["id", "Indonesian"], ["ga", "Irish"], ["it", "Italian"], ["ja", "Japanese"], ["jv", "Javanese"],
+	["kn", "Kannada"], ["kk", "Kazakh"], ["km", "Khmer"], ["ko", "Korean"], ["ky", "Kyrgyz"],
+	["lo", "Lao"], ["lv", "Latvian"], ["lt", "Lithuanian"], ["mk", "Macedonian"], ["ms", "Malay"],
+	["ml", "Malayalam"], ["mr", "Marathi"], ["mn", "Mongolian"], ["ne", "Nepali"], ["no", "Norwegian"],
+	["or", "Odia"], ["pa", "Punjabi"], ["pl", "Polish"], ["pt", "Portuguese"], ["ro", "Romanian"],
+	["ru", "Russian"], ["sr", "Serbian"], ["si", "Sinhala"], ["sk", "Slovak"], ["sl", "Slovenian"],
+	["so", "Somali"], ["es", "Spanish"], ["sw", "Swahili"], ["sv", "Swedish"], ["tl", "Filipino"],
+	["tg", "Tajik"], ["ta", "Tamil"], ["te", "Telugu"], ["th", "Thai"], ["tr", "Turkish"],
+	["tk", "Turkmen"], ["uk", "Ukrainian"], ["ur", "Urdu"], ["ug", "Uyghur"], ["uz", "Uzbek"],
+	["vi", "Vietnamese"], ["cy", "Welsh"], ["yo", "Yoruba"], ["zu", "Zulu"]
+];
+
+const timezones = ["UTC", ...timeZonesNames];
+
 export default function Registration() {
+	const { language } = useLanguage();
 	const location = useLocation();
 	const [sent, setSent] = useState(false);
 	const [successMessage, setSuccessMessage] = useState("");
 	const [selectedCourse, setSelectedCourse] = useState(location.state?.selectedCourse || "");
 	const [schedule, setSchedule] = useState({ start: "", end: "" });
+	const languageDisplayNames = new Intl.DisplayNames([language], { type: "language" });
 
 	useEffect(() => {
 		if (location.state?.selectedCourse) {
@@ -55,6 +81,9 @@ export default function Registration() {
 			country: String(formData.get("country") || "").trim(),
 			ageGroup: String(formData.get("ageGroup") || "").trim(),
 			gender: String(formData.get("gender") || "").trim(),
+			timezone: String(formData.get("timezone") || "").trim(),
+			instructionLanguage: String(formData.get("instructionLanguage") || "").trim(),
+			faith: String(formData.get("faith") || "").trim(),
 			course: courseValue,
 			startTime: schedule.start,
 			endTime: schedule.end,
@@ -145,6 +174,28 @@ export default function Registration() {
 									<option value="" disabled>Select gender</option>
 									<option value="male">Male</option>
 									<option value="female">Female</option>
+								</select>
+							</label>
+							<label>
+								Timezone
+								<select required name="timezone" defaultValue="">
+									<option value="" disabled>Select timezone</option>
+									{timezones.map((timezone) => <option key={timezone} value={timezone}>{timezone}</option>)}
+								</select>
+							</label>
+							<label>
+								Language of Instruction
+								<select required name="instructionLanguage" defaultValue="">
+									<option value="" disabled>Select language</option>
+									{instructionLanguages.map(([code, label]) => <option key={code} value={code}>{languageDisplayNames.of(code) || label}</option>)}
+								</select>
+							</label>
+							<label>
+								Faith
+								<select required name="faith" defaultValue="">
+									<option value="" disabled>Select faith</option>
+									<option value="new-muslim">New Muslim</option>
+									<option value="born-muslim">Born Muslim</option>
 								</select>
 							</label>
 							<label>

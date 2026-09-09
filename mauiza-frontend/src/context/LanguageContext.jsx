@@ -441,6 +441,22 @@ Object.assign(translations.ar, {
   "Arabic Reading Course 1": "دورة قراءة العربية 1", "Arabic Reading Course 2": "دورة قراءة العربية 2", "Arabic Reading Course 3": "دورة قراءة العربية 3", "Arabic Reading Course 4": "دورة قراءة العربية 4"
 });
 
+const registrationFieldTranslations = {
+  ur: { Timezone: "ٹائم زون", "Select timezone": "ٹائم زون منتخب کریں", "Language of Instruction": "تعلیم کی زبان", "Select language": "زبان منتخب کریں", Faith: "مذہب", "Select faith": "مذہب منتخب کریں", "New Muslim": "نو مسلم", "Born Muslim": "پیدائشی مسلمان" },
+  ar: { Timezone: "المنطقة الزمنية", "Select timezone": "اختر المنطقة الزمنية", "Language of Instruction": "لغة التدريس", "Select language": "اختر اللغة", Faith: "الحالة الإسلامية", "Select faith": "اختر الحالة الإسلامية", "New Muslim": "مسلم جديد", "Born Muslim": "مسلم بالفطرة" },
+  sv: { Timezone: "Tidszon", "Select timezone": "Välj tidszon", "Language of Instruction": "Undervisningsspråk", "Select language": "Välj språk", Faith: "Muslimsk bakgrund", "Select faith": "Välj bakgrund", "New Muslim": "Ny muslim", "Born Muslim": "Född muslim" },
+  tr: { Timezone: "Saat dilimi", "Select timezone": "Saat dilimi seçin", "Language of Instruction": "Eğitim dili", "Select language": "Dil seçin", Faith: "Müslümanlık durumu", "Select faith": "Durum seçin", "New Muslim": "Yeni Müslüman", "Born Muslim": "Doğuştan Müslüman" },
+  fr: { Timezone: "Fuseau horaire", "Select timezone": "Sélectionnez le fuseau horaire", "Language of Instruction": "Langue d’enseignement", "Select language": "Sélectionnez la langue", Faith: "Statut musulman", "Select faith": "Sélectionnez le statut", "New Muslim": "Nouveau musulman", "Born Muslim": "Musulman de naissance" },
+  es: { Timezone: "Zona horaria", "Select timezone": "Selecciona la zona horaria", "Language of Instruction": "Idioma de instrucción", "Select language": "Selecciona el idioma", Faith: "Condición musulmana", "Select faith": "Selecciona la condición", "New Muslim": "Musulmán nuevo", "Born Muslim": "Musulmán de nacimiento" },
+  "zh-CN": { Timezone: "时区", "Select timezone": "选择时区", "Language of Instruction": "授课语言", "Select language": "选择语言", Faith: "穆斯林身份", "Select faith": "选择身份", "New Muslim": "新穆斯林", "Born Muslim": "出生即为穆斯林" },
+  pt: { Timezone: "Fuso horário", "Select timezone": "Selecione o fuso horário", "Language of Instruction": "Idioma de instrução", "Select language": "Selecione o idioma", Faith: "Condição muçulmana", "Select faith": "Selecione a condição", "New Muslim": "Novo muçulmano", "Born Muslim": "Muçulmano de nascimento" },
+  fil: { Timezone: "Time zone", "Select timezone": "Pumili ng time zone", "Language of Instruction": "Wika ng pagtuturo", "Select language": "Pumili ng wika", Faith: "Kalagayan sa Islam", "Select faith": "Pumili ng kalagayan", "New Muslim": "Bagong Muslim", "Born Muslim": "Muslim mula pagkabata" },
+  hi: { Timezone: "समय क्षेत्र", "Select timezone": "समय क्षेत्र चुनें", "Language of Instruction": "शिक्षण की भाषा", "Select language": "भाषा चुनें", Faith: "मुस्लिम स्थिति", "Select faith": "स्थिति चुनें", "New Muslim": "नए मुस्लिम", "Born Muslim": "जन्म से मुस्लिम" },
+  ru: { Timezone: "Часовой пояс", "Select timezone": "Выберите часовой пояс", "Language of Instruction": "Язык обучения", "Select language": "Выберите язык", Faith: "Статус мусульманина", "Select faith": "Выберите статус", "New Muslim": "Новый мусульманин", "Born Muslim": "Мусульманин с рождения" }
+};
+
+Object.entries(registrationFieldTranslations).forEach(([language, dictionary]) => Object.assign(translations[language], dictionary));
+
 const LanguageContext = createContext(null);
 
 function translateDocument(language, originalText) {
