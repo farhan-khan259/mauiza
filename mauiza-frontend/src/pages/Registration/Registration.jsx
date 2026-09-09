@@ -157,6 +157,8 @@ export default function Registration() {
 						<div className="form-row">
 							<label>WhatsApp Number<input required name="phone" placeholder="Your WhatsApp number" /></label>
 							<label>Country<input required name="country" placeholder="Your country" /></label>
+						</div>
+						<div className="form-row">
 							<label>
 								Age Group
 								<select required name="ageGroup" defaultValue="">
@@ -166,8 +168,6 @@ export default function Registration() {
 									<option>Adult</option>
 								</select>
 							</label>
-						</div>
-						<div className="form-row">
 							<label>
 								Gender
 								<select required name="gender" defaultValue="">
@@ -176,6 +176,8 @@ export default function Registration() {
 									<option value="female">Female</option>
 								</select>
 							</label>
+						</div>
+						<div className="form-row">
 							<label>
 								Timezone
 								<select required name="timezone" defaultValue="">
@@ -190,6 +192,8 @@ export default function Registration() {
 									{instructionLanguages.map(([code, label]) => <option key={code} value={code}>{languageDisplayNames.of(code) || label}</option>)}
 								</select>
 							</label>
+						</div>
+						<div className="form-row">
 							<label>
 								Faith
 								<select required name="faith" defaultValue="">
