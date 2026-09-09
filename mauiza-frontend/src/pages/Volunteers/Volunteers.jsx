@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CheckCircle2, HeartHandshake, Info } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
+import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
 import { countryCodes } from "../../data/countries";
 import { useLanguage, translations } from "../../context/LanguageContext";
@@ -47,6 +48,7 @@ export default function Volunteers() {
   const [role, setRole] = useState("");
   const [step, setStep] = useState(1);
   const [sent, setSent] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -89,10 +91,40 @@ export default function Volunteers() {
       tiktokAccount: String(data.get("tiktokAccount") || "").trim()
     };
 
+    const requiredFields = [
+      ["fullName", "Full name"],
+      ["email", "Email"],
+      ["phone", "WhatsApp number"],
+      ["country", "Country"],
+      ["profession", "Profession"],
+      ["designation", "Volunteer role"],
+      ["instructionLanguage", "Language of instruction"],
+      ["availability", "Availability"],
+      ["goals", "Goals"]
+    ];
+
+    const missing = requiredFields.filter(([key]) => !payload[key]?.trim());
+    if (missing.length > 0) {
+      setErrorMessage(`Please complete the required fields: ${missing.map(([, label]) => label).join(", ")}.`);
+      return;
+    }
+
+    const roleField = payload.designation === "Teacher"
+      ? payload.islamicEducation
+      : payload.designation === "Video Editor"
+        ? payload.skills
+        : payload.tiktokAccount;
+
+    if (!roleField?.trim()) {
+      setErrorMessage(`Please add the required ${payload.designation} details before submitting.`);
+      return;
+    }
+
     try {
       setSubmitting(true);
       setErrorMessage("");
-      const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
+      const preferredApiUrl = import.meta.env.VITE_API_URL || (window.location.hostname === "localhost" ? "http://localhost:5001" : "https://mauiza-backend.onrender.com");
+      const apiBaseUrl = preferredApiUrl.replace(/\/+$/, "");
       const response = await fetch(`${apiBaseUrl}/api/volunteers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,7 +132,10 @@ export default function Volunteers() {
       });
       const contentType = response.headers.get("content-type") || "";
       const result = contentType.includes("application/json") ? await response.json() : {};
-      if (!response.ok) throw new Error(result.message || "Volunteer application failed. Please try again.");
+      if (!response.ok) throw new Error(result.message || `Volunteer application failed (${response.status}). Please try again.`);
+
+      const whatsappMessage = `Hello Mauiza, I have submitted my volunteer application as a ${payload.designation}. My name is ${payload.fullName} and my email is ${payload.email}. I would like to continue the conversation.`;
+      setSuccessMessage(whatsappMessage);
       setSent(true);
       form.reset();
       setRole("");
@@ -234,9 +269,16 @@ export default function Volunteers() {
         <div className="success-modal-backdrop" onClick={() => setSent(false)}>
           <div className="success-modal" onClick={(event) => event.stopPropagation()}>
             <div className="success-modal-icon"><CheckCircle2 /></div>
-            <h3>{t("Thank you for volunteering with Mauiza.")}</h3>
-            <p>{t("Your application has been received. Our team will review it and contact you soon.")}</p>
-            <button type="button" onClick={() => setSent(false)}>{t("Close")}</button>
+            <h3>{t("Your volunteer application has been submitted successfully.")}</h3>
+            <p>{t("Thank you for volunteering with Mauiza. Our team will review it and contact you soon.")}</p>
+            <a
+              className="whatsapp-cta"
+              href={`https://wa.me/1234567891011?text=${encodeURIComponent(successMessage)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <WhatsAppIcon /> {t("Contact on WhatsApp")}
+            </a>
           </div>
         </div>
       )}
