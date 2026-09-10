@@ -3,11 +3,18 @@ import { Clock3, Compass, LocateFixed, MapPin, Moon, Search, ShieldAlert, Sparkl
 import PageHero from "../../components/PageHero/PageHero";
 import { images } from "../../data/images";
 import { useLanguage } from "../../context/LanguageContext";
+import dailyTranslations from "./dailyEssentialsTranslations";
 import "./MuslimsDailyEssentials.css";
 
 const prayerIcons = { Fajr: Sunrise, Sunrise, Dhuhr: Sun, Asr: Compass, Maghrib: Sunset, Isha: Moon };
 const prayerOrder = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
+const extraLabels = {
+  en: { sunset: "Sunset", remaining: "Remaining" }, ur: { sunset: "غروب آفتاب", remaining: "باقی وقت" }, ar: { sunset: "الغروب", remaining: "متبقٍ" },
+  sv: { sunset: "Solnedgång", remaining: "Återstår" }, tr: { sunset: "Gün batımı", remaining: "Kalan" }, fr: { sunset: "Coucher du soleil", remaining: "Restant" },
+  es: { sunset: "Atardecer", remaining: "Restante" }, "zh-CN": { sunset: "日落", remaining: "剩余" }, pt: { sunset: "Pôr do sol", remaining: "Restante" },
+  fil: { sunset: "Paglubog ng araw", remaining: "Natitira" }, hi: { sunset: "सूर्यास्त", remaining: "शेष" }, ru: { sunset: "Закат", remaining: "Осталось" }
+};
 
 function clockToMinutes(value) {
   const [hours, minutes] = value.split(":").map(Number);
@@ -54,8 +61,13 @@ function getTodayDate() {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 }
 
+function formatLocalDate(date, language, calendar) {
+  return new Intl.DateTimeFormat(language, { calendar, dateStyle: "long", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`));
+}
+
 export default function MuslimsDailyEssentials() {
   const { language } = useLanguage();
+  const t = (key) => extraLabels[language]?.[key] || dailyTranslations[language]?.[key] || dailyTranslations.en[key] || key;
   const [location, setLocation] = useState(() => {
     try { return JSON.parse(sessionStorage.getItem("mauiza-daily-location")) || null; } catch { return null; }
   });
@@ -76,7 +88,7 @@ export default function MuslimsDailyEssentials() {
     try {
       const response = await fetch(`${apiBaseUrl}/api/prayer-times?latitude=${nextLocation.latitude}&longitude=${nextLocation.longitude}&date=${getTodayDate()}`);
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || "Prayer timings could not be loaded.");
+      if (!response.ok) throw new Error(result.message || t("prayerUnavailable"));
       setPrayerData(result.data);
       if (result.data.location) {
         const resolvedLocation = { ...nextLocation, ...result.data.location };
@@ -84,7 +96,7 @@ export default function MuslimsDailyEssentials() {
         sessionStorage.setItem("mauiza-daily-location", JSON.stringify(resolvedLocation));
       }
     } catch (requestError) {
-      setError(requestError.message || "Prayer timings could not be loaded.");
+      setError(requestError.message || t("prayerUnavailable"));
     } finally {
       setLoading(false);
       setLocationLoading(false);
@@ -93,14 +105,14 @@ export default function MuslimsDailyEssentials() {
 
   const allowLocation = () => {
     if (!navigator.geolocation) {
-      setError("Location detection is not available in this browser. Search for your city instead.");
+      setError(t("locationUnavailable"));
       return;
     }
     setLocationLoading(true);
     setError("");
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => requestPrayerTimes({ latitude: coords.latitude, longitude: coords.longitude }),
-      () => { setLocationLoading(false); setError("Location access was denied. Search for your city to continue."); },
+      () => { setLocationLoading(false); setError(t("locationDenied")); },
       { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
     );
   };
@@ -151,39 +163,39 @@ export default function MuslimsDailyEssentials() {
     if (!prayerData) return "Upcoming";
     const minutes = clockToMinutes(time);
     if (name === currentPrayer?.name) return "Now";
-    if (minutes < currentPrayer?.currentMinutes && name !== "Sunrise") return "Completed";
+    if (minutes < currentPrayer?.currentMinutes) return "Completed";
     return "Upcoming";
   };
 
   return (
-    <main className="page daily-essentials-page">
-      <PageHero title="Muslims Daily Essentials" subtitle="Essential Islamic tools designed to help Muslims organize their daily worship and stay connected with their prayers." image={images.mosque} />
+    <main className="page daily-essentials-page" data-translation-owned="true">
+      <PageHero title={t("title")} subtitle={t("subtitle")} image={images.mosque} />
       <section className="section daily-dashboard-section">
         <div className="container">
           <div className="daily-location-bar">
-            <div className="daily-location-copy"><MapPin /><div><span>Current Location</span><strong>{location?.city && location?.country ? `${location.city}, ${location.country}` : "No location selected"}</strong></div></div>
+            <div className="daily-location-copy"><MapPin /><div><span>{t("currentLocation")}</span><strong>{location?.city && location?.country ? `${location.city}, ${location.country}` : t("noLocation")}</strong></div></div>
             <div className="daily-location-actions">
-              <button type="button" className="daily-button daily-button-light" onClick={allowLocation} disabled={locationLoading}><LocateFixed />{locationLoading ? "Detecting..." : "Allow Location Access"}</button>
-              <label className="daily-place-search"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search for a city" aria-label="Search for a city" /></label>
+              <button type="button" className="daily-button daily-button-light" onClick={allowLocation} disabled={locationLoading}><LocateFixed />{locationLoading ? t("detecting") : t("allowLocation")}</button>
+              <label className="daily-place-search"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t("searchCity")} aria-label={t("searchCity")} /></label>
             </div>
             {places.length > 0 && <div className="place-results">{places.map((place) => <button type="button" key={`${place.latitude}-${place.longitude}`} onClick={() => choosePlace(place)}>{place.label}</button>)}</div>}
           </div>
           {error && <div className="daily-message daily-error" role="alert">{error}</div>}
-          {loading && <div className="daily-message"><Clock3 /> Loading local prayer timings...</div>}
+          {loading && <div className="daily-message"><Clock3 /> {t("loading")}</div>}
           {prayerData && !loading && (
             <>
-              <div className="daily-date-row"><div><span className="eyebrow">TODAY'S DATE</span><h2>{prayerData.dateLabel}</h2></div><div className="hijri-date">{prayerData.hijriDate}</div><button type="button" className="daily-change" onClick={() => { setLocation(null); setPrayerData(null); sessionStorage.removeItem("mauiza-daily-location"); }}>Change Location</button></div>
-              <div className="next-prayer-card"><div><span className="eyebrow">NEXT PRAYER</span><h2>{currentPrayer.name}</h2><p>{formatTime(currentPrayer.time)} · {currentPrayer.tomorrow ? "Tomorrow" : "Today"}</p></div><div className="countdown"><strong>{formatCountdown(countdown)}</strong><span>Remaining</span></div></div>
-              <div className="daily-section-heading"><div><span className="eyebrow">SMART PRAYER TIMINGS</span><h2>Today’s Prayer Times</h2></div><span className="calculation-note">Method: {prayerData.method}</span></div>
-              <div className="prayer-grid">{prayerOrder.map((name) => { const Icon = prayerIcons[name]; return <article className={`prayer-card ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><div className="prayer-card-top"><Icon /><span>{prayerStatus(name, prayerData.timings[name])}</span></div><h3>{name}</h3><strong>{formatTime(prayerData.timings[name])}</strong></article>; })}</div>
-              <div className="timeline-panel"><div className="daily-section-heading"><div><span className="eyebrow">DAILY PRAYER OVERVIEW</span><h2>Your day in prayer</h2></div></div><div className="prayer-timeline">{prayerOrder.map((name) => <div className={`timeline-item ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><span className="timeline-dot" /><strong>{name}</strong><small>{formatTime(prayerData.timings[name])}</small></div>)}</div></div>
-              <section className="prohibited-panel"><div className="prohibited-heading"><ShieldAlert /><div><span className="eyebrow">GUIDANCE</span><h2>Prohibited Prayer Times</h2></div></div><p className="prohibited-intro">These are calculated astronomical times around which voluntary prayer is generally avoided. Specific rulings can vary by school of thought.</p><div className="prohibited-grid">{[["Sunrise", "Avoid prayer around sunrise."], ["Zawal", "Avoid prayer around the exact solar noon period."], ["Sunset", "Avoid prayer around sunset."]].map(([name, description]) => <div className="prohibited-card" key={name}><span>{name}</span><strong>{formatTime(name === "Zawal" ? prayerData.timings.Dhuhr : prayerData.timings[name])}</strong><p>{description}</p></div>)}</div></section>
+              <div className="daily-date-row"><div><span className="eyebrow">{t("todayDate")}</span><h2>{formatLocalDate(prayerData.date, language, "gregory")}</h2></div><div className="hijri-date">{formatLocalDate(prayerData.date, language, "islamic")}</div><button type="button" className="daily-change" onClick={() => { setLocation(null); setPrayerData(null); sessionStorage.removeItem("mauiza-daily-location"); }}>{t("changeLocation")}</button></div>
+              <div className="next-prayer-card"><div><span className="eyebrow">{t("nextPrayer")}</span><h2>{t(currentPrayer.name)}</h2><p>{formatTime(currentPrayer.time)} · {currentPrayer.tomorrow ? t("tomorrow") : t("today")}</p></div><div className="countdown"><strong>{formatCountdown(countdown)}</strong><span>{t("remaining")}</span></div></div>
+              <div className="daily-section-heading"><div><span className="eyebrow">{t("smartTimings")}</span><h2>{t("prayerTimes")}</h2></div><span className="calculation-note">{t("method")}: {prayerData.method}</span></div>
+              <div className="prayer-grid">{prayerOrder.map((name) => { const Icon = prayerIcons[name]; return <article className={`prayer-card ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><div className="prayer-card-top"><Icon /><span>{t(prayerStatus(name, prayerData.timings[name]).toLowerCase())}</span></div><h3>{t(name)}</h3><strong>{formatTime(prayerData.timings[name])}</strong></article>; })}</div>
+              <div className="timeline-panel"><div className="daily-section-heading"><div><span className="eyebrow">{t("dailyOverview")}</span><h2>{t("dayInPrayer")}</h2></div></div><div className="prayer-timeline">{prayerOrder.map((name) => <div className={`timeline-item ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><span className="timeline-dot" /><strong>{t(name)}</strong><small>{formatTime(prayerData.timings[name])}</small></div>)}</div></div>
+              <section className="prohibited-panel"><div className="prohibited-heading"><ShieldAlert /><div><span className="eyebrow">{t("guidance")}</span><h2>{t("prohibited")}</h2></div></div><p className="prohibited-intro">{t("prohibitedIntro")}</p><div className="prohibited-grid">{[["Sunrise", "sunriseAvoid"], ["Zawal", "zawalAvoid"], ["Maghrib", "sunsetAvoid"]].map(([name, description]) => <div className="prohibited-card" key={name}><span>{name === "Maghrib" ? t("sunset") : t(name)}</span><strong>{formatTime(name === "Zawal" ? prayerData.timings.Dhuhr : prayerData.timings[name])}</strong><p>{t(description)}</p></div>)}</div></section>
             </>
           )}
-          {!location && !loading && <div className="daily-empty"><Sparkles /><h2>Start with your local prayer times</h2><p>Allow location access or search for a city to see today’s calculated timings.</p><button type="button" className="daily-button" onClick={allowLocation}><LocateFixed /> Allow Location Access</button></div>}
+          {!location && !loading && <div className="daily-empty"><Sparkles /><h2>{t("startTitle")}</h2><p>{t("startText")}</p><button type="button" className="daily-button" onClick={allowLocation}><LocateFixed /> {t("allowLocation")}</button></div>}
         </div>
       </section>
-      <section className="section daily-info"><div className="container"><span className="eyebrow">A STEADY RHYTHM</span><h2>Stay Connected With Your Daily Prayers</h2><p>Use accurate local prayer times to organize your day, prepare for each salah, and keep worship close through every season.</p></div></section>
+      <section className="section daily-info"><div className="container"><span className="eyebrow">{t("steadyRhythm")}</span><h2>{t("stayConnected")}</h2><p>{t("info")}</p></div></section>
     </main>
   );
 }

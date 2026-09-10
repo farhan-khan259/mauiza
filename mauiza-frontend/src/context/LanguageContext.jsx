@@ -626,7 +626,7 @@ function translateDocument(language, originalText) {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let node;
   while ((node = walker.nextNode())) {
-    if (!node.parentElement.closest("script, style")) {
+    if (!node.parentElement.closest("script, style, [data-translation-owned]")) {
       const original = originalText.current.get(node) || node.textContent;
       originalText.current.set(node, original);
       const leading = original.match(/^\s*/)[0];
@@ -637,6 +637,7 @@ function translateDocument(language, originalText) {
   }
   ["placeholder", "alt", "aria-label", "title"].forEach((attribute) => {
     document.querySelectorAll(`[${attribute}]`).forEach((element) => {
+      if (element.closest("[data-translation-owned]")) return;
       const dataKey = `original${attribute.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()).replace(/^./, (letter) => letter.toUpperCase())}`;
       const original = element.dataset[dataKey] || element.getAttribute(attribute);
       if (original) {
