@@ -242,20 +242,10 @@ export default function Home() {
               title="Making Quranic Education More Accessible"
             />
             <p>
-              We are an online Islamic education platform dedicated to helping
-              students develop their Quranic knowledge through accessible and
-              structured learning.
+              A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.
             </p>
             <p>
-              Our goal is to bring together the timeless teachings of the Quran
-              and the convenience of modern technology, allowing students to
-              learn from the comfort of their homes.
-            </p>
-            <p>
-              Whether you are taking your first steps in Quranic learning or
-              looking to improve your existing skills, our courses provide a
-              supportive environment where learning can become a consistent part
-              of your life.
+              Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.
             </p>
             <Button to="/about">Discover Our Story</Button>
           </div>
