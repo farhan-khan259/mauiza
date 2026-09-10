@@ -11,6 +11,7 @@ const links = [
   ["/courses", "Courses"],
   ["/resources", "Resources"],
   ["/volunteers", "Volunteers"],
+  ["/muslims-daily-essentials", "Muslims Daily Essentials"],
   ["/contact", "Contact Us"],
 ];
 export default function Navbar() {
