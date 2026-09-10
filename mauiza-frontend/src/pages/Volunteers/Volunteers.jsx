@@ -10,13 +10,6 @@ import "./Volunteers.css";
 
 const roles = ["Teacher", "Video Editor", "Media Manager"];
 const instructionLanguages = [["ar", "Arabic"], ["en", "English"], ["fr", "French"], ["hi", "Hindi"], ["pt", "Portuguese"], ["es", "Spanish"], ["sv", "Swedish"], ["tr", "Turkish"], ["ur", "Urdu"], ["other", "Other"]];
-const availabilitySlots = [
-  "Morning (06:00 - 12:00)",
-  "Afternoon (12:00 - 17:00)",
-  "Evening (17:00 - 22:00)",
-  "Flexible",
-  "Other"
-];
 const opportunities = [
   {
     role: "Teacher",
@@ -93,6 +86,7 @@ export default function Volunteers() {
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [availability, setAvailability] = useState({ start: "", end: "" });
   const applicationRef = useRef(null);
 
   useEffect(() => {
@@ -122,6 +116,14 @@ export default function Volunteers() {
     setErrorMessage("");
   }
 
+  function formatTimeForDisplay(value) {
+    if (!value) return "";
+    const [hours, minutes] = value.split(":").map(Number);
+    const suffix = hours >= 12 ? "PM" : "AM";
+    const hour = hours % 12 || 12;
+    return `${hour}:${String(minutes).padStart(2, "0")} ${suffix}`;
+  }
+
   async function submit(event) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -139,7 +141,9 @@ export default function Volunteers() {
       profession: String(data.get("profession") || "").trim(),
       designation: String(data.get("designation") || "").trim(),
       instructionLanguage: String(data.get("instructionLanguage") || "").trim(),
-      availability: String(data.get("availability") || "").trim(),
+      startTime: availability.start,
+      endTime: availability.end,
+      availability: `${formatTimeForDisplay(availability.start)} to ${formatTimeForDisplay(availability.end)}`,
       availabilityDetails: String(data.get("availabilityDetails") || "").trim(),
       goals: String(data.get("goals") || "").trim(),
       islamicEducation: String(data.get("islamicEducation") || "").trim(),
@@ -162,6 +166,11 @@ export default function Volunteers() {
     const missing = requiredFields.filter(([key]) => !payload[key]?.trim());
     if (missing.length > 0) {
       setErrorMessage(`Please complete the required fields: ${missing.map(([, label]) => label).join(", ")}.`);
+      return;
+    }
+
+    if (!availability.start || !availability.end || availability.end <= availability.start) {
+      setErrorMessage(t("Please choose a valid availability time range."));
       return;
     }
 
@@ -193,6 +202,7 @@ export default function Volunteers() {
       setSuccessMessage(whatsappMessage);
       setSent(true);
       form.reset();
+      setAvailability({ start: "", end: "" });
       setRole("");
       setStep(1);
     } catch (error) {
@@ -301,11 +311,18 @@ export default function Volunteers() {
                     </select>
                   </label>
                   <label>
-                    {t("Availability Time Slot")}
-                    <select required name="availability" defaultValue="">
-                      <option value="" disabled>{t("Select your availability")}</option>
-                      {availabilitySlots.map((slot) => <option key={slot} value={slot}>{t(slot, slot)}</option>)}
-                    </select>
+                    {t("Availability Time")}
+                    <div className="volunteer-time-range">
+                      <label className="volunteer-time-field">
+                        <span>{t("From")}</span>
+                        <input required type="time" name="startTime" step="60" value={availability.start} onChange={(event) => setAvailability((current) => ({ ...current, start: event.target.value }))} />
+                      </label>
+                      <span className="volunteer-time-separator">{t("to")}</span>
+                      <label className="volunteer-time-field">
+                        <span>{t("To")}</span>
+                        <input required type="time" name="endTime" step="60" min={availability.start || undefined} value={availability.end} onChange={(event) => setAvailability((current) => ({ ...current, end: event.target.value }))} />
+                      </label>
+                    </div>
                   </label>
                 </div>
                 <label>{t("Availability Details (optional)")}<input name="availabilityDetails" placeholder={t("Add specific days or times")} /></label>
