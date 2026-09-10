@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { CheckCircle2, HeartHandshake, Info } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { CheckCircle2, Clapperboard, GraduationCap, HeartHandshake, Info, Smartphone } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PageHero from "../../components/PageHero/PageHero";
 import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
@@ -16,8 +17,49 @@ const availabilitySlots = [
   "Flexible",
   "Other"
 ];
+const opportunities = [
+  {
+    role: "Teacher",
+    eyebrow: "VOLUNTEER OPPORTUNITY 01",
+    title: "Islamic Teacher",
+    tagline: "Teach. Inspire. Make a Difference.",
+    description: "Share your Islamic knowledge with students and help them build a stronger connection with the Qur'an, Sunnah, and Islamic teachings.",
+    heading: "What You'll Contribute",
+    items: ["Teach Islamic subjects and lessons", "Guide and support students", "Share your knowledge and experience", "Help students grow in understanding"],
+    image: "/images/volunteer-teacher.jpg",
+    Icon: GraduationCap
+  },
+  {
+    role: "Video Editor",
+    eyebrow: "VOLUNTEER OPPORTUNITY 02",
+    title: "Video Editor",
+    tagline: "Create. Edit. Inspire.",
+    description: "Help us transform Islamic knowledge into engaging and meaningful video content for learners and audiences online.",
+    heading: "What You'll Contribute",
+    items: ["Edit Islamic educational videos", "Create engaging short-form content", "Improve quality and presentation", "Prepare content for social media"],
+    note: "Free training will be provided — beginners are welcome to apply.",
+    image: "/images/volunteer-video-editor.jpg",
+    Icon: Clapperboard
+  },
+  {
+    role: "Media Manager",
+    eyebrow: "VOLUNTEER OPPORTUNITY 03",
+    title: "Media Manager",
+    tagline: "Share. Connect. Grow.",
+    description: "Help spread beneficial Islamic content by managing and publishing content on social media platforms.",
+    heading: "How It Works",
+    items: ["We provide the content", "You post it on your account", "Keep a consistent schedule", "Together, reach more people"],
+    note: "Your role is to post, organize, and manage the content we provide on your account.",
+    image: "/images/volunteer-media-manager.jpg",
+    Icon: Smartphone
+  }
+];
 
 export default function Volunteers() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const requestedRole = searchParams.get("role");
+  const formOnly = roles.includes(requestedRole);
   const { language } = useLanguage();
   const t = (key, fallback = key) => translations[language]?.[key] ?? fallback;
   const countryDisplayNames = new Intl.DisplayNames([language], { type: "region" });
@@ -45,12 +87,26 @@ export default function Volunteers() {
       note: t("Media Manager Role: Content will be provided to you. Your responsibility will be to post the provided content on your TikTok account and manage the content on your account consistently.")
     }
   };
-  const [role, setRole] = useState("");
-  const [step, setStep] = useState(1);
+  const [role, setRole] = useState(() => formOnly ? requestedRole : "");
+  const [step, setStep] = useState(() => formOnly ? 2 : 1);
   const [sent, setSent] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const applicationRef = useRef(null);
+
+  useEffect(() => {
+    if (formOnly) {
+      setRole(requestedRole);
+      setStep(2);
+      setErrorMessage("");
+    }
+  }, [formOnly, requestedRole]);
+
+  function applyForRole(selectedRole) {
+    navigate(`/volunteers?role=${encodeURIComponent(selectedRole)}`);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
 
   function goToDetails() {
     if (!role) {
@@ -150,24 +206,47 @@ export default function Volunteers() {
   const selectedRole = roleCopy[role];
 
   return (
-    <main className="page volunteer-page">
-      <PageHero
-        title={t("Volunteer With Mauiza")}
-        subtitle={t("Share your skills, serve with purpose, and help make Quranic learning more accessible.")}
+    <main className={`page volunteer-page ${formOnly ? "volunteer-form-only-page" : ""}`}>
+      {!formOnly && <PageHero
+        title={t("Become a Volunteer")}
+        subtitle={t("Share your skills. Serve the Ummah. Help make Islamic education, media, and dawah accessible around the world.")}
         image={images.learning}
-      />
-      <section className="section">
-        <div className="container volunteer-layout">
-          <aside className="volunteer-intro">
-            <p className="eyebrow">{t("JOIN OUR TEAM")}</p>
-            <h2>{t("Bring Your Gifts to Meaningful Work.")}</h2>
-            <p>{t("Complete one application and tell us how you would like to support Mauiza. Your role-specific questions will appear as soon as you choose a volunteer designation.")}</p>
-            <div className="volunteer-points">
-              <p><HeartHandshake /> {t("One unified application")}</p>
-              <p><HeartHandshake /> {t("Flexible ways to contribute")}</p>
-              <p><HeartHandshake /> {t("Training available for beginners")}</p>
-            </div>
-          </aside>
+      />}
+      {!formOnly && <section className="section volunteer-opportunities-section">
+        <div className="container">
+          <div className="volunteer-section-intro">
+            <p className="eyebrow">{t("VOLUNTEER OPPORTUNITIES")}</p>
+            <h2>{t("Bring your skills to a meaningful mission.")}</h2>
+            <p>{t("Explore how you can contribute your knowledge and time to support Islamic education and beneficial content.")}</p>
+            <button className="volunteer-hero-apply" type="button" onClick={() => applicationRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}>{t("Volunteer Today")} <span>→</span></button>
+          </div>
+          <div className="volunteer-opportunities">
+            {opportunities.map((opportunity, index) => {
+              const Icon = opportunity.Icon;
+              return (
+                <article className={`volunteer-opportunity ${index % 2 ? "reverse" : ""}`} key={opportunity.role}>
+                  <div className="volunteer-opportunity-image">
+                    <img src={opportunity.image} alt={opportunity.title} />
+                    <span><Icon /></span>
+                  </div>
+                  <div className="volunteer-opportunity-content">
+                    <p className="course-number">{t(opportunity.eyebrow)}</p>
+                    <h2>{t(opportunity.title)}</h2>
+                    <h3>{t(opportunity.tagline)}</h3>
+                    <p>{t(opportunity.description)}</p>
+                    <h4>{t(opportunity.heading)}</h4>
+                    <ul>{opportunity.items.map((item) => <li key={item}><CheckCircle2 /> {t(item)}</li>)}</ul>
+                    {opportunity.note && <p className="opportunity-note">{t(opportunity.note)}</p>}
+                    <button type="button" onClick={() => applyForRole(opportunity.role)}>{t(`Apply as ${opportunity.title}`)} <span>→</span></button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>}
+      <section className={`section volunteer-application-section ${formOnly ? "volunteer-form-only-section" : ""}`} ref={applicationRef}>
+        <div className="container volunteer-form-only">
 
           <form className="volunteer-form" onSubmit={submit} noValidate>
             <div className="volunteer-form-heading">
