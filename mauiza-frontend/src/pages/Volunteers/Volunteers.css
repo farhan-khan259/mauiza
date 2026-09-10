@@ -10,6 +10,7 @@
   margin: 10px 0 14px;
   font-size: 42px;
   line-height: 1.08;
+  text-align: center;
 }
 .volunteer-section-intro > p:not(.eyebrow) {
   margin: 0 auto;
