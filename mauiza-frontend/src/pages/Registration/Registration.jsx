@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { timeZonesNames } from "@vvo/tzdb";
+import { getTimeZones } from "@vvo/tzdb";
 import PageHero from "../../components/PageHero/PageHero";
 import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
@@ -29,7 +29,29 @@ const instructionLanguages = [
 	["vi", "Vietnamese"], ["cy", "Welsh"], ["yo", "Yoruba"], ["zu", "Zulu"]
 ];
 
-const timezones = ["UTC", ...timeZonesNames];
+const timezones = getTimeZones({ includeUtc: true });
+const timezonePrefix = {
+	en: "Time zone in",
+	ur: "ٹائم زون",
+	ar: "المنطقة الزمنية في",
+	sv: "Tidszon i",
+	tr: "Şuradaki saat dilimi:",
+	fr: "Fuseau horaire de",
+	es: "Zona horaria de",
+	"zh-CN": "时区：",
+	pt: "Fuso horário em",
+	fil: "Time zone sa",
+	hi: "समय क्षेत्र",
+	ru: "Часовой пояс:"
+};
+
+function formatTimezoneOffset(minutes) {
+	const sign = minutes < 0 ? "-" : "+";
+	const absoluteMinutes = Math.abs(minutes);
+	const hours = Math.floor(absoluteMinutes / 60);
+	const remainingMinutes = absoluteMinutes % 60;
+	return `GMT${sign}${hours}${remainingMinutes ? `:${String(remainingMinutes).padStart(2, "0")}` : ""}`;
+}
 
 export default function Registration() {
 	const { language } = useLanguage();
@@ -42,6 +64,26 @@ export default function Registration() {
 	const [schedule, setSchedule] = useState({ start: "", end: "" });
 	const languageDisplayNames = new Intl.DisplayNames([language], { type: "language" });
 	const countryDisplayNames = new Intl.DisplayNames([language], { type: "region" });
+	const timezoneCountryCounts = timezones.reduce((counts, timezone) => {
+		if (timezone.countryCode) counts[timezone.countryCode] = (counts[timezone.countryCode] || 0) + 1;
+		return counts;
+	}, {});
+
+	function formatTimezoneLabel(timezone) {
+		if (timezone.name === "UTC") return "Time zone in UTC (GMT+0)";
+		let country = timezone.countryName;
+		if (/^[A-Z]{2}$/.test(timezone.countryCode || "")) {
+			try {
+				country = countryDisplayNames.of(timezone.countryCode) || country;
+			} catch {
+				country = timezone.countryName;
+			}
+		}
+		const city = timezoneCountryCounts[timezone.countryCode] > 1 && timezone.mainCities?.[0]
+			? ` - ${timezone.mainCities[0]}`
+			: "";
+		return `${timezonePrefix[language] || timezonePrefix.en} ${country}${city} (${formatTimezoneOffset(timezone.currentTimeOffsetInMinutes)})`;
+	}
 
 	useEffect(() => {
 		if (location.state?.selectedCourse) {
@@ -196,7 +238,7 @@ export default function Registration() {
 								Timezone
 								<select required name="timezone" defaultValue="">
 									<option value="" disabled>Select timezone</option>
-									{timezones.map((timezone) => <option key={timezone} value={timezone}>{timezone}</option>)}
+									{timezones.map((timezone) => <option key={timezone.name} value={timezone.name}>{formatTimezoneLabel(timezone)}</option>)}
 								</select>
 							</label>
 							<label>
