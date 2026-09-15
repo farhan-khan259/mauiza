@@ -158,10 +158,12 @@ export default function MuslimsDailyEssentials() {
     if (!prayerData) return null;
     const timezone = prayerData.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
     const currentMinutes = clockToMinutes(new Intl.DateTimeFormat("en-GB", { timeZone: timezone, hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(now)));
-    const upcoming = prayerOrder.map((name) => ({ name, time: prayerData.timings[name] })).find(({ time }) => clockToMinutes(time) > currentMinutes);
+    const prayers = prayerOrder.map((name) => ({ name, time: prayerData.timings[name], minutes: clockToMinutes(prayerData.timings[name]) }));
+    const upcoming = prayers.find(({ minutes }) => minutes > currentMinutes);
+    const active = [...prayers].reverse().find(({ minutes }) => minutes <= currentMinutes) || prayers[prayers.length - 1];
     const next = upcoming || { name: "Fajr", time: prayerData.timings.Fajr, tomorrow: true };
     const target = getTargetTimestamp(next.time, next.tomorrow ? getTomorrowDate(prayerData.date) : prayerData.date, timezone);
-    return { ...next, target, currentMinutes };
+    return { ...next, activeName: active.name, target, currentMinutes };
   }, [now, prayerData]);
 
   useEffect(() => {
@@ -177,8 +179,8 @@ export default function MuslimsDailyEssentials() {
   const prayerStatus = (name, time) => {
     if (!prayerData) return "Upcoming";
     const minutes = clockToMinutes(time);
-    if (name === currentPrayer?.name) return "Now";
-    if (minutes < currentPrayer?.currentMinutes) return "Completed";
+    if (name === currentPrayer?.activeName) return "Now";
+    if (minutes <= currentPrayer?.currentMinutes) return "Completed";
     return "Upcoming";
   };
 
@@ -200,7 +202,7 @@ export default function MuslimsDailyEssentials() {
           {prayerData && !loading && (
             <>
               <div className="daily-date-row"><div><span className="eyebrow">{t("todayDate")}</span><h2>{formatLocalDate(prayerData.date, language, "gregory")}</h2></div><div className="hijri-date">{formatLocalDate(prayerData.date, language, "islamic")}</div><button type="button" className="daily-change" onClick={() => { setLocation(null); setPrayerData(null); sessionStorage.removeItem("mauiza-daily-location"); }}>{t("changeLocation")}</button></div>
-              <div className="next-prayer-card"><div><span className="eyebrow">{t("nextPrayer")}</span><h2>{t(currentPrayer.name)}</h2><p>{formatTime(currentPrayer.time)} · {currentPrayer.tomorrow ? t("tomorrow") : t("today")}</p></div><div className="countdown"><strong>{formatCountdown(countdown)}</strong><span>{t("remaining")}</span></div></div>
+              <div className="next-prayer-card"><div><span className="eyebrow">{t("now")}</span><h2>{t(currentPrayer.activeName)}</h2><p>{formatTime(prayerData.timings[currentPrayer.activeName])}</p></div><div className="countdown"><strong>{formatCountdown(countdown)}</strong><span>{t("remaining")}</span></div></div>
               <div className="daily-section-heading"><div><span className="eyebrow">{t("smartTimings")}</span><h2>{t("prayerTimes")}</h2></div><span className="calculation-note">{t("method")}: {prayerData.method}</span></div>
               <div className="prayer-grid">{prayerOrder.map((name) => { const Icon = prayerIcons[name]; return <article className={`prayer-card ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><div className="prayer-card-top"><Icon /><span>{t(prayerStatus(name, prayerData.timings[name]).toLowerCase())}</span></div><h3>{t(name)}</h3><strong>{formatTime(prayerData.timings[name])}</strong></article>; })}</div>
               <div className="timeline-panel"><div className="daily-section-heading"><div><span className="eyebrow">{t("dailyOverview")}</span><h2>{t("dayInPrayer")}</h2></div></div><div className="prayer-timeline">{prayerOrder.map((name) => <div className={`timeline-item ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><span className="timeline-dot" /><strong>{t(name)}</strong><small>{formatTime(prayerData.timings[name])}</small></div>)}</div></div>
