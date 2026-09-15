@@ -27,6 +27,21 @@ function formatTime(value) {
   return `${hours % 12 || 12}:${String(minutes).padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
 }
 
+function addMinutes(value, minutesToAdd) {
+  const totalMinutes = clockToMinutes(value) + minutesToAdd;
+  const normalizedMinutes = ((totalMinutes % (24 * 60)) + (24 * 60)) % (24 * 60);
+  return `${String(Math.floor(normalizedMinutes / 60)).padStart(2, "0")}:${String(normalizedMinutes % 60).padStart(2, "0")}`;
+}
+
+function getProhibitedTimes(timings) {
+  const durationMinutes = 10;
+  return [
+    { name: "Sunrise", description: "sunriseAvoid", start: timings.Sunrise, end: addMinutes(timings.Sunrise, durationMinutes) },
+    { name: "Zawal", description: "zawalAvoid", start: timings.Dhuhr, end: addMinutes(timings.Dhuhr, durationMinutes) },
+    { name: "Maghrib", description: "sunsetAvoid", start: timings.Maghrib, end: addMinutes(timings.Maghrib, durationMinutes) }
+  ];
+}
+
 function formatCountdown(totalSeconds) {
   const seconds = Math.max(0, totalSeconds);
   const hours = Math.floor(seconds / 3600);
@@ -189,7 +204,7 @@ export default function MuslimsDailyEssentials() {
               <div className="daily-section-heading"><div><span className="eyebrow">{t("smartTimings")}</span><h2>{t("prayerTimes")}</h2></div><span className="calculation-note">{t("method")}: {prayerData.method}</span></div>
               <div className="prayer-grid">{prayerOrder.map((name) => { const Icon = prayerIcons[name]; return <article className={`prayer-card ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><div className="prayer-card-top"><Icon /><span>{t(prayerStatus(name, prayerData.timings[name]).toLowerCase())}</span></div><h3>{t(name)}</h3><strong>{formatTime(prayerData.timings[name])}</strong></article>; })}</div>
               <div className="timeline-panel"><div className="daily-section-heading"><div><span className="eyebrow">{t("dailyOverview")}</span><h2>{t("dayInPrayer")}</h2></div></div><div className="prayer-timeline">{prayerOrder.map((name) => <div className={`timeline-item ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><span className="timeline-dot" /><strong>{t(name)}</strong><small>{formatTime(prayerData.timings[name])}</small></div>)}</div></div>
-              <section className="prohibited-panel"><div className="prohibited-heading"><ShieldAlert /><div><span className="eyebrow">{t("guidance")}</span><h2>{t("prohibited")}</h2></div></div><p className="prohibited-intro">{t("prohibitedIntro")}</p><div className="prohibited-grid">{[["Sunrise", "sunriseAvoid"], ["Zawal", "zawalAvoid"], ["Maghrib", "sunsetAvoid"]].map(([name, description]) => <div className="prohibited-card" key={name}><span>{name === "Maghrib" ? t("sunset") : t(name)}</span><strong>{formatTime(name === "Zawal" ? prayerData.timings.Dhuhr : prayerData.timings[name])}</strong><p>{t(description)}</p></div>)}</div></section>
+              <section className="prohibited-panel"><div className="prohibited-heading"><ShieldAlert /><div><span className="eyebrow">{t("guidance")}</span><h2>{t("prohibited")}</h2></div></div><p className="prohibited-intro">{t("prohibitedIntro")}</p><div className="prohibited-grid">{getProhibitedTimes(prayerData.timings).map(({ name, description, start, end }) => <div className="prohibited-card" key={name}><span>{name === "Maghrib" ? t("sunset") : t(name)}</span><strong>{formatTime(start)} – {formatTime(end)}</strong><p>{t(description)}</p></div>)}</div></section>
             </>
           )}
           {!location && !loading && <div className="daily-empty"><Sparkles /><h2>{t("startTitle")}</h2><p>{t("startText")}</p><button type="button" className="daily-button" onClick={allowLocation}><LocateFixed /> {t("allowLocation")}</button></div>}
