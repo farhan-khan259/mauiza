@@ -120,4 +120,12 @@ const volunteerFallbackLabels = {
 
 Object.entries(volunteerFallbackLabels).forEach(([language, dictionary]) => Object.assign(shared[language], dictionary));
 
+const dailyEssentialsLabels = {
+  ur: "روزمرہ ضروریات", ar: "الاحتياجات اليومية", sv: "Dagliga behov", tr: "Günlük Gereksinimler",
+  fr: "Les essentiels quotidiens", es: "Esenciales diarios", "zh-CN": "每日必备", pt: "Essenciais diários",
+  fil: "Mga Pang-araw-araw na Pangangailangan", hi: "दैनिक आवश्यकताएँ", ru: "Ежедневные нужды"
+};
+
+Object.entries(dailyEssentialsLabels).forEach(([language, label]) => Object.assign(shared[language], { "Daily Essentials": label }));
+
 export default shared;

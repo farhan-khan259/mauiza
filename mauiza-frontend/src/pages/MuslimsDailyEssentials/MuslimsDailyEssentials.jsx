@@ -84,6 +84,11 @@ function formatLocalDate(date, language, calendar) {
 export default function MuslimsDailyEssentials() {
   const { language } = useLanguage();
   const t = (key) => extraLabels[language]?.[key] || dailyTranslations[language]?.[key] || dailyTranslations.en[key] || key;
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = `${t("title")} | Mauiza`;
+    return () => { document.title = previousTitle; };
+  }, [language]);
   const [location, setLocation] = useState(() => {
     try { return JSON.parse(sessionStorage.getItem("mauiza-daily-location")) || null; } catch { return null; }
   });

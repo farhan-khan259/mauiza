@@ -71,6 +71,12 @@ const dictionaries = {
   ru: { ...english, title: "Ежедневные нужды мусульман", subtitle: "Важные исламские инструменты, помогающие организовать ежедневное поклонение и сохранять связь с молитвами.", currentLocation: "Текущее местоположение", noLocation: "Местоположение не выбрано", allowLocation: "Разрешить доступ к местоположению", detecting: "Определение...", searchCity: "Найти город", todayDate: "СЕГОДНЯШНЯЯ ДАТА", changeLocation: "Изменить местоположение", nextPrayer: "СЛЕДУЮЩАЯ МОЛИТВА", today: "Сегодня", tomorrow: "Завтра", smartTimings: "УМНЫЕ ВРЕМЕНА МОЛИТВ", prayerTimes: "Времена молитв сегодня", method: "Метод", dailyOverview: "ОБЗОР МОЛИТВ ДНЯ", dayInPrayer: "Ваш день в молитве", guidance: "ИНФОРМАЦИЯ", prohibited: "Время, когда молитва нежелательна", prohibitedIntro: "Это рассчитанные астрономические периоды, вокруг которых обычно избегают дополнительных молитв. Конкретные правила могут различаться по мазхабам.", sunriseAvoid: "Избегайте молитвы во время восхода солнца.", zawalAvoid: "Избегайте молитвы в точный солнечный полдень.", sunsetAvoid: "Избегайте молитвы во время заката.", steadyRhythm: "СТАБИЛЬНЫЙ РИТМ", stayConnected: "Оставайтесь связанными с ежедневными молитвами", info: "Используйте точное местное время молитв, чтобы организовать день и подготовиться к каждой молитве.", startTitle: "Начните с местного времени молитв", startText: "Разрешите доступ к местоположению или найдите город, чтобы увидеть рассчитанное время.", loading: "Загрузка местного времени молитв...", locationDenied: "Доступ к местоположению запрещён. Найдите город, чтобы продолжить.", upcoming: "Предстоит", now: "Сейчас", completed: "Завершена", Zawal: "Зенит", Fajr: "Фаджр", Sunrise: "Восход", Dhuhr: "Зухр", Asr: "Аср", Maghrib: "Магриб", Isha: "Иша" }
 };
 
-Object.values(dictionaries).forEach((dictionary) => { dictionary.title = "Daily Essentials"; });
+const dailyEssentialsTitles = {
+  en: "Daily Essentials", ur: "روزمرہ ضروریات", ar: "الاحتياجات اليومية", sv: "Dagliga behov", tr: "Günlük Gereksinimler",
+  fr: "Les essentiels quotidiens", es: "Esenciales diarios", "zh-CN": "每日必备", pt: "Essenciais diários",
+  fil: "Mga Pang-araw-araw na Pangangailangan", hi: "दैनिक आवश्यकताएँ", ru: "Ежедневные нужды"
+};
+
+Object.entries(dailyEssentialsTitles).forEach(([language, title]) => { dictionaries[language].title = title; });
 
 export default dictionaries;
