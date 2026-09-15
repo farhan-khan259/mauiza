@@ -5,6 +5,7 @@ import { images } from "../../data/images";
 import { useLanguage } from "../../context/LanguageContext";
 import dailyTranslations from "./dailyEssentialsTranslations";
 import "./MuslimsDailyEssentials.css";
+import "./DailyEssentialsRedesign.css";
 
 const prayerIcons = { Fajr: Sunrise, Sunrise, Dhuhr: Sun, Asr: Compass, Maghrib: Sunset, Isha: Moon };
 const prayerOrder = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
@@ -186,7 +187,7 @@ export default function MuslimsDailyEssentials() {
 
   return (
     <main className="page daily-essentials-page" data-translation-owned="true">
-      <PageHero title={t("title")} subtitle={t("subtitle")} image={images.mosque} />
+      <PageHero className="daily-page-hero" title={t("title")} subtitle={t("subtitle")} image={images.mosque} />
       <section className="section daily-dashboard-section">
         <div className="container">
           <div className="daily-location-bar">
@@ -202,7 +203,7 @@ export default function MuslimsDailyEssentials() {
           {prayerData && !loading && (
             <>
               <div className="daily-date-row"><div><span className="eyebrow">{t("todayDate")}</span><h2>{formatLocalDate(prayerData.date, language, "gregory")}</h2></div><div className="hijri-date">{formatLocalDate(prayerData.date, language, "islamic")}</div><button type="button" className="daily-change" onClick={() => { setLocation(null); setPrayerData(null); sessionStorage.removeItem("mauiza-daily-location"); }}>{t("changeLocation")}</button></div>
-              <div className="next-prayer-card"><div><span className="eyebrow">{t("now")}</span><h2>{t(currentPrayer.activeName)}</h2><p>{formatTime(prayerData.timings[currentPrayer.activeName])}</p></div><div className="countdown"><strong>{formatCountdown(countdown)}</strong><span>{t("remaining")}</span></div></div>
+              <div className="next-prayer-card current-prayer-card"><div><span className="eyebrow">{t("now")}</span><h2>{t(currentPrayer.activeName)}</h2><p>{formatTime(prayerData.timings[currentPrayer.activeName])}</p></div><div className="countdown"><strong>{formatCountdown(countdown)}</strong><span>{t("nextPrayer")} · {t("remaining")}</span></div></div>
               <div className="daily-section-heading"><div><span className="eyebrow">{t("smartTimings")}</span><h2>{t("prayerTimes")}</h2></div><span className="calculation-note">{t("method")}: {prayerData.method}</span></div>
               <div className="prayer-grid">{prayerOrder.map((name) => { const Icon = prayerIcons[name]; return <article className={`prayer-card ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><div className="prayer-card-top"><Icon /><span>{t(prayerStatus(name, prayerData.timings[name]).toLowerCase())}</span></div><h3>{t(name)}</h3><strong>{formatTime(prayerData.timings[name])}</strong></article>; })}</div>
               <div className="timeline-panel"><div className="daily-section-heading"><div><span className="eyebrow">{t("dailyOverview")}</span><h2>{t("dayInPrayer")}</h2></div></div><div className="prayer-timeline">{prayerOrder.map((name) => <div className={`timeline-item ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><span className="timeline-dot" /><strong>{t(name)}</strong><small>{formatTime(prayerData.timings[name])}</small></div>)}</div></div>
