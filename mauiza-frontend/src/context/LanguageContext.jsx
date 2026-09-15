@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
+import volunteerCompleteTranslations from "../data/volunteerTranslations";
 
 export const languages = [
   { code: "en", label: "English", nativeLabel: "English", direction: "ltr" },
@@ -471,7 +472,9 @@ const volunteerTranslations = {
   ru: { Volunteers: "Волонтёры", "Volunteer With Mauiza": "Станьте волонтёром Mauiza", "JOIN OUR TEAM": "ПРИСОЕДИНЯЙТЕСЬ К НАШЕЙ КОМАНДЕ", "VOLUNTEER APPLICATION": "ЗАЯВКА ВОЛОНТЁРА", Profession: "Профессия", "Designation / Volunteer Role": "Роль волонтёра", "Select a volunteer role": "Выберите роль волонтёра", Teacher: "Преподаватель", "Video Editor": "Видеоредактор", "Media Manager": "Менеджер медиа", "Availability Time Slot": "Время доступности", "Write About Your Goals": "Расскажите о своих целях", "Submit Volunteer Application": "Отправить заявку" }
 };
 
-Object.entries(volunteerTranslations).forEach(([language, dictionary]) => Object.assign(translations[language], dictionary));
+Object.entries(volunteerCompleteTranslations).forEach(([language, dictionary]) => {
+  if (translations[language]) Object.assign(translations[language], dictionary);
+});
 
 const volunteerPageTranslations = {
   ur: {
@@ -522,6 +525,7 @@ const volunteerRoleGuidanceTranslations = {
 };
 
 Object.entries(volunteerRoleGuidanceTranslations).forEach(([language, dictionary]) => Object.assign(translations[language], dictionary));
+Object.entries(volunteerTranslations).forEach(([language, dictionary]) => Object.assign(translations[language], dictionary));
 
 const countrySelectTranslations = {
   ur: "ملک منتخب کریں",

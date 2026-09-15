@@ -1,6 +1,39 @@
 .volunteer-opportunities-section {
   padding-bottom: 22px;
 }
+@media (min-width: 801px) and (max-width: 1050px) {
+  body:has(.volunteer-page) .navbar {
+    height: 64px;
+  }
+  body:has(.volunteer-page) .navbar .menu-button {
+    display: block;
+    z-index: 2;
+  }
+  body:has(.volunteer-page) .navbar nav {
+    position: absolute;
+    top: 64px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: .25s;
+  }
+  body:has(.volunteer-page) .navbar nav.open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+}
 .volunteer-section-intro {
   max-width: 670px;
   margin: 0 auto 62px;

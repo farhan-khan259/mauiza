@@ -54,7 +54,8 @@ export default function Volunteers() {
   const requestedRole = searchParams.get("role");
   const formOnly = roles.includes(requestedRole);
   const { language } = useLanguage();
-  const t = (key, fallback = key) => translations[language]?.[key] ?? fallback;
+  const t = (key, fallback = key) => translations[language]?.[key] ?? translations.en?.[key] ?? fallback;
+  const interpolate = (key, values) => Object.entries(values).reduce((message, [name, value]) => message.replace(`{${name}}`, value), t(key));
   const countryDisplayNames = new Intl.DisplayNames([language], { type: "region" });
   const instructionLanguageDisplayNames = new Intl.DisplayNames([language], { type: "language" });
   const roleCopy = {
@@ -165,7 +166,7 @@ export default function Volunteers() {
 
     const missing = requiredFields.filter(([key]) => !payload[key]?.trim());
     if (missing.length > 0) {
-      setErrorMessage(`Please complete the required fields: ${missing.map(([, label]) => label).join(", ")}.`);
+      setErrorMessage(interpolate("Please complete the required fields: {fields}.", { fields: missing.map(([, label]) => t(label, label)).join(", ") }));
       return;
     }
 
@@ -181,7 +182,7 @@ export default function Volunteers() {
         : payload.tiktokAccount;
 
     if (!roleField?.trim()) {
-      setErrorMessage(`Please add the required ${payload.designation} details before submitting.`);
+      setErrorMessage(interpolate("Please add the required {role} details before submitting.", { role: t(payload.designation, payload.designation) }));
       return;
     }
 
@@ -196,7 +197,7 @@ export default function Volunteers() {
       });
       const contentType = response.headers.get("content-type") || "";
       const result = contentType.includes("application/json") ? await response.json() : {};
-      if (!response.ok) throw new Error(result.message || `Volunteer application failed (${response.status}). Please try again.`);
+      if (!response.ok) throw new Error(result.message || t("Volunteer application failed. Please try again."));
 
       const whatsappMessage = `Hello Mauiza, I have submitted my volunteer application as a ${payload.designation}. My name is ${payload.fullName} and my email is ${payload.email}. I would like to continue the conversation.`;
       setSuccessMessage(whatsappMessage);
@@ -207,7 +208,7 @@ export default function Volunteers() {
       setStep(1);
     } catch (error) {
       console.error("Volunteer application error:", error);
-      setErrorMessage(error.message || "Volunteer application failed. Please try again.");
+      setErrorMessage(error.message || t("Volunteer application failed. Please try again."));
     } finally {
       setSubmitting(false);
     }
@@ -216,7 +217,7 @@ export default function Volunteers() {
   const selectedRole = roleCopy[role];
 
   return (
-    <main className={`page volunteer-page ${formOnly ? "volunteer-form-only-page" : ""}`}>
+    <main className={`page volunteer-page ${formOnly ? "volunteer-form-only-page" : ""}`} data-translation-owned="true">
       {!formOnly && <PageHero
         title={t("Become a Volunteer")}
         subtitle={t("Share your skills. Serve the Ummah. Help make Islamic education, media, and dawah accessible around the world.")}
@@ -236,7 +237,7 @@ export default function Volunteers() {
               return (
                 <article className={`volunteer-opportunity ${index % 2 ? "reverse" : ""}`} key={opportunity.role}>
                   <div className="volunteer-opportunity-image">
-                    <img src={opportunity.image} alt={opportunity.title} />
+                    <img src={opportunity.image} alt={t(opportunity.title)} />
                     <span><Icon /></span>
                   </div>
                   <div className="volunteer-opportunity-content">
@@ -307,7 +308,7 @@ export default function Volunteers() {
                     {t("Language of Instruction")}
                     <select required name="instructionLanguage" defaultValue="">
                       <option value="" disabled>{t("Select a language")}</option>
-                      {instructionLanguages.map(([code, label]) => <option key={code} value={code}>{instructionLanguageDisplayNames.of(code) || label}</option>)}
+                      {instructionLanguages.map(([code, label]) => <option key={code} value={code}>{instructionLanguageDisplayNames.of(code) || t(label, label)}</option>)}
                     </select>
                   </label>
                   <label>
