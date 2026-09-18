@@ -6,10 +6,27 @@ import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
 import { countryCodes } from "../../data/countries";
 import { useLanguage, translations } from "../../context/LanguageContext";
+import { getTimeZones } from "@vvo/tzdb";
 import "./Volunteers.css";
 
 const roles = ["Teacher", "Video Editor", "Media Manager"];
 const instructionLanguages = [["ar", "Arabic"], ["en", "English"], ["fr", "French"], ["hi", "Hindi"], ["pt", "Portuguese"], ["es", "Spanish"], ["sv", "Swedish"], ["tr", "Turkish"], ["ur", "Urdu"], ["other", "Other"]];
+const ageGroups = ["Child", "Teen", "Adult"];
+const genders = [["male", "Male"], ["female", "Female"]];
+const faithOptions = [["new-muslim", "New Muslim"], ["born-muslim", "Born Muslim"]];
+const timezones = getTimeZones({ includeUtc: true });
+const timezonePrefix = {
+  en: "Time zone in", ur: "ٹائم زون", ar: "المنطقة الزمنية في", sv: "Tidszon i", tr: "Şuradaki saat dilimi:",
+  fr: "Fuseau horaire de", es: "Zona horaria de", "zh-CN": "时区：", pt: "Fuso horário em", fil: "Time zone sa", hi: "समय क्षेत्र", ru: "Часовой пояс:"
+};
+
+function formatTimezoneOffset(minutes) {
+  const sign = minutes < 0 ? "-" : "+";
+  const absoluteMinutes = Math.abs(minutes);
+  const hours = Math.floor(absoluteMinutes / 60);
+  const remainingMinutes = absoluteMinutes % 60;
+  return `GMT${sign}${hours}${remainingMinutes ? `:${String(remainingMinutes).padStart(2, "0")}` : ""}`;
+}
 const opportunities = [
   {
     role: "Teacher",
@@ -58,6 +75,19 @@ export default function Volunteers() {
   const interpolate = (key, values) => Object.entries(values).reduce((message, [name, value]) => message.replace(`{${name}}`, value), t(key));
   const countryDisplayNames = new Intl.DisplayNames([language], { type: "region" });
   const instructionLanguageDisplayNames = new Intl.DisplayNames([language], { type: "language" });
+  const timezoneCountryCounts = timezones.reduce((counts, timezone) => {
+    if (timezone.countryCode) counts[timezone.countryCode] = (counts[timezone.countryCode] || 0) + 1;
+    return counts;
+  }, {});
+  const formatTimezoneLabel = (timezone) => {
+    if (timezone.name === "UTC") return "Time zone in UTC (GMT+0)";
+    let country = timezone.countryName;
+    if (/^[A-Z]{2}$/.test(timezone.countryCode || "")) {
+      try { country = countryDisplayNames.of(timezone.countryCode) || country; } catch { country = timezone.countryName; }
+    }
+    const city = timezoneCountryCounts[timezone.countryCode] > 1 && timezone.mainCities?.[0] ? ` - ${timezone.mainCities[0]}` : "";
+    return `${timezonePrefix[language] || timezonePrefix.en} ${country}${city} (${formatTimezoneOffset(timezone.currentTimeOffsetInMinutes)})`;
+  };
   const roleCopy = {
     Teacher: {
       fieldLabel: t("Islamic Education / Background"),
@@ -141,6 +171,10 @@ export default function Volunteers() {
       country: String(data.get("country") || "").trim(),
       profession: String(data.get("profession") || "").trim(),
       designation: String(data.get("designation") || "").trim(),
+      ageGroup: String(data.get("ageGroup") || "").trim(),
+      gender: String(data.get("gender") || "").trim(),
+      timezone: String(data.get("timezone") || "").trim(),
+      faith: String(data.get("faith") || "").trim(),
       instructionLanguage: String(data.get("instructionLanguage") || "").trim(),
       startTime: availability.start,
       endTime: availability.end,
@@ -159,6 +193,10 @@ export default function Volunteers() {
       ["country", "Country"],
       ["profession", "Profession"],
       ["designation", "Volunteer role"],
+      ["ageGroup", "Age Group"],
+      ["gender", "Gender"],
+      ["timezone", "Timezone"],
+      ["faith", "Faith"],
       ["instructionLanguage", "Language of instruction"],
       ["availability", "Availability"],
       ["goals", "Goals"]
@@ -303,6 +341,38 @@ export default function Volunteers() {
                   </label>
                 </div>
                 <label>{t("Profession")}<input required name="profession" placeholder={t("Your current profession")} /></label>
+                <div className="volunteer-form-row">
+                  <label>
+                    {t("Age Group")}
+                    <select required name="ageGroup" defaultValue="">
+                      <option value="" disabled>{t("Select age group")}</option>
+                      {ageGroups.map((item) => <option key={item} value={item}>{t(item, item)}</option>)}
+                    </select>
+                  </label>
+                  <label>
+                    {t("Gender")}
+                    <select required name="gender" defaultValue="">
+                      <option value="" disabled>{t("Select gender")}</option>
+                      {genders.map(([value, label]) => <option key={value} value={value}>{t(label, label)}</option>)}
+                    </select>
+                  </label>
+                </div>
+                <div className="volunteer-form-row">
+                  <label>
+                    {t("Timezone")}
+                    <select required name="timezone" defaultValue="">
+                      <option value="" disabled>{t("Select timezone")}</option>
+                      {timezones.map((timezone) => <option key={timezone.name} value={timezone.name}>{formatTimezoneLabel(timezone)}</option>)}
+                    </select>
+                  </label>
+                  <label>
+                    {t("Faith")}
+                    <select required name="faith" defaultValue="">
+                      <option value="" disabled>{t("Select faith")}</option>
+                      {faithOptions.map(([value, label]) => <option key={value} value={value}>{t(label, label)}</option>)}
+                    </select>
+                  </label>
+                </div>
                 <div className="volunteer-form-row">
                   <label>
                     {t("Language of Instruction")}
