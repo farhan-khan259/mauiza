@@ -26,6 +26,26 @@ const resourceGroups = [
   { title: "Tajweed", description: "A clear reference for strengthening pronunciation and reciting the Quran with care.", icon: Sparkles, documents: [["Tajweed", tajweed]] },
 ];
 
+async function viewPdf(file, name) {
+  const viewerWindow = window.open("", "_blank");
+  if (!viewerWindow) {
+    window.open(file, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  viewerWindow.document.title = name;
+  viewerWindow.document.body.textContent = "Opening PDF...";
+  try {
+    const response = await fetch(file);
+    if (!response.ok) throw new Error("PDF request failed");
+    const source = await response.blob();
+    const pdf = source.type === "application/pdf" ? source : new Blob([source], { type: "application/pdf" });
+    viewerWindow.location.replace(URL.createObjectURL(pdf));
+  } catch {
+    viewerWindow.location.replace(file);
+  }
+}
+
 export default function Resources() {
   return <main className="page resources-page">
     <PageHero title="Learning Resources" subtitle="Explore and keep useful study materials for every step of your Quranic learning journey." image={images.learning} />
@@ -47,7 +67,7 @@ export default function Resources() {
                 {documents.map(([name, file, type]) => <div className="resource-document" key={name}>
                   <div className="document-name"><FileText /><span>{name}</span><small>{type === "presentation" ? "PPTX" : "PDF"}</small></div>
                   <div className="document-actions">
-                    {type !== "presentation" && <a href={file} target="_blank" rel="noreferrer" className="document-action view-action" aria-label={`View ${name}`}><ExternalLink /><span>View</span></a>}
+                    {type !== "presentation" && <a href={file} target="_blank" rel="noreferrer" className="document-action view-action" onClick={(event) => { event.preventDefault(); void viewPdf(file, name); }} aria-label={`View ${name}`}><ExternalLink /><span>View</span></a>}
                     <a href={file} download className="document-action download-action" aria-label={`Download ${name}`}><Download /><span>Download</span></a>
                   </div>
                 </div>)}

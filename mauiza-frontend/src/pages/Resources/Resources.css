@@ -111,10 +111,14 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  border: 0;
   border-radius: 7px;
   padding: 8px 11px;
+  font: inherit;
   font-size: 11px;
   font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
   transition:
     transform 0.2s,
     background 0.2s;
