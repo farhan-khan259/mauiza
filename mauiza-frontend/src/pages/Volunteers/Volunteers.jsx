@@ -5,12 +5,12 @@ import PageHero from "../../components/PageHero/PageHero";
 import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
 import { countryCodes } from "../../data/countries";
+import instructionLanguages from "../../data/languages";
 import { useLanguage, translations } from "../../context/LanguageContext";
 import { getTimeZones } from "@vvo/tzdb";
 import "./Volunteers.css";
 
 const roles = ["Teacher", "Video Editor", "Media Manager"];
-const instructionLanguages = [["ar", "Arabic"], ["en", "English"], ["fr", "French"], ["hi", "Hindi"], ["pt", "Portuguese"], ["es", "Spanish"], ["sv", "Swedish"], ["tr", "Turkish"], ["ur", "Urdu"], ["other", "Other"]];
 const ageGroups = ["Child", "Teen", "Adult"];
 const genders = [["male", "Male"], ["female", "Female"]];
 const faithOptions = [["new-muslim", "New Muslim"], ["born-muslim", "Born Muslim"]];
