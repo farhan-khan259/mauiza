@@ -660,8 +660,15 @@ export function LanguageProvider({ children }) {
     const savedLanguage = localStorage.getItem("mauiza-language");
     return languages.some((item) => item.code === savedLanguage) ? savedLanguage : "en";
   });
+  const [theme, setTheme] = useState(() => localStorage.getItem("mauiza-theme") || "light");
   const selected = languages.find((item) => item.code === language) || languages[0];
   const originalText = useRef(new Map());
+
+  useEffect(() => {
+    const nextTheme = theme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = nextTheme;
+    localStorage.setItem("mauiza-theme", nextTheme);
+  }, [theme]);
 
   useEffect(() => {
     localStorage.setItem("mauiza-language", language);
@@ -694,7 +701,7 @@ export function LanguageProvider({ children }) {
     return () => observer.disconnect();
   }, [language, selected.direction]);
 
-  return <LanguageContext.Provider value={{ language, setLanguage, selected }}>{children}</LanguageContext.Provider>;
+  return <LanguageContext.Provider value={{ language, setLanguage, selected, theme, toggleTheme: () => setTheme((current) => current === "dark" ? "light" : "dark") }}>{children}</LanguageContext.Provider>;
 }
 
 export function useLanguage() {

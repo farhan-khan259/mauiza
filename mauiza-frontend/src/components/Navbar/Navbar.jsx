@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import Button from "../Button/Button";
 import { languages, useLanguage } from "../../context/LanguageContext";
 import logo from "../../pictures/logo.jpeg";
@@ -17,7 +17,7 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false),
     [scrolled, setScrolled] = useState(false);
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, theme, toggleTheme } = useLanguage();
   useEffect(() => {
     const f = () => setScrolled(scrollY > 20);
     f();
@@ -31,34 +31,48 @@ export default function Navbar() {
           <img className="logo-image" src={logo} alt="Mauiza logo" />
         </Link>
         <nav className={open ? "open" : ""}>
-          {links.map(([to, label]) => (
-            <NavLink
-              end={to === "/"}
-              to={to}
-              key={to}
-              onClick={() => setOpen(false)}
-            >
-              {label}
-            </NavLink>
-          ))}
-          <Button to="/registration" className="nav-cta" onClick={() => setOpen(false)}>
-            Enroll Now
-          </Button>
-          <label className="language-picker">
-            <span className="sr-only">Website language</span>
-            <select
-              value={language}
-              aria-label="Website language"
-              onChange={(event) => setLanguage(event.target.value)}
-            >
-              {languages.map(({ code, label, nativeLabel }) => (
-                <option key={code} value={code}>
-                  {nativeLabel} · {label}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div className="nav-links">
+            {links.map(([to, label]) => (
+              <NavLink
+                end={to === "/"}
+                to={to}
+                key={to}
+                onClick={() => setOpen(false)}
+              >
+                {label}
+              </NavLink>
+            ))}
+          </div>
+          <div className="nav-actions">
+            <Button to="/registration" className="nav-cta" onClick={() => setOpen(false)}>
+              Enroll Now
+            </Button>
+            <label className="language-picker">
+              <span className="sr-only">Website language</span>
+              <select
+                value={language}
+                aria-label="Website language"
+                onChange={(event) => setLanguage(event.target.value)}
+              >
+                {languages.map(({ code, label, nativeLabel }) => (
+                  <option key={code} value={code}>
+                    {nativeLabel} · {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         </nav>
+        <button
+          className="theme-toggle"
+          type="button"
+          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          aria-pressed={theme === "dark"}
+          onClick={toggleTheme}
+        >
+          {theme === "dark" ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+        </button>
         <button
           className="menu-button"
           aria-label="Toggle menu"

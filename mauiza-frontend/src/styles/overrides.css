@@ -53,3 +53,68 @@ html[dir="rtl"] .page-hero .eyebrow {
 .contact-layout > div:first-child > p:not(.eyebrow) {
   margin-inline: auto;
 }
+
+html[data-theme="dark"] body {
+  background: var(--background);
+}
+
+html[data-theme="dark"] .course-card,
+html[data-theme="dark"] .feature-card,
+html[data-theme="dark"] .mission-section,
+html[data-theme="dark"] .mission-card,
+html[data-theme="dark"] .contact-info-grid > div,
+html[data-theme="dark"] .resource-group,
+html[data-theme="dark"] .registration-form,
+html[data-theme="dark"] .volunteer-form,
+html[data-theme="dark"] .daily-location-bar,
+html[data-theme="dark"] .calculation-note,
+html[data-theme="dark"] .prayer-card,
+html[data-theme="dark"] .timeline-panel,
+html[data-theme="dark"] .prohibited-card,
+html[data-theme="dark"] .prohibited-panel,
+html[data-theme="dark"] .saved-locations,
+html[data-theme="dark"] .daily-empty,
+html[data-theme="dark"] .success-modal,
+html[data-theme="dark"] .intro-float,
+html[data-theme="dark"] .quran-card {
+  background: var(--surface) !important;
+  color: var(--text);
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background: var(--field) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+html[data-theme="dark"] .resources-section {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--soft-green) 100%);
+}
+
+html[data-theme="dark"] .role-choice-intro,
+html[data-theme="dark"] .role-panel,
+html[data-theme="dark"] .selected-role-strip {
+  background: var(--soft-green) !important;
+  color: var(--text);
+}
+
+html[data-theme="dark"] .opportunity-note {
+  background: #2d281b;
+}
+
+html[data-theme="dark"] .button.light,
+html[data-theme="dark"] .document-name small {
+  background: var(--soft-green);
+  color: var(--primary);
+}
+
+html[data-theme="dark"] .view-action:hover {
+  background: var(--soft-green);
+}
+
+html[data-theme="dark"] .footer-grid p,
+html[data-theme="dark"] .footer-grid a:not(.logo) {
+  color: #c5d7d2;
+}

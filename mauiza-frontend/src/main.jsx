@@ -8,4 +8,7 @@ import './styles/responsive.css';
 import './styles/rtl.css';
 import './styles/overrides.css';
 
+const savedTheme = localStorage.getItem('mauiza-theme');
+if (savedTheme === 'dark') document.documentElement.dataset.theme = 'dark';
+
 createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><App /></BrowserRouter></React.StrictMode>);

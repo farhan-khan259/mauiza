@@ -98,10 +98,15 @@ h3 {
   min-height: 60vh;
 }
 .surface {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 20px;
   box-shadow: var(--shadow);
+}
+input,
+select,
+textarea {
+  color-scheme: inherit;
 }
 .arabic {
   font-family: "Noto Serif Arabic", serif;
