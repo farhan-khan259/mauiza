@@ -22,6 +22,8 @@ const english = {
   dayInPrayer: "Your day in prayer",
   guidance: "GUIDANCE",
   prohibited: "Prohibited Prayer Times",
+  SunRise: "SUN RISE",
+  SunSet: "SUN SET",
   prohibitedIntro: "These are calculated astronomical times around which voluntary prayer is generally avoided. Specific rulings can vary by school of thought.",
   timingDisclaimer: "These timings are based on internal calculation methods and are provided for informational purposes. As a precaution, you can always double-check the timings through a trusted local source before making a decision. If you have any concerns or notice an issue, you can provide feedback through our email.",
   fajrAvoid: "Avoid voluntary prayer for ten minutes after Fajr.",
