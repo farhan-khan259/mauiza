@@ -80,7 +80,7 @@ export default function Volunteers() {
     return counts;
   }, {});
   const formatTimezoneLabel = (timezone) => {
-    if (timezone.name === "UTC") return "Time zone in UTC (GMT+0)";
+    if (timezone.name === "UTC") return t("Time zone in UTC (GMT+0)");
     let country = timezone.countryName;
     if (/^[A-Z]{2}$/.test(timezone.countryCode || "")) {
       try { country = countryDisplayNames.of(timezone.countryCode) || country; } catch { country = timezone.countryName; }
@@ -246,7 +246,7 @@ export default function Volunteers() {
       setStep(1);
     } catch (error) {
       console.error("Volunteer application error:", error);
-      setErrorMessage(error.message || t("Volunteer application failed. Please try again."));
+      setErrorMessage(t(error.message || "Volunteer application failed. Please try again."));
     } finally {
       setSubmitting(false);
     }

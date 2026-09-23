@@ -17,6 +17,7 @@ import CTASection from "../../components/CTASection/CTASection";
 import FloatingDecor from "../../components/FloatingDecor/FloatingDecor";
 import { courses } from "../../data/courses";
 import { images } from "../../data/images";
+import { useLanguage } from "../../context/LanguageContext";
 import "./Home.css";
 const features = [
   [
@@ -51,6 +52,7 @@ const features = [
   ],
 ];
 export default function Home() {
+  const { t } = useLanguage();
   return (
     <main className="page">
       <section className="home-hero">
@@ -62,18 +64,16 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <p className="hero-kicker">BISMILLAHIR RAHMANIR RAHEEM</p>
+            <p className="hero-kicker">{t("BISMILLAHIR RAHMANIR RAHEEM")}</p>
             <h1>
-              Learn the Quran.
+              {t("Learn the Quran.")}
               <br />
-              <em>Strengthen Your Faith.</em>
+              <em>{t("Strengthen Your Faith.")}</em>
               <br />
-              Transform Your Life.
+              {t("Transform Your Life.")}
             </h1>
             <p className="hero-text">
-              Accessible Islamic education designed to help you learn,
-              understand and practice the teachings of the Quran from the
-              comfort of your home.
+              {t("Accessible Islamic education designed to help you learn, understand and practice the teachings of the Quran from the comfort of your home.")}
             </p>
             <div className="hero-actions">
               <Button to="/courses">Explore Courses</Button>
@@ -82,8 +82,7 @@ export default function Home() {
               </Button>
             </div>
             <div className="trust-line">
-              <Check /> Online Learning <Check /> Qualified Instructors <Check />{" "}
-              Flexible Schedule
+              <Check /> {t("Online Learning")} <Check /> {t("Qualified Instructors")} <Check /> {t("Flexible Schedule")}
             </div>
           </motion.div>
           <motion.div
@@ -95,17 +94,17 @@ export default function Home() {
             <div className="hero-photo">
               <img
                 src={images.hero}
-                alt="Open Quran resting on a wooden stand"
+                alt={t("Open Quran resting on a wooden stand")}
               />
             </div>
             <div className="quran-card">
               <span>۝</span>
               <p>
-                READ. REFLECT.
+                {t("READ. REFLECT.")}
                 <br />
-                GROW.
+                {t("GROW.")}
               </p>
-              <small>YOUR JOURNEY BEGINS</small>
+              <small>{t("YOUR JOURNEY BEGINS")}</small>
             </div>
             <div className="hero-ring" />
             {/* <div className="scroll-note">
@@ -124,14 +123,14 @@ export default function Home() {
           >
             <img
               src={images.learning}
-                alt="Open Quran for Islamic study"
+                alt={t("Open Quran for Islamic study")}
             />
             <div className="intro-float">
               <span>01</span>
               <p>
-                Begin a meaningful
+                {t("Begin a meaningful")}
                 <br />
-                learning journey
+                {t("learning journey")}
               </p>
             </div>
           </motion.div>
@@ -141,15 +140,10 @@ export default function Home() {
               title="Your Journey Towards Quranic Learning Starts Here"
             />
             <p>
-              Learning the Quran is a journey that brings knowledge, guidance
-              and spiritual growth into our lives.
+              {t("Learning the Quran is a journey that brings knowledge, guidance and spiritual growth into our lives.")}
             </p>
             <p>
-              Our online Islamic education platform is designed to make Quranic
-              learning accessible to students of different ages and learning
-              levels. Through structured lessons, dedicated instructors and a
-              flexible learning environment, we help students build a stronger
-              connection with the Quran and Islamic teachings.
+              {t("Our online Islamic education platform is designed to make Quranic learning accessible to students of different ages and learning levels. Through structured lessons, dedicated instructors and a flexible learning environment, we help students build a stronger connection with the Quran and Islamic teachings.")}
             </p>
             <Button to="/about" className="intro-btn">
               Learn More About Us
@@ -218,7 +212,7 @@ export default function Home() {
                 "Begin Your Learning Journey",
                 "Our team will review your registration and contact you with the next steps.",
               ],
-            ].map(([n, t, d]) => (
+            ].map(([n, title, description]) => (
               <motion.div
                 className="step"
                 key={n}
@@ -227,8 +221,8 @@ export default function Home() {
                 viewport={{ once: true }}
               >
                 <span>{n}</span>
-                <h3>{t}</h3>
-                <p>{d}</p>
+                <h3>{t(title)}</h3>
+                <p>{t(description)}</p>
               </motion.div>
             ))}
           </div>
@@ -241,18 +235,14 @@ export default function Home() {
               eyebrow="ABOUT US"
               title="Making Quranic Education More Accessible"
             />
-            <p>
-              A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.
-            </p>
-            <p>
-              Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.
-            </p>
+            <p>{t("A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.")}</p>
+            <p>{t("Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.")}</p>
             <Button to="/about">Discover Our Story</Button>
           </div>
           <div className="about-picture">
-            <img src={images.mosque} alt="Peaceful mosque interior" />
+            <img src={images.mosque} alt={t("Peaceful mosque interior")} />
             <div>
-              ۞<small>LEARN WITH PURPOSE</small>
+              ۞<small>{t("LEARN WITH PURPOSE")}</small>
             </div>
           </div>
         </div>

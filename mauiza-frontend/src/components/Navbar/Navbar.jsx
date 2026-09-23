@@ -17,7 +17,7 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false),
     [scrolled, setScrolled] = useState(false);
-  const { language, setLanguage, theme, toggleTheme } = useLanguage();
+  const { language, setLanguage, theme, t, toggleTheme } = useLanguage();
   useEffect(() => {
     const f = () => setScrolled(scrollY > 20);
     f();
@@ -28,7 +28,7 @@ export default function Navbar() {
     <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="nav-inner container">
         <Link to="/" className="logo" onClick={() => setOpen(false)}>
-          <img className="logo-image" src={logo} alt="Mauiza logo" />
+          <img className="logo-image" src={logo} alt={t("Mauiza logo")} />
         </Link>
         <nav className={open ? "open" : ""}>
           <div className="nav-links">
@@ -39,19 +39,19 @@ export default function Navbar() {
                 key={to}
                 onClick={() => setOpen(false)}
               >
-                {label}
+                {t(label)}
               </NavLink>
             ))}
           </div>
           <div className="nav-actions">
             <Button to="/registration" className="nav-cta" onClick={() => setOpen(false)}>
-              Enroll Now
+              {t("Enroll Now")}
             </Button>
             <label className="language-picker">
-              <span className="sr-only">Website language</span>
+              <span className="sr-only">{t("Website language")}</span>
               <select
                 value={language}
-                aria-label="Website language"
+                aria-label={t("Website language")}
                 onChange={(event) => setLanguage(event.target.value)}
               >
                 {languages.map(({ code, label, nativeLabel }) => (
@@ -66,8 +66,8 @@ export default function Navbar() {
         <button
           className="theme-toggle"
           type="button"
-          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-          title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          aria-label={theme === "dark" ? t("Switch to light mode") : t("Switch to dark mode")}
+          title={theme === "dark" ? t("Switch to light mode") : t("Switch to dark mode")}
           aria-pressed={theme === "dark"}
           onClick={toggleTheme}
         >
@@ -75,7 +75,7 @@ export default function Navbar() {
         </button>
         <button
           className="menu-button"
-          aria-label="Toggle menu"
+          aria-label={t("Toggle menu")}
           onClick={() => setOpen(!open)}
         >
           {open ? <X /> : <Menu />}

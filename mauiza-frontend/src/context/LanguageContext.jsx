@@ -418,7 +418,7 @@ Object.assign(translations.fr, {
   "We encourage students to make learning a regular part of their lives.": "Nous encourageons les élèves à faire de l’apprentissage une partie régulière de leur vie."
 });
 Object.assign(translations.es, {
-  Resources: "Recursos", "RESOURCE COLLECTION": "COLECCIÓN DE RECURSOS", Country: "País", "Your country": "Tu país", From: "Desde", To: "Hasta",
+  Resources: "Recursos", "Learning Resources": "Recursos de aprendizaje", "RESOURCE COLLECTION": "COLECCIÓN DE RECURSOS", Country: "País", "Your country": "Tu país", From: "Desde", To: "Hasta",
   "What We Stand For": "Nuestros valores",
   "We value authentic and meaningful Islamic learning.": "Valoramos un aprendizaje islámico auténtico y significativo.",
   "We strive to maintain a professional and organized learning experience.": "Nos esforzamos por mantener una experiencia de aprendizaje profesional y organizada.",
@@ -594,39 +594,55 @@ const aboutWelcomeTranslations = {
 
 Object.entries(aboutWelcomeTranslations).forEach(([language, dictionary]) => Object.assign(translations[language], dictionary));
 
+Object.assign(translations.fr, {
+  Resources: "Ressources", Volunteers: "Bénévoles", "Daily Essentials": "Essentiels quotidiens",
+  "Switch to light mode": "Passer au mode clair", "Switch to dark mode": "Passer au mode sombre",
+  "Simple online registration": "Inscription en ligne simple", "Choose a suitable course": "Choisissez un cours adapté", "Flexible schedule preferences": "Préférences d’emploi du temps",
+  "Please complete all required registration fields.": "Veuillez remplir tous les champs obligatoires de l’inscription.", "Please choose a valid preferred schedule.": "Veuillez choisir un emploi du temps valide.", "Registration request failed. Please try again.": "La demande d’inscription a échoué. Veuillez réessayer.", "Registration failed": "L’inscription a échoué", "Failed to submit registration. Please try again.": "Impossible d’envoyer l’inscription. Veuillez réessayer.",
+  "Submitting...": "Envoi en cours…", Timezone: "Fuseau horaire", "Select timezone": "Sélectionnez le fuseau horaire", "New Muslim": "Nouveau musulman", "Born Muslim": "Musulman de naissance", to: "à",
+  "Please complete all required fields.": "Veuillez remplir tous les champs obligatoires.", "Contact request failed. Please try again.": "La demande de contact a échoué. Veuillez réessayer.", "Failed to send message": "Impossible d’envoyer le message", "Failed to send message. Please try again.": "Impossible d’envoyer le message. Veuillez réessayer.", "Sending...": "Envoi en cours…", "How can we help?": "Comment pouvons-nous vous aider ?", "Time zone in UTC (GMT+0)": "Fuseau horaire UTC (GMT+0)", "GET IN TOUCH": "CONTACTEZ-NOUS", "Your name": "Votre nom", "Your full name": "Votre nom complet", "Your WhatsApp number": "Votre numéro WhatsApp"
+});
+Object.assign(translations.es, {
+  Resources: "Recursos", Volunteers: "Voluntarios", "Daily Essentials": "Esenciales diarios",
+  "Switch to light mode": "Cambiar al modo claro", "Switch to dark mode": "Cambiar al modo oscuro",
+  "Simple online registration": "Registro sencillo en línea", "Choose a suitable course": "Elige un curso adecuado", "Flexible schedule preferences": "Preferencias de horario flexible",
+  "Please complete all required registration fields.": "Completa todos los campos obligatorios del registro.", "Please choose a valid preferred schedule.": "Elige un horario preferido válido.", "Registration request failed. Please try again.": "La solicitud de registro falló. Inténtalo de nuevo.", "Registration failed": "El registro falló", "Failed to submit registration. Please try again.": "No se pudo enviar el registro. Inténtalo de nuevo.",
+  "Submitting...": "Enviando…", Timezone: "Zona horaria", "Select timezone": "Selecciona la zona horaria", "New Muslim": "Musulmán nuevo", "Born Muslim": "Musulmán de nacimiento", to: "a",
+  "Please complete all required fields.": "Completa todos los campos obligatorios.", "Contact request failed. Please try again.": "La solicitud de contacto falló. Inténtalo de nuevo.", "Failed to send message": "No se pudo enviar el mensaje", "Failed to send message. Please try again.": "No se pudo enviar el mensaje. Inténtalo de nuevo.", "Sending...": "Enviando…", "How can we help?": "¿Cómo podemos ayudarte?", "Time zone in UTC (GMT+0)": "Zona horaria UTC (GMT+0)", "GET IN TOUCH": "CONTÁCTANOS", "Your name": "Tu nombre", "Your full name": "Tu nombre completo", "Your WhatsApp number": "Tu número de WhatsApp"
+});
+
 const LanguageContext = createContext(null);
+
+function translateValue(dictionary, value) {
+  if (typeof value !== "string") return value;
+  const normalized = value.trim().replace(/\s+/g, " ");
+  if (dictionary[normalized]) return dictionary[normalized];
+
+  if (normalized.startsWith("Enroll in ")) {
+    const courseName = normalized.slice("Enroll in ".length);
+    const translatedCourse = dictionary[courseName] || courseName;
+    return `${dictionary["Enroll in"] || "Enroll in"} ${translatedCourse}`;
+  }
+
+  const courseNumber = normalized.match(/^COURSE (\d+)$/);
+  if (courseNumber) return `${dictionary.Courses || "Courses"} ${courseNumber[1]}`;
+
+  for (const action of ["View", "Download"]) {
+    const prefix = `${action} `;
+    if (normalized.startsWith(prefix)) {
+      const documentName = normalized.slice(prefix.length);
+      const translatedAction = dictionary[action] || action;
+      const translatedDocument = dictionary[documentName]
+        || documentName.replace(/^(.*?)(\s+\d+)$/, (_, name, number) => `${dictionary[name] || name}${number}`);
+      return `${translatedAction} ${translatedDocument}`;
+    }
+  }
+
+  return value;
+}
 
 function translateDocument(language, originalText) {
   const dictionary = translations[language] || {};
-  const translate = (value) => {
-    const normalized = value.trim().replace(/\s+/g, " ");
-    if (dictionary[normalized]) return dictionary[normalized];
-
-    if (normalized.startsWith("Enroll in ")) {
-      const courseName = normalized.slice("Enroll in ".length);
-      const translatedCourse = dictionary[courseName] || courseName;
-      return `${dictionary["Enroll in"] || "Enroll in"} ${translatedCourse}`;
-    }
-
-    const courseNumber = normalized.match(/^COURSE (\d+)$/);
-    if (courseNumber) return `${dictionary.Courses || "Courses"} ${courseNumber[1]}`;
-
-    // Resource action labels include a document name (for example, "View
-    // Revert Guide 1"), so they cannot be stored as one fixed dictionary key.
-    // Translate both parts to keep these accessible labels localized too.
-    for (const action of ["View", "Download"]) {
-      const prefix = `${action} `;
-      if (normalized.startsWith(prefix)) {
-        const documentName = normalized.slice(prefix.length);
-        const translatedAction = dictionary[action] || action;
-        const translatedDocument = dictionary[documentName]
-          || documentName.replace(/^(.*?)(\s+\d+)$/, (_, name, number) => `${dictionary[name] || name}${number}`);
-        return `${translatedAction} ${translatedDocument}`;
-      }
-    }
-
-    return value;
-  };
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let node;
   while ((node = walker.nextNode())) {
@@ -635,7 +651,7 @@ function translateDocument(language, originalText) {
       originalText.current.set(node, original);
       const leading = original.match(/^\s*/)[0];
       const trailing = original.match(/\s*$/)[0];
-      const translated = `${leading}${translate(original)}${trailing}`;
+      const translated = `${leading}${translateValue(dictionary, original)}${trailing}`;
       if (node.textContent !== translated) node.textContent = translated;
     }
   }
@@ -646,7 +662,7 @@ function translateDocument(language, originalText) {
       const original = element.dataset[dataKey] || element.getAttribute(attribute);
       if (original) {
         element.dataset[dataKey] = original;
-        const translated = translate(original);
+        const translated = translateValue(dictionary, original);
         if (element.getAttribute(attribute) !== translated) {
           element.setAttribute(attribute, translated);
         }
@@ -663,6 +679,7 @@ export function LanguageProvider({ children }) {
   const [theme, setTheme] = useState(() => localStorage.getItem("mauiza-theme") || "light");
   const selected = languages.find((item) => item.code === language) || languages[0];
   const originalText = useRef(new Map());
+  const t = (value) => translateValue(translations[language] || {}, value);
 
   useEffect(() => {
     const nextTheme = theme === "dark" ? "dark" : "light";
@@ -701,7 +718,7 @@ export function LanguageProvider({ children }) {
     return () => observer.disconnect();
   }, [language, selected.direction]);
 
-  return <LanguageContext.Provider value={{ language, setLanguage, selected, theme, toggleTheme: () => setTheme((current) => current === "dark" ? "light" : "dark") }}>{children}</LanguageContext.Provider>;
+  return <LanguageContext.Provider value={{ language, setLanguage, selected, theme, t, toggleTheme: () => setTheme((current) => current === "dark" ? "light" : "dark") }}>{children}</LanguageContext.Provider>;
 }
 
 export function useLanguage() {

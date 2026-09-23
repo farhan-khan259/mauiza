@@ -3,6 +3,7 @@ import { CheckCircle2, Clock, Mail, MapPin, Send } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
 import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
+import { useLanguage } from "../../context/LanguageContext";
 import "./Contact.css";
 const infos = [
   [Mail, "Email Us", "mauizainstitute@gmail.com"],
@@ -11,6 +12,7 @@ const infos = [
   [MapPin, "Our Classroom", "Online, worldwide"],
 ];
 export default function Contact() {
+  const { t } = useLanguage();
   const [sent, setSent] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -18,8 +20,8 @@ export default function Contact() {
   return (
     <main className="page">
       <PageHero
-        title="We’re Here to Help"
-        subtitle="Have a question about a course or your learning journey? Get in touch with us."
+        title={t("We’re Here to Help")}
+        subtitle={t("Have a question about a course or your learning journey? Get in touch with us.")}
         image={images.mosque}
       />
       <section className="section">
@@ -28,22 +30,20 @@ export default function Contact() {
             {infos.map(([Icon, title, text]) => (
               <div key={title}>
                 <Icon />
-                <small>{title}</small>
-                <b>{text}</b>
+                <small>{t(title)}</small>
+                <b>{t(text)}</b>
               </div>
             ))}
           </div>
           <div className="contact-layout">
             <div>
-              <p className="eyebrow">GET IN TOUCH</p>
-              <h2>Let’s Start a Conversation.</h2>
+              <p className="eyebrow">{t("GET IN TOUCH")}</p>
+              <h2>{t("Let’s Start a Conversation.")}</h2>
               <p>
-                We would be happy to answer your questions and help you find a
-                course that suits your goals.
+                {t("We would be happy to answer your questions and help you find a course that suits your goals.")}
               </p>
               <p>
-                Send us a message and our team will get back to you as soon as
-                possible.
+                {t("Send us a message and our team will get back to you as soon as possible.")}
               </p>
             </div>
             <form
@@ -59,7 +59,7 @@ export default function Contact() {
                   message: formData.get("message")?.trim(),
                 };
                 if (Object.values(payload).some((value) => !value)) {
-                  setErrorMessage("Please complete all required fields.");
+                  setErrorMessage(t("Please complete all required fields."));
                   return;
                 }
                 try {
@@ -81,28 +81,28 @@ export default function Contact() {
                   const data = contentType.includes("application/json")
                     ? await response.json()
                     : {
-                        message: `Contact request failed (${response.status}). Please try again.`,
+                        message: t("Contact request failed. Please try again."),
                       };
                   if (!response.ok)
-                    throw new Error(data.message || "Failed to send message");
+                    throw new Error(data.message || t("Failed to send message"));
                   const whatsappMessage = `Hello Mauiza, I have sent a message through your contact form. My name is ${payload.name} and my email is ${payload.email}. I would like to follow up regarding: ${payload.subject}.`;
                   setSuccessMessage(whatsappMessage);
                   setSent(true);
                   form.reset();
                 } catch (error) {
                   console.error("Contact form error:", error);
-                  setErrorMessage(error.message || "Failed to send message. Please try again.");
+                  setErrorMessage(t(error.message || "Failed to send message. Please try again."));
                 } finally {
                   setSubmitting(false);
                 }
               }}
             >
               <label>
-                Your Name
-                <input required name="name" placeholder="Your name" />
+                {t("Your Name")}
+                <input required name="name" placeholder={t("Your name")} />
               </label>
               <label>
-                Email Address
+                {t("Email Address")}
                 <input
                   required
                   type="email"
@@ -111,21 +111,21 @@ export default function Contact() {
                 />
               </label>
               <label>
-                Subject
-                <input required name="subject" placeholder="How can we help?" />
+                {t("Subject")}
+                <input required name="subject" placeholder={t("How can we help?")} />
               </label>
               <label>
-                Your Message
+                {t("Your Message")}
                 <textarea
                   required
                   rows="5"
                   name="message"
-                  placeholder="Write your message here..."
+                  placeholder={t("Write your message here...")}
                 />
               </label>
               {errorMessage && <p className="contact-error" role="alert">{errorMessage}</p>}
               <button type="submit" disabled={submitting}>
-                <Send /> {submitting ? "Sending..." : "Send Message"}
+                <Send /> {submitting ? t("Sending...") : t("Send Message")}
               </button>
             </form>
           </div>
@@ -140,15 +140,15 @@ export default function Contact() {
             <div className="success-modal-icon">
               <CheckCircle2 />
             </div>
-            <h3>Your message has been sent successfully.</h3>
-            <p>Thank you for reaching out to Mauiza. We’ll be in touch soon.</p>
+            <h3>{t("Your message has been sent successfully.")}</h3>
+            <p>{t("Thank you for reaching out to Mauiza. We’ll be in touch soon.")}</p>
             <a
               className="whatsapp-cta"
               href={`https://wa.me/1234567891011?text=${encodeURIComponent(successMessage)}`}
               target="_blank"
               rel="noreferrer"
             >
-              <WhatsAppIcon /> Contact on WhatsApp
+              <WhatsAppIcon /> {t("Contact on WhatsApp")}
             </a>
           </div>
         </div>

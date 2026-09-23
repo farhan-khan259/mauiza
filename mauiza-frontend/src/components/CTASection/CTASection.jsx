@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Button from "../Button/Button";
+import { useLanguage } from "../../context/LanguageContext";
 import "./CTASection.css";
 export default function CTASection({
   title = "Make Time for What Matters",
@@ -7,6 +8,7 @@ export default function CTASection({
   button = "Start Learning Today",
   to = "/registration",
 }) {
+  const { t } = useLanguage();
   return (
     <section className="cta-section">
       <div className="cta-pattern">✦</div>
@@ -17,13 +19,13 @@ export default function CTASection({
         viewport={{ once: true }}
       >
         <p className="arabic">رَبِّ زِدْنِي عِلْمًا</p>
-        <h2>{title}</h2>
-        <p>{description}</p>
+        <h2>{t(title)}</h2>
+        <p>{t(description)}</p>
         <p className="cta-support">
-          Start your Quranic learning journey today.
+          {t("Start your Quranic learning journey today.")}
         </p>
         <Button to={to} variant="light">
-          {button}
+          {t(button)}
         </Button>
       </motion.div>
     </section>

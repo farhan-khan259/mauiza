@@ -35,7 +35,7 @@ function formatTimezoneOffset(minutes) {
 }
 
 export default function Registration() {
-	const { language } = useLanguage();
+	const { language, t } = useLanguage();
 	const location = useLocation();
 	const [sent, setSent] = useState(false);
 	const [successMessage, setSuccessMessage] = useState("");
@@ -118,11 +118,11 @@ export default function Registration() {
 			goals: String(formData.get("goals") || "").trim()
 		};
 		if (Object.values(payload).some((value) => !value)) {
-			setErrorMessage("Please complete all required registration fields.");
+			setErrorMessage(t("Please complete all required registration fields."));
 			return;
 		}
 		if (!schedule.start || !schedule.end || schedule.end <= schedule.start) {
-			setErrorMessage("Please choose a valid preferred schedule.");
+			setErrorMessage(t("Please choose a valid preferred schedule."));
 			return;
 		}
 
@@ -139,9 +139,9 @@ export default function Registration() {
 			const contentType = response.headers.get("content-type") || "";
 			const data = contentType.includes("application/json")
 				? await response.json()
-				: { message: `Registration request failed (${response.status}). Please try again.` };
+				: { message: t("Registration request failed. Please try again.") };
 			if (!response.ok) {
-				throw new Error(data.message || "Registration failed");
+				throw new Error(data.message || t("Registration failed"));
 			}
 
 			const whatsappMessage = `Hello Mauiza, I have submitted my registration for ${courseValue}. My name is ${payload.fullName} and my email is ${payload.email}. I would like to continue the conversation.`;
@@ -152,7 +152,7 @@ export default function Registration() {
 			setSchedule({ start: "", end: "" });
 		} catch (error) {
 			console.error("Registration error:", error);
-			setErrorMessage(error.message || "Failed to submit registration. Please try again.");
+			setErrorMessage(t(error.message || "Failed to submit registration. Please try again."));
 		} finally {
 			setSubmitting(false);
 		}
@@ -161,105 +161,104 @@ export default function Registration() {
 	return (
 		<main className="page">
 			<PageHero
-				title="Begin Your Learning Journey"
-				subtitle="Complete the form below and take your next step towards meaningful Quranic learning."
+				title={t("Begin Your Learning Journey")}
+				subtitle={t("Complete the form below and take your next step towards meaningful Quranic learning.")}
 				image={images.learning}
 			/>
 			<section className="section">
 				<div className="container register-layout">
 					<aside>
-						<p className="eyebrow">REGISTRATION</p>
-						<h2>Let’s Find the Right Learning Path for You.</h2>
+						<p className="eyebrow">{t("REGISTRATION")}</p>
+						<h2>{t("Let’s Find the Right Learning Path for You.")}</h2>
 						<p>
-							Share a few details about your learning goals and preferred schedule.
-							Our team will review your registration and contact you with the next steps.
+							{t("Share a few details about your learning goals and preferred schedule.")} {t("Our team will review your registration and contact you with the next steps.")}
 						</p>
 						<div className="register-points">
-							<p><CheckCircle2 /> Simple online registration</p>
-							<p><CheckCircle2 /> Choose a suitable course</p>
-							<p><CheckCircle2 /> Flexible schedule preferences</p>
+							<p><CheckCircle2 /> {t("Simple online registration")}</p>
+							<p><CheckCircle2 /> {t("Choose a suitable course")}</p>
+							<p><CheckCircle2 /> {t("Flexible schedule preferences")}</p>
 						</div>
 					</aside>
 					<form onSubmit={submit} className="registration-form">
 						<div className="form-row">
-							<label>Full Name<input required name="name" placeholder="Your full name" /></label>
-							<label>Email Address<input required type="email" name="email" placeholder="mauizainstitute@gmail.com" /></label>
+							<label>{t("Full Name")}<input required name="name" placeholder={t("Your full name")} /></label>
+							<label>{t("Email Address")}<input required type="email" name="email" placeholder="mauizainstitute@gmail.com" /></label>
 						</div>
 						<div className="form-row">
-							<label>WhatsApp Number<input required name="phone" placeholder="Your WhatsApp number" /></label>
+							<label>{t("WhatsApp Number")}<input required name="phone" placeholder={t("Your WhatsApp number")} /></label>
 							<label>
-								Country
+								{t("Country")}
 								<select required name="country" defaultValue="">
-									<option value="" disabled>Select country</option>
+									<option value="" disabled>{t("Select country")}</option>
 									{countryCodes.map((code) => <option key={code} value={code}>{countryDisplayNames.of(code) || code}</option>)}
 								</select>
 							</label>
 						</div>
 						<div className="form-row">
 							<label>
-								Age Group
+								{t("Age Group")}
 								<select required name="ageGroup" defaultValue="">
-									<option value="" disabled>Select age group</option>
-									<option>Child</option>
-									<option>Teen</option>
-									<option>Adult</option>
+									<option value="" disabled>{t("Select age group")}</option>
+									<option>{t("Child")}</option>
+									<option>{t("Teen")}</option>
+									<option>{t("Adult")}</option>
 								</select>
 							</label>
 							<label>
-								Gender
+								{t("Gender")}
 								<select required name="gender" defaultValue="">
-									<option value="" disabled>Select gender</option>
-									<option value="male">Male</option>
-									<option value="female">Female</option>
+									<option value="" disabled>{t("Select gender")}</option>
+									<option value="male">{t("Male")}</option>
+									<option value="female">{t("Female")}</option>
 								</select>
 							</label>
 						</div>
 						<div className="form-row">
 							<label>
-								Timezone
+								{t("Timezone")}
 								<select required name="timezone" defaultValue="">
-									<option value="" disabled>Select timezone</option>
+									<option value="" disabled>{t("Select timezone")}</option>
 									{timezones.map((timezone) => <option key={timezone.name} value={timezone.name}>{formatTimezoneLabel(timezone)}</option>)}
 								</select>
 							</label>
 							<label>
-								Language of Instruction
+								{t("Language of Instruction")}
 								<select required name="instructionLanguage" defaultValue="">
-									<option value="" disabled>Select language</option>
+									<option value="" disabled>{t("Select language")}</option>
 									{instructionLanguages.map(([code, label]) => <option key={code} value={code}>{languageDisplayNames.of(code) || label}</option>)}
 								</select>
 							</label>
 						</div>
 						<div className="form-row">
 							<label>
-								Faith
+								{t("Faith")}
 								<select required name="faith" defaultValue="">
-									<option value="" disabled>Select faith</option>
-									<option value="new-muslim">New Muslim</option>
-									<option value="born-muslim">Born Muslim</option>
+									<option value="" disabled>{t("Select faith")}</option>
+									<option value="new-muslim">{t("New Muslim")}</option>
+									<option value="born-muslim">{t("Born Muslim")}</option>
 								</select>
 							</label>
 							<label>
-								Preferred Course
+								{t("Preferred Course")}
 								<select
 									required
 									name="course"
 									value={selectedCourse}
 									onChange={(event) => setSelectedCourse(event.target.value)}
 								>
-									<option value="" disabled>Select a course</option>
-									<option value="Namaz Course">Namaz Course</option>
-									<option value="Quran Memorization">Quran Memorization</option>
-									<option value="Tajweed Course">Tajweed Course</option>
-									<option value="Arabic Reading Course">Arabic Reading Course</option>
+									<option value="" disabled>{t("Select a course")}</option>
+									<option value="Namaz Course">{t("Namaz Course")}</option>
+									<option value="Quran Memorization">{t("Quran Memorization")}</option>
+									<option value="Tajweed Course">{t("Tajweed Course")}</option>
+									<option value="Arabic Reading Course">{t("Arabic Reading Course")}</option>
 								</select>
 							</label>
 						</div>
 						<label>
-							Preferred Schedule
+							{t("Preferred Schedule")}
 							<div className="time-range-wrap">
 								<label className="time-range-field">
-									<span>From</span>
+									<span>{t("From")}</span>
 									<input
 										required
 										type="time"
@@ -273,9 +272,9 @@ export default function Registration() {
 									}}
 									/>
 								</label>
-								<span className="time-range-separator">to</span>
+								<span className="time-range-separator">{t("to")}</span>
 								<label className="time-range-field">
-									<span>To</span>
+									<span>{t("To")}</span>
 									<input
 										required
 										type="time"
@@ -290,11 +289,11 @@ export default function Registration() {
 							<input type="hidden" name="schedule" value={scheduleSummary} />
 						</label>
 						<label>
-							Learning Goals
-							<textarea required name="goals" rows="4" placeholder="Tell us briefly what you would like to learn..." />
+							{t("Learning Goals")}
+							<textarea required name="goals" rows="4" placeholder={t("Tell us briefly what you would like to learn...")} />
 						</label>
 						{errorMessage && <p className="form-error" role="alert">{errorMessage}</p>}
-						<button type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Registration"} <span>→</span></button>
+						<button type="submit" disabled={submitting}>{submitting ? t("Submitting...") : t("Submit Registration")} <span>→</span></button>
 					</form>
 				</div>
 			</section>
@@ -302,8 +301,8 @@ export default function Registration() {
 				<div className="success-modal-backdrop" onClick={() => setSent(false)}>
 					<div className="success-modal" onClick={(event) => event.stopPropagation()}>
 						<div className="success-modal-icon"><CheckCircle2 /></div>
-						<h3>Your registration has been submitted successfully.</h3>
-						<p>Thank you for choosing Mauiza. Our team will contact you soon.</p>
+						<h3>{t("Your registration has been submitted successfully.")}</h3>
+						<p>{t("Thank you for choosing Mauiza. Our team will contact you soon.")}</p>
 						<a
 							className="whatsapp-cta"
 							href={`https://wa.me/1234567891011?text=${encodeURIComponent(successMessage)}`}
@@ -311,7 +310,7 @@ export default function Registration() {
 							rel="noreferrer"
 						>
 							<WhatsAppIcon />
-							Contact on WhatsApp
+							{t("Contact on WhatsApp")}
 						</a>
 					</div>
 				</div>

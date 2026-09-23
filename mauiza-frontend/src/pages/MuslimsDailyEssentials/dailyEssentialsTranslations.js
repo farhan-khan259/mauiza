@@ -83,6 +83,17 @@ const dailyEssentialsTitles = {
   fil: "Mga Pang-araw-araw na Pangangailangan", hi: "दैनिक आवश्यकताएँ", ru: "Ежедневные нужды"
 };
 
+Object.assign(dictionaries.fr, {
+  tracker: "SUIVI", savedLocations: "Lieux enregistrés", deleteSavedLocation: "Supprimer le lieu enregistré", saveLocation: "Enregistrer le lieu",
+  timingDisclaimer: "Ces horaires sont fondés sur des méthodes de calcul internes et sont fournis à titre indicatif. Par précaution, vérifiez-les auprès d’une source locale fiable.",
+  fajrAvoid: "Évitez la prière volontaire pendant les dix minutes qui suivent le Fajr.", zawalAvoid: "Évitez la prière autour du midi solaire exact.", optionalWorship: "ADORATION FACULTATIVE", voluntaryPrayers: "Prières volontaires", voluntaryPrayersIntro: "Des prières facultatives qui ajoutent réflexion et adoration à votre rythme quotidien.", optional: "Facultative", tahajjud: "Tahajjud", tahajjudTime: "Pendant la dernière partie de la nuit", tahajjudDescription: "Une prière nocturne paisible offerte traditionnellement avant le Fajr.", ishraq: "Ishraq", ishraqDescription: "Une prière volontaire offerte après le lever du soleil.", chasht: "Chasht (Duha)", chashtDescription: "Une prière volontaire de fin de matinée avant le Dhuhr.", after: "Après"
+});
+Object.assign(dictionaries.es, {
+  tracker: "SEGUIMIENTO", savedLocations: "Ubicaciones guardadas", deleteSavedLocation: "Eliminar ubicación guardada", saveLocation: "Guardar ubicación",
+  timingDisclaimer: "Estos horarios se basan en métodos de cálculo internos y se ofrecen con fines informativos. Como precaución, compruébalos con una fuente local fiable.",
+  fajrAvoid: "Evita la oración voluntaria durante los diez minutos posteriores al Fajr.", zawalAvoid: "Evita rezar alrededor del mediodía solar exacto.", optionalWorship: "ADORACIÓN OPCIONAL", voluntaryPrayers: "Oraciones voluntarias", voluntaryPrayersIntro: "Oraciones opcionales que pueden añadir reflexión y adoración a tu ritmo diario.", optional: "Opcional", tahajjud: "Tahajjud", tahajjudTime: "Durante la última parte de la noche", tahajjudDescription: "Una oración nocturna tranquila que tradicionalmente se ofrece antes del Fajr.", ishraq: "Ishraq", ishraqDescription: "Una oración voluntaria que se ofrece después del amanecer.", chasht: "Chasht (Duha)", chashtDescription: "Una oración voluntaria de media mañana antes del Dhuhr.", after: "Después de"
+});
+
 Object.entries(dailyEssentialsTitles).forEach(([language, title]) => { dictionaries[language].title = title; });
 
 export default dictionaries;

@@ -12,6 +12,7 @@ import SectionHeading from "../../components/SectionHeading/SectionHeading";
 import FeatureCard from "../../components/FeatureCard/FeatureCard";
 import CTASection from "../../components/CTASection/CTASection";
 import { images } from "../../data/images";
+import { useLanguage } from "../../context/LanguageContext";
 import "./About.css";
 const approach = [
   [
@@ -60,11 +61,12 @@ const values = [
   ],
 ];
 export default function About() {
+  const { t } = useLanguage();
   return (
     <main className="page">
       <PageHero
-        title="About Our Islamic Education Platform"
-        subtitle="Making Quranic and Islamic education more accessible through modern online learning."
+        title={t("About Our Islamic Education Platform")}
+        subtitle={t("Making Quranic and Islamic education more accessible through modern online learning.")}
         image={images.about}
       />
       <section className="section">
@@ -75,25 +77,18 @@ export default function About() {
               title="Welcome to a New Way of Learning"
             />
             <p>
-              A non-profit online institution that aims to bridge the gap
-              between Muslims and the Quran by combining modern technologies
-              with traditional teaching methods.
+              {t("A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.")}
             </p>
             <p>
-              Our institution's purpose is to unite conscious Muslims on a
-              single platform for the sake of Allah, offering them the
-              opportunity to immerse themselves in the light of Hadith. As the
-              saying goes, The best of you are those who learn the Quran and
-              teach it.
+              {t("Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.")}
             </p>
           </div>
           <div className="welcome-quote">
             <Heart />
             <p>
-              “The best investment is the one that brings you closer to
-              knowledge.”
+              {t("“The best investment is the one that brings you closer to knowledge.”")}
             </p>
-            <span>MAUIZA ONLINE ACADEMY</span>
+            <span>{t("MAUIZA ONLINE ACADEMY")}</span>
           </div>
         </div>
       </section>
@@ -106,16 +101,9 @@ export default function About() {
             viewport={{ once: true }}
           >
             <span>01</span>
-            <h2>Our Mission</h2>
-            <p>
-              Our mission is to make Islamic education accessible, meaningful
-              and convenient for learners of different ages and backgrounds.
-            </p>
-            <p>
-              We aim to create an environment where students can learn at their
-              own pace, receive proper guidance and develop a lasting connection
-              with the Quran and Islamic teachings.
-            </p>
+            <h2>{t("Our Mission")}</h2>
+            <p>{t("Our mission is to make Islamic education accessible, meaningful and convenient for learners of different ages and backgrounds.")}</p>
+            <p>{t("We aim to create an environment where students can learn at their own pace, receive proper guidance and develop a lasting connection with the Quran and Islamic teachings.")}</p>
           </motion.div>
           <motion.div
             className="mission-card vision"
@@ -124,12 +112,8 @@ export default function About() {
             viewport={{ once: true }}
           >
             <span>02</span>
-            <h2>Our Vision</h2>
-            <p>
-              To build a trusted online learning platform where people around
-              the world can access quality Quranic and Islamic education and
-              make learning an integral part of their everyday lives.
-            </p>
+            <h2>{t("Our Vision")}</h2>
+            <p>{t("To build a trusted online learning platform where people around the world can access quality Quranic and Islamic education and make learning an integral part of their everyday lives.")}</p>
           </motion.div>
         </div>
       </section>
@@ -158,17 +142,17 @@ export default function About() {
             title="What We Stand For"
           />
           <div className="values-list">
-            {values.map(([t, d], i) => (
+            {values.map(([title, description], i) => (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                key={t}
+                key={title}
               >
                 <b>0{i + 1}</b>
-                <h3>{t}</h3>
-                <p>{d}</p>
+                <h3>{t(title)}</h3>
+                <p>{t(description)}</p>
               </motion.div>
             ))}
           </div>

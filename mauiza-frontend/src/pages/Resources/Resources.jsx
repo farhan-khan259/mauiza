@@ -2,6 +2,7 @@ import { BookOpen, Download, ExternalLink, FileText, GraduationCap, HeartHandsha
 import { motion } from "framer-motion";
 import PageHero from "../../components/PageHero/PageHero";
 import { images } from "../../data/images";
+import { useLanguage } from "../../context/LanguageContext";
 import revertGuide1 from "../../pictures/Revert Guide1.pdf";
 import revertGuide2 from "../../pictures/Revert Guide2.pdf";
 import revertGuide3 from "../../pictures/Revert Guide3.pdf";
@@ -26,7 +27,7 @@ const resourceGroups = [
   { title: "Tajweed", description: "A clear reference for strengthening pronunciation and reciting the Quran with care.", icon: Sparkles, documents: [["Tajweed", tajweed]] },
 ];
 
-async function viewPdf(file, name) {
+async function viewPdf(file, name, openingText) {
   const viewerWindow = window.open("", "_blank");
   if (!viewerWindow) {
     window.open(file, "_blank", "noopener,noreferrer");
@@ -34,7 +35,7 @@ async function viewPdf(file, name) {
   }
 
   viewerWindow.document.title = name;
-  viewerWindow.document.body.textContent = "Opening PDF...";
+  viewerWindow.document.body.textContent = openingText;
   try {
     const response = await fetch(file);
     if (!response.ok) throw new Error("PDF request failed");
@@ -47,28 +48,29 @@ async function viewPdf(file, name) {
 }
 
 export default function Resources() {
+  const { t } = useLanguage();
   return <main className="page resources-page">
-    <PageHero title="Learning Resources" subtitle="Explore and keep useful study materials for every step of your Quranic learning journey." image={images.learning} />
+    <PageHero title={t("Learning Resources")} subtitle={t("Explore and keep useful study materials for every step of your Quranic learning journey.")} image={images.learning} />
     <section className="section resources-section">
       <div className="container">
         <div className="resources-intro">
-          <div className="eyebrow">STUDY LIBRARY</div>
-          <h2 className="resource-title22">Learn at your own pace.</h2>
-          <p className="lead">Open a resource whenever you need it, or download it to keep learning offline. Each collection is organized around a focused part of your journey.</p>
+          <div className="eyebrow">{t("STUDY LIBRARY")}</div>
+          <h2 className="resource-title22">{t("Learn at your own pace.")}</h2>
+          <p className="lead">{t("Open a resource whenever you need it, or download it to keep learning offline. Each collection is organized around a focused part of your journey.")}</p>
         </div>
         <div className="resource-groups">
           {resourceGroups.map(({ title, description, icon: Icon, documents }, index) => (
             <motion.article className="resource-group surface" key={title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .15 }} transition={{ duration: .45, delay: index * .05 }}>
               <header className="resource-group-heading">
                 <span className="resource-icon"><Icon /></span>
-                <div><p className="resource-kicker">RESOURCE COLLECTION</p><h3>{title}</h3><p>{description}</p></div>
+                <div><p className="resource-kicker">{t("RESOURCE COLLECTION")}</p><h3>{t(title)}</h3><p>{t(description)}</p></div>
               </header>
               <div className="resource-documents">
                 {documents.map(([name, file, type]) => <div className="resource-document" key={name}>
-                  <div className="document-name"><FileText /><span>{name}</span><small>{type === "presentation" ? "PPTX" : "PDF"}</small></div>
+                  <div className="document-name"><FileText /><span>{t(name)}</span><small>{type === "presentation" ? "PPTX" : "PDF"}</small></div>
                   <div className="document-actions">
-                    {type !== "presentation" && <a href={file} target="_blank" rel="noreferrer" className="document-action view-action" onClick={(event) => { event.preventDefault(); void viewPdf(file, name); }} aria-label={`View ${name}`}><ExternalLink /><span>View</span></a>}
-                    <a href={file} download className="document-action download-action" aria-label={`Download ${name}`}><Download /><span>Download</span></a>
+                    {type !== "presentation" && <a href={file} target="_blank" rel="noreferrer" className="document-action view-action" onClick={(event) => { event.preventDefault(); void viewPdf(file, name, t("Opening PDF...")); }} aria-label={`${t("View")} ${t(name)}`}><ExternalLink /><span>{t("View")}</span></a>}
+                    <a href={file} download className="document-action download-action" aria-label={`${t("Download")} ${t(name)}`}><Download /><span>{t("Download")}</span></a>
                   </div>
                 </div>)}
               </div>
