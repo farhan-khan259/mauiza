@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Clock3, Compass, LocateFixed, MapPin, Moon, MoonStar, Search, ShieldAlert, Sparkles, Sunrise, Sun, SunMedium, Sunset, Trash2 } from "lucide-react";
+import { Clock3, Compass, LocateFixed, MapPin, Moon, MoonStar, Search, ShieldAlert, Sparkles, Sunrise, Sun, Sunset, Trash2 } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
 import { images } from "../../data/images";
 import { useLanguage } from "../../context/LanguageContext";
@@ -51,6 +51,15 @@ function getProhibitedTimes(timings) {
     { name: "SunRise", description: "sunriseAvoid", start: timings.Sunrise, end: addMinutes(timings.Sunrise, 10) },
     { name: "Zawal", description: "zawalAvoid", start: addMinutes(timings.Dhuhr, -10), end: timings.Dhuhr },
     { name: "SunSet", description: "sunsetAvoid", start: addMinutes(timings.Maghrib, -20), end: timings.Maghrib }
+  ];
+}
+
+function getVoluntaryPrayers(timings) {
+  const zawalStart = getProhibitedTimes(timings).find(({ name }) => name === "Zawal").start;
+  return [
+    [MoonStar, "tahajjud", `${formatTime(timings.Isha)} – ${formatTime(timings.Fajr)}`, "tahajjudDescription"],
+    [Sunrise, "ishraq", `${formatTime(addMinutes(timings.Sunrise, 10))} – ${formatTime(zawalStart)}`, "ishraqDescription"],
+    [Sunset, "avabeen", `${formatTime(timings.Maghrib)} – ${formatTime(timings.Isha)}`, "avabeenDescription"]
   ];
 }
 
@@ -284,11 +293,7 @@ export default function MuslimsDailyEssentials() {
               <div className="timeline-panel"><div className="daily-section-heading"><div><span className="eyebrow">{t("dailyOverview")}</span><h2>{t("dayInPrayer")}</h2></div></div><div className="prayer-timeline">{prayerOrder.map((name) => <div className={`timeline-item ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><span className="timeline-dot" /><strong>{t(name)}</strong><small>{formatTime(prayerData.timings[name])}</small></div>)}</div></div>
               <p className="timing-disclaimer">{t("timingDisclaimer")}</p>
               <section className="prohibited-panel daily-image-card"><div className="prohibited-heading"><ShieldAlert /><div><span className="eyebrow">{t("guidance")}</span><h2>{t("prohibited")}</h2></div></div><p className="prohibited-intro">{t("prohibitedIntro")}</p><div className="prohibited-grid">{getProhibitedTimes(prayerData.timings).map(({ name, description, start, end }) => <div className="prohibited-card daily-image-card" key={name}><div className="daily-card-image"><img src={dailyCardImages.prohibited} alt="" /></div><div className="daily-card-body"><h3>{t(name)}</h3><strong>{formatTime(start)} – {formatTime(end)}</strong><p>{t(description)}</p></div></div>)}</div></section>
-              <section className="prohibited-panel voluntary-panel"><div className="prohibited-heading"><Sparkles /><div><span className="eyebrow">{t("optionalWorship")}</span><h2>{t("voluntaryPrayers")}</h2></div></div><p className="prohibited-intro">{t("voluntaryPrayersIntro")}</p><div className="prohibited-grid">{[
-                [MoonStar, "tahajjud", t("tahajjudTime"), "tahajjudDescription"],
-                [Sunrise, "ishraq", `${t("after")} ${formatTime(prayerData.timings.Sunrise)}`, "ishraqDescription"],
-                [SunMedium, "chasht", `${formatTime(prayerData.timings.Sunrise)} – ${formatTime(prayerData.timings.Dhuhr)}`, "chashtDescription"]
-              ].map(([Icon, name, time, description]) => <article className="prohibited-card voluntary-card" key={name}><div className="prayer-card-top"><Icon /><span>{t("optional")}</span></div><h3>{t(name)}</h3><strong>{time}</strong><p>{t(description)}</p></article>)}</div></section>
+              <section className="prohibited-panel voluntary-panel"><div className="prohibited-heading"><Sparkles /><div><span className="eyebrow">{t("optionalWorship")}</span><h2>{t("voluntaryPrayers")}</h2></div></div><p className="prohibited-intro">{t("voluntaryPrayersIntro")}</p><div className="prohibited-grid">{getVoluntaryPrayers(prayerData.timings).map(([Icon, name, time, description]) => <article className="prohibited-card voluntary-card" key={name}><div className="prayer-card-top"><Icon /><span>{t("optional")}</span></div><h3>{t(name)}</h3><strong>{time}</strong><p>{t(description)}</p></article>)}</div></section>
             </>
           )}
           {!location && !loading && <div className="daily-empty"><Sparkles /><h2>{t("startTitle")}</h2><p>{t("startText")}</p><button type="button" className="daily-button" onClick={allowLocation}><LocateFixed /> {t("allowLocation")}</button></div>}
