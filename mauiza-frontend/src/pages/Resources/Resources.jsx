@@ -27,26 +27,6 @@ const resourceGroups = [
   { title: "Tajweed", description: "A clear reference for strengthening pronunciation and reciting the Quran with care.", icon: Sparkles, documents: [["Tajweed", tajweed]] },
 ];
 
-async function viewPdf(file, name, openingText) {
-  const viewerWindow = window.open("", "_blank");
-  if (!viewerWindow) {
-    window.open(file, "_blank", "noopener,noreferrer");
-    return;
-  }
-
-  viewerWindow.document.title = name;
-  viewerWindow.document.body.textContent = openingText;
-  try {
-    const response = await fetch(file);
-    if (!response.ok) throw new Error("PDF request failed");
-    const source = await response.blob();
-    const pdf = source.type === "application/pdf" ? source : new Blob([source], { type: "application/pdf" });
-    viewerWindow.location.replace(URL.createObjectURL(pdf));
-  } catch {
-    viewerWindow.location.replace(file);
-  }
-}
-
 export default function Resources() {
   const { t } = useLanguage();
   return <main className="page resources-page">
@@ -69,7 +49,7 @@ export default function Resources() {
                 {documents.map(([name, file, type]) => <div className="resource-document" key={name}>
                   <div className="document-name"><FileText /><span>{t(name)}</span><small>{type === "presentation" ? "PPTX" : "PDF"}</small></div>
                   <div className="document-actions">
-                    {type !== "presentation" && <a href={file} target="_blank" rel="noreferrer" className="document-action view-action" onClick={(event) => { event.preventDefault(); void viewPdf(file, name, t("Opening PDF...")); }} aria-label={`${t("View")} ${t(name)}`}><ExternalLink /><span>{t("View")}</span></a>}
+                    {type !== "presentation" && <a href={file} target="_blank" rel="noopener noreferrer" className="document-action view-action" aria-label={`${t("View")} ${t(name)}`}><ExternalLink /><span>{t("View")}</span></a>}
                     <a href={file} download className="document-action download-action" aria-label={`${t("Download")} ${t(name)}`}><Download /><span>{t("Download")}</span></a>
                   </div>
                 </div>)}
