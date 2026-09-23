@@ -254,7 +254,7 @@
   margin-top: 34px;
 }
 .works {
-  background: #fff;
+  background: var(--surface);
 }
 .steps {
   display: grid;
@@ -300,7 +300,7 @@
   max-width: 270px;
 }
 .about-preview {
-  background: #f0f7f4;
+  background: var(--soft-green);
 }
 .about-picture {
   height: 445px;

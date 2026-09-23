@@ -118,3 +118,60 @@ html[data-theme="dark"] .footer-grid p,
 html[data-theme="dark"] .footer-grid a:not(.logo) {
   color: #c5d7d2;
 }
+
+html[data-theme="dark"] .course-card,
+html[data-theme="dark"] .contact-info-grid > div,
+html[data-theme="dark"] .registration-form,
+html[data-theme="dark"] .volunteer-form,
+html[data-theme="dark"] .daily-location-bar,
+html[data-theme="dark"] .resources-section,
+html[data-theme="dark"] .works,
+html[data-theme="dark"] .about-preview {
+  background: var(--surface) !important;
+}
+
+html[data-theme="dark"] .about-preview,
+html[data-theme="dark"] .why,
+html[data-theme="dark"] .resources-section {
+  background: var(--soft-green) !important;
+}
+
+html[data-theme="dark"] .course-body h3,
+html[data-theme="dark"] .resource-group h3,
+html[data-theme="dark"] .document-name,
+html[data-theme="dark"] .contact-info-grid b,
+html[data-theme="dark"] .contact-info-grid small,
+html[data-theme="dark"] .step h3,
+html[data-theme="dark"] .step p,
+html[data-theme="dark"] .detailed-content h2,
+html[data-theme="dark"] .detailed-content h3,
+html[data-theme="dark"] .detailed-content h4,
+html[data-theme="dark"] .detailed-content li,
+html[data-theme="dark"] .registration-form label,
+html[data-theme="dark"] .volunteer-form label {
+  color: var(--text);
+}
+
+html[data-theme="dark"] .intro-float,
+html[data-theme="dark"] .quran-card,
+html[data-theme="dark"] .light,
+html[data-theme="dark"] .course-image span {
+  background: var(--surface) !important;
+  color: var(--text);
+}
+
+html[data-theme="dark"] .works .step > span {
+  border-color: var(--soft-green);
+}
+
+html[data-theme="dark"] .view-action:hover,
+html[data-theme="dark"] .document-name small {
+  background: var(--soft-green);
+  color: var(--primary);
+}
+
+html[data-theme="dark"] .contact-error,
+html[data-theme="dark"] .form-error,
+html[data-theme="dark"] .volunteer-error {
+  color: #ff9b91;
+}
