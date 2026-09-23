@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Clock3, Compass, LocateFixed, MapPin, Moon, MoonStar, Search, ShieldAlert, Sparkles, Sunrise, Sun, SunMedium, Sunset, Trash2 } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
 import { images } from "../../data/images";
@@ -121,8 +121,10 @@ export default function MuslimsDailyEssentials() {
   const [places, setPlaces] = useState([]);
   const [countdown, setCountdown] = useState(0);
   const [now, setNow] = useState(Date.now());
+  const requestToken = useRef(0);
 
   const requestPrayerTimes = async (nextLocation) => {
+    const token = ++requestToken.current;
     setLocation(nextLocation);
     sessionStorage.setItem("mauiza-daily-location", JSON.stringify(nextLocation));
     setLoading(true);
@@ -131,6 +133,7 @@ export default function MuslimsDailyEssentials() {
       const response = await fetch(`${apiBaseUrl}/api/prayer-times?latitude=${nextLocation.latitude}&longitude=${nextLocation.longitude}&date=${getTodayDate()}`);
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || t("prayerUnavailable"));
+      if (token !== requestToken.current) return;
       setPrayerData(result.data);
       if (result.data.location) {
         const resolvedLocation = { ...nextLocation, ...result.data.location };
@@ -138,10 +141,13 @@ export default function MuslimsDailyEssentials() {
         sessionStorage.setItem("mauiza-daily-location", JSON.stringify(resolvedLocation));
       }
     } catch (requestError) {
+      if (token !== requestToken.current) return;
       setError(requestError.message || t("prayerUnavailable"));
     } finally {
-      setLoading(false);
-      setLocationLoading(false);
+      if (token === requestToken.current) {
+        setLoading(false);
+        setLocationLoading(false);
+      }
     }
   };
 
@@ -213,15 +219,20 @@ export default function MuslimsDailyEssentials() {
   };
 
   const deleteSavedLocation = (savedLocation) => {
+    requestToken.current += 1;
     const locationKey = getLocationKey(savedLocation);
+    const isActiveLocation = location && getLocationKey(location) === locationKey;
     setSavedLocations((currentLocations) => {
       const nextLocations = currentLocations.filter((item) => getLocationKey(item) !== locationKey);
       localStorage.setItem("mauiza-saved-locations", JSON.stringify(nextLocations));
       return nextLocations;
     });
-    if (location && getLocationKey(location) === locationKey) {
+    if (isActiveLocation) {
       setLocation(null);
       setPrayerData(null);
+      setLoading(false);
+      setLocationLoading(false);
+      setError("");
       sessionStorage.removeItem("mauiza-daily-location");
     }
   };
@@ -241,7 +252,7 @@ export default function MuslimsDailyEssentials() {
         <div className="container">
           <div className="daily-location-bar daily-image-card">
             <div className="daily-card-image"><img src={dailyCardImages.location} alt="" /></div>
-            <div className="daily-location-copy"><MapPin /><div><span>{t("currentLocation")}</span><strong>{location?.city && location?.country ? `${location.city}, ${location.country}` : t("noLocation")}</strong></div></div>
+            <div className="daily-location-copy"><MapPin /><div><span>{t("currentLocation")}</span><strong>{location?.city && location?.country ? `${location.city}, ${location.country}` : t("noLocation")}</strong></div>{location && savedLocations.some((savedLocation) => getLocationKey(savedLocation) === getLocationKey(location)) && <button type="button" className="daily-location-remove" onClick={() => deleteSavedLocation(location)} aria-label={t("deleteSavedLocation")} title={t("deleteSavedLocation")}><Trash2 aria-hidden="true" /></button>}</div>
             <div className="daily-location-actions">
               <button type="button" className="daily-button daily-button-light" onClick={allowLocation} disabled={locationLoading}><LocateFixed />{locationLoading ? t("detecting") : t("allowLocation")}</button>
               <label className="daily-place-search"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t("searchCity")} aria-label={t("searchCity")} /></label>
