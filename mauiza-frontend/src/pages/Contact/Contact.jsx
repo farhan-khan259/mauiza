@@ -6,7 +6,7 @@ import { images } from "../../data/images";
 import "./Contact.css";
 const infos = [
   [Mail, "Email Us", "mauizainstitute@gmail.com"],
-  [WhatsAppIcon, "WhatsApp Number", "+12 3456 7891011"],
+  [WhatsAppIcon, "WhatsApp Number", "+44 7460020357"],
   [Clock, "Availability", "Flexible online learning"],
   [MapPin, "Our Classroom", "Online, worldwide"],
 ];
