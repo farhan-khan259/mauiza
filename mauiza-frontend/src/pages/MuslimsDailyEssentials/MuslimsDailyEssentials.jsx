@@ -1,25 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Clock3, Compass, LocateFixed, MapPin, Moon, MoonStar, Search, ShieldAlert, Sparkles, Sunrise, Sun, Sunset, Trash2 } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
-import { images } from "../../data/images";
 import { useLanguage } from "../../context/LanguageContext";
 import dailyTranslations from "./dailyEssentialsTranslations";
 import "./MuslimsDailyEssentials.css";
 import "./DailyEssentialsRedesign.css";
 
 const prayerIcons = { Fajr: Sunrise, Sunrise, Dhuhr: Sun, Asr: Compass, Maghrib: Sunset, Isha: Moon };
-const dailyCardImages = {
-  location: images.mosque,
-  timings: images.namaz,
-  Fajr: images.hero,
-  Sunrise: images.about,
-  Dhuhr: images.mosque,
-  Asr: images.learning,
-  Maghrib: images.namaz,
-  Isha: images.tajweed,
-  prohibited: images.about,
-  voluntary: images.memorization
-};
 const prayerOrder = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
 const extraLabels = {
@@ -256,11 +243,10 @@ export default function MuslimsDailyEssentials() {
 
   return (
     <main className="page daily-essentials-page" data-translation-owned="true">
-      <PageHero className="daily-page-hero" title={t("title")} subtitle={t("subtitle")} image={images.mosque} />
+      <PageHero className="daily-page-hero" title={t("title")} subtitle={t("subtitle")} />
       <section className="section daily-dashboard-section">
         <div className="container">
-          <div className="daily-location-bar daily-image-card">
-            <div className="daily-card-image"><img src={dailyCardImages.location} alt="" /></div>
+          <div className="daily-location-bar">
             <div className="daily-location-copy"><MapPin /><div><span>{t("currentLocation")}</span><strong>{location?.city && location?.country ? `${location.city}, ${location.country}` : t("noLocation")}</strong></div>{location && savedLocations.some((savedLocation) => getLocationKey(savedLocation) === getLocationKey(location)) && <button type="button" className="daily-location-remove" onClick={() => deleteSavedLocation(location)} aria-label={t("deleteSavedLocation")} title={t("deleteSavedLocation")}><Trash2 aria-hidden="true" /></button>}</div>
             <div className="daily-location-actions">
               <button type="button" className="daily-button daily-button-light" onClick={allowLocation} disabled={locationLoading}><LocateFixed />{locationLoading ? t("detecting") : t("allowLocation")}</button>
@@ -284,15 +270,21 @@ export default function MuslimsDailyEssentials() {
             <>
               <div className="daily-date-row"><div><span className="eyebrow">{t("todayDate")}</span><h2>{formatLocalDate(prayerData.date, language, "gregory")}</h2></div><div className="hijri-date">{formatLocalDate(prayerData.date, language, "islamic")}</div><button type="button" className="daily-change" onClick={() => { setLocation(null); setPrayerData(null); sessionStorage.removeItem("mauiza-daily-location"); }}>{t("changeLocation")}</button></div>
               <div className="daily-feature-grid">
-                <article className="daily-image-card daily-summary-card"><div className="daily-card-image"><img src={dailyCardImages.timings} alt="" /><span><Clock3 /></span></div><div className="daily-card-body"><small>{t("smartTimings")}</small><h3>{t("prayerTimes")}</h3><p>{t("method")}: {prayerData.method}</p></div></article>
-                <article className="daily-image-card daily-summary-card"><div className="daily-card-image"><img src={dailyCardImages.Isha} alt="" /><span><MoonStar /></span></div><div className="daily-card-body"><small>{t("nextPrayer")}</small><h3>{t(currentPrayer.name)}</h3><p>{formatCountdown(countdown)} · {t("remaining")}</p></div></article>
+                <article className="daily-summary-card">
+                  <div className="daily-card-body"><small>{t("smartTimings")}</small><h3>{t("prayerTimes")}</h3><p>{t("method")}: {prayerData.method}</p></div>
+                </article>
+                <article className="daily-summary-card">
+                  <div className="daily-card-body"><small>{t("nextPrayer")}</small><h3>{t(currentPrayer.name)}</h3><p>{formatCountdown(countdown)} · {t("remaining")}</p></div>
+                </article>
               </div>
-              <div className="next-prayer-card current-prayer-card daily-image-card"><div className="daily-card-image"><img src={dailyCardImages[currentPrayer.activeName]} alt="" /></div><div className="current-prayer-content"><span className="eyebrow">{t("now")}</span><h2>{t(currentPrayer.activeName)}</h2><p>{formatTime(prayerData.timings[currentPrayer.activeName])}</p></div><div className="countdown"><strong>{formatCountdown(countdown)}</strong><span>{t("nextPrayer")} · {t("remaining")}</span></div></div>
+              <div className="next-prayer-card current-prayer-card">
+                <div className="current-prayer-content"><span className="eyebrow">{t("now")}</span><h2>{t(currentPrayer.activeName)}</h2><p>{formatTime(prayerData.timings[currentPrayer.activeName])}</p></div><div className="countdown"><strong>{formatCountdown(countdown)}</strong><span>{t("nextPrayer")} · {t("remaining")}</span></div>
+              </div>
               <div className="daily-section-heading"><div><span className="eyebrow">{t("smartTimings")}</span><h2>{t("prayerTimes")}</h2></div><span className="calculation-note">{t("method")}: {prayerData.method}</span></div>
-              <div className="prayer-grid">{prayerOrder.map((name) => { const Icon = prayerIcons[name]; return <article className={`prayer-card daily-image-card ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><div className="daily-card-image"><img src={dailyCardImages[name]} alt="" /><span><Icon /></span></div><div className="daily-card-body"><small>{t(prayerStatus(name, prayerData.timings[name]).toLowerCase())}</small><h3>{t(name)}</h3><strong>{formatTime(prayerData.timings[name])}</strong></div></article>; })}</div>
+              <div className="prayer-grid">{prayerOrder.map((name) => { const Icon = prayerIcons[name]; return <article className={`prayer-card ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><div className="daily-card-body"><div className="prayer-card-top"><Icon /><span>{t(prayerStatus(name, prayerData.timings[name]).toLowerCase())}</span></div><h3>{t(name)}</h3><strong>{formatTime(prayerData.timings[name])}</strong></div></article>; })}</div>
               <div className="timeline-panel"><div className="daily-section-heading"><div><span className="eyebrow">{t("dailyOverview")}</span><h2>{t("dayInPrayer")}</h2></div></div><div className="prayer-timeline">{prayerOrder.map((name) => <div className={`timeline-item ${prayerStatus(name, prayerData.timings[name]).toLowerCase()}`} key={name}><span className="timeline-dot" /><strong>{t(name)}</strong><small>{formatTime(prayerData.timings[name])}</small></div>)}</div></div>
               <p className="timing-disclaimer">{t("timingDisclaimer")}</p>
-              <section className="prohibited-panel daily-image-card"><div className="prohibited-heading"><ShieldAlert /><div><span className="eyebrow">{t("guidance")}</span><h2>{t("prohibited")}</h2></div></div><p className="prohibited-intro">{t("prohibitedIntro")}</p><div className="prohibited-grid">{getProhibitedTimes(prayerData.timings).map(({ name, description, start, end }) => <div className="prohibited-card daily-image-card" key={name}><div className="daily-card-image"><img src={dailyCardImages.prohibited} alt="" /></div><div className="daily-card-body"><h3>{t(name)}</h3><strong>{formatTime(start)} – {formatTime(end)}</strong><p>{t(description)}</p></div></div>)}</div></section>
+              <section className="prohibited-panel"><div className="prohibited-heading"><ShieldAlert /><div><span className="eyebrow">{t("guidance")}</span><h2>{t("prohibited")}</h2></div></div><p className="prohibited-intro">{t("prohibitedIntro")}</p><div className="prohibited-grid">{getProhibitedTimes(prayerData.timings).map(({ name, description, start, end }) => <div className="prohibited-card" key={name}><div className="daily-card-body"><h3>{t(name)}</h3><strong>{formatTime(start)} – {formatTime(end)}</strong><p>{t(description)}</p></div></div>)}</div></section>
               <section className="prohibited-panel voluntary-panel"><div className="prohibited-heading"><Sparkles /><div><span className="eyebrow">{t("optionalWorship")}</span><h2>{t("voluntaryPrayers")}</h2></div></div><p className="prohibited-intro">{t("voluntaryPrayersIntro")}</p><div className="prohibited-grid">{getVoluntaryPrayers(prayerData.timings).map(([Icon, name, time, description]) => <article className="prohibited-card voluntary-card" key={name}><div className="prayer-card-top"><Icon /><span>{t("optional")}</span></div><h3>{t(name)}</h3><strong>{time}</strong><p>{t(description)}</p></article>)}</div></section>
             </>
           )}
