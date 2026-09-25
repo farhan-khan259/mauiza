@@ -7,7 +7,7 @@ import "./DailyEssentialsLanding.css";
 
 const modules = [
   { title: "Qibla Location Detector", description: "Find the accurate Qibla direction from your current location with an interactive compass, Qibla bearing, and distance to the Kaaba.", to: "/daily-essentials/qibla", image: images.hero, Icon: Compass },
-  { title: "Smart Halal Ingredient Scanner", description: "Scan food ingredient labels, detect E-numbers, and identify ingredients that are generally halal, require verification, or may be potentially haram.", to: "/daily-essentials/halal-scanner", image: "https://images.unsplash.com/photo-1601598851547-4302969d0614?auto=format&fit=crop&w=900&q=85", Icon: ScanLine },
+  { title: "Halal Ingredient Checker", description: "Enter each ingredient or additive to check whether it is generally halal, needs verification, or may be potentially haram.", to: "/daily-essentials/halal-scanner", image: "https://images.unsplash.com/photo-1601598851547-4302969d0614?auto=format&fit=crop&w=900&q=85", Icon: ScanLine },
   { title: "Mosque & Halal Finder", description: "Discover nearby mosques, Islamic centers, halal restaurants, and halal food locations using your current location and an interactive map.", to: "/daily-essentials/mosque-halal-finder", image: images.mosque, Icon: MapPinned },
   { title: "Prayer Timings", description: "View daily prayer timings, current prayer status, countdowns, prohibited prayer times, and additional voluntary prayer timings.", to: "/daily-essentials/prayer-timings", image: images.namaz, Icon: Clock3 }
 ];
