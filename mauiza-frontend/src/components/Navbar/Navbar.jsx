@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import Button from "../Button/Button";
 import { languages, useLanguage } from "../../context/LanguageContext";
@@ -17,7 +17,15 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false),
     [scrolled, setScrolled] = useState(false);
+  const { pathname } = useLocation();
   const { language, setLanguage, theme, t, toggleTheme } = useLanguage();
+  const isActiveLink = (to) => {
+    if (to === "/") return pathname === "/";
+    if (to === "/muslims-daily-essentials") {
+      return pathname === "/muslims-daily-essentials" || pathname === "/daily-essentials" || pathname.startsWith("/daily-essentials/");
+    }
+    return pathname === to;
+  };
   useEffect(() => {
     const f = () => setScrolled(scrollY > 20);
     f();
@@ -38,6 +46,7 @@ export default function Navbar() {
                 to={to}
                 key={to}
                 onClick={() => setOpen(false)}
+                className={({ isActive }) => `nav-link ${isActive || isActiveLink(to) ? "active" : ""}`}
               >
                 {t(label)}
               </NavLink>

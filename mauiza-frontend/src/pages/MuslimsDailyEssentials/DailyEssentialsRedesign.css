@@ -5,11 +5,34 @@
 .daily-page-hero p{max-width:620px}
 .daily-dashboard-section{position:relative;padding:72px 0 100px;background:linear-gradient(180deg,var(--background),var(--soft-green) 46%,var(--background))}
 .daily-dashboard-section>.container{position:relative;z-index:1}
-.daily-location-bar{border-color:var(--line);background:var(--white);box-shadow:var(--shadow)}
+.daily-location-bar{border-color:var(--line);background:linear-gradient(135deg, var(--soft-green), var(--surface));box-shadow:var(--shadow);color:var(--text)}
 .daily-location-copy{min-width:0}
-.daily-location-copy>svg{flex:0 0 auto;width:42px;height:42px;padding:10px;border-radius:12px;background:var(--soft-green);color:var(--primary)}
-.daily-location-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.daily-location-copy>svg{flex:0 0 auto;width:42px;height:42px;padding:10px;border-radius:12px;background:rgba(18,184,176,.12);color:var(--primary)}
+.daily-location-copy span{color:var(--muted)}
+.daily-location-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--dark)}
 .daily-location-actions{flex-wrap:wrap;justify-content:flex-end}
+.daily-place-search{position:relative;display:block}
+.daily-place-search svg{left:12px;color:var(--muted)}
+.daily-place-search input{width:220px;padding:11px 12px 11px 38px;border:1px solid var(--line);border-radius:10px;background:var(--field);color:var(--text);font:inherit;font-size:12px;outline:0}
+.daily-place-search input::placeholder{color:var(--muted)}
+.daily-place-search input:focus{border-color:var(--secondary);box-shadow:0 0 0 3px rgba(18,184,176,.18)}
+.place-results{position:absolute;z-index:4;top:calc(100% + 8px);right:0;display:grid;width:min(360px,calc(100vw - 56px));padding:6px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+.place-results button{padding:10px 12px;border:0;border-radius:8px;background:transparent;color:var(--text);font:inherit;font-size:12px;text-align:left;cursor:pointer}
+.place-results button:hover{background:var(--soft-green);color:var(--primary)}
+
+html[data-theme="dark"] .daily-location-bar,
+html[data-theme="dark"] .saved-locations,
+html[data-theme="dark"] .daily-date-row,
+html[data-theme="dark"] .current-prayer-card,
+html[data-theme="dark"] .prayer-card,
+html[data-theme="dark"] .timeline-panel,
+html[data-theme="dark"] .prohibited-panel,
+html[data-theme="dark"] .voluntary-panel,
+html[data-theme="dark"] .daily-empty,
+html[data-theme="dark"] .calculation-note,
+html[data-theme="dark"] .daily-message {
+  color: var(--text);
+}
 .daily-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:42px 0 22px}
 .daily-feature-grid .feature-card{min-height:144px}
 .daily-feature-grid .feature-card h3{font-size:17px}

@@ -200,9 +200,24 @@ export default function MuslimsDailyEssentials() {
   }, [currentPrayer, now]);
 
   const choosePlace = (place) => {
+    const lat = Number(place.latitude ?? place.lat ?? 0);
+    const lon = Number(place.longitude ?? place.lon ?? 0);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon) || (lat === 0 && lon === 0)) {
+      setError(t("prayerUnavailable"));
+      return;
+    }
+
+    const nextLocation = {
+      latitude: lat,
+      longitude: lon,
+      city: place.city || place.name || place.label?.split(",")[0] || "Selected location",
+      country: place.country || place.country_name || place.region || "Location",
+    };
+
     setSearch("");
     setPlaces([]);
-    requestPrayerTimes({ latitude: Number(place.latitude), longitude: Number(place.longitude), city: place.city, country: place.country });
+    setError("");
+    requestPrayerTimes(nextLocation);
   };
 
   const saveLocation = () => {
@@ -250,7 +265,7 @@ export default function MuslimsDailyEssentials() {
             <div className="daily-location-copy"><MapPin /><div><span>{t("currentLocation")}</span><strong>{location?.city && location?.country ? `${location.city}, ${location.country}` : t("noLocation")}</strong></div>{location && savedLocations.some((savedLocation) => getLocationKey(savedLocation) === getLocationKey(location)) && <button type="button" className="daily-location-remove" onClick={() => deleteSavedLocation(location)} aria-label={t("deleteSavedLocation")} title={t("deleteSavedLocation")}><Trash2 aria-hidden="true" /></button>}</div>
             <div className="daily-location-actions">
               <button type="button" className="daily-button daily-button-light" onClick={allowLocation} disabled={locationLoading}><LocateFixed />{locationLoading ? t("detecting") : t("allowLocation")}</button>
-              <label className="daily-place-search"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t("searchCity")} aria-label={t("searchCity")} /></label>
+              <label className="daily-place-search"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={"Search your location"} aria-label={t("searchCity")} /></label>
               <button type="button" className="daily-button daily-button-save" onClick={saveLocation} disabled={!location}><MapPin />{t("saveLocation")}</button>
             </div>
             {places.length > 0 && <div className="place-results">{places.map((place) => <button type="button" key={`${place.latitude}-${place.longitude}`} onClick={() => choosePlace(place)}>{place.label}</button>)}</div>}
