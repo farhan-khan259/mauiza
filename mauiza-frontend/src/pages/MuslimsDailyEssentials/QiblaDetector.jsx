@@ -106,10 +106,6 @@ export default function QiblaDetector() {
         {location ? <>
           <div className="compass-dial">
             <span className="north">N</span><span className="east">E</span><span className="south">S</span><span className="west">W</span>
-            <div className="qibla-guide" style={{ transform: `translate(-50%, -50%) rotate(${relativeDirection}deg)` }}>
-              <span className="qibla-guide-line" />
-              <span className="qibla-guide-dot" />
-            </div>
             <Navigation className="qibla-arrow" style={{ transform: `translate(-50%, -50%) rotate(${relativeDirection}deg)` }} />
             <span className="kaaba">☪</span>
           </div>
