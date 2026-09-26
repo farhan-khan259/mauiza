@@ -5,7 +5,8 @@ import { useLanguage } from "../../context/LanguageContext";
 import { images } from "../../data/images";
 import "./DailyEssentialsTools.css";
 
-const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
+const isLocalRuntime = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+const apiBaseUrl = (import.meta.env.VITE_API_URL || (isLocalRuntime ? "http://localhost:5001" : "https://mauiza-backend.onrender.com")).replace(/\/+$/, "");
 const defaultMapCenter = { latitude: 21.4225, longitude: 39.8262 };
 
 function normalizeFilterValue(value) {
