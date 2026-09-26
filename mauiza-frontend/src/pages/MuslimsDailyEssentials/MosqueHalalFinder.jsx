@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { LocateFixed, Map, MapPin, Search, Store, Building2, AlertCircle } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
+import { useLanguage } from "../../context/LanguageContext";
 import { images } from "../../data/images";
 import "./DailyEssentialsTools.css";
 
@@ -16,6 +17,8 @@ function mapUrl(center, radius) {
 }
 
 export default function MosqueHalalFinder() {
+  const { language } = useLanguage();
+  const isFrench = language === "fr";
   const [center, setCenter] = useState(null);
   const [query, setQuery] = useState("");
   const [radius, setRadius] = useState("5");
@@ -69,23 +72,42 @@ export default function MosqueHalalFinder() {
     }
   };
 
+  const pageTitle = isFrench ? "Mosquée & recherche halal" : "Mosque & Halal Finder";
+  const pageSubtitle = isFrench
+    ? "Trouvez les mosquées, centres islamiques et aliments halal proches de votre position."
+    : "Find nearby mosques, Islamic centres, and halal food options close to your location.";
+  const useLocationLabel = isFrench ? "Utiliser ma position" : "Use my location";
+  const searchPlaceholder = isFrench ? "Ville, quartier ou adresse" : "City, area, or address";
+  const radiusLabel = isFrench ? "Rayon de recherche" : "Search radius";
+  const filterOptions = isFrench ? ["Tous", "Mosquées", "Nourriture halal", "Centres islamiques"] : ["All", "Mosques", "Halal food", "Islamic centres"];
+  const viewLabels = isFrench ? { map: "Carte", list: "Liste" } : { map: "Map", list: "List" };
+  const mapHint = isFrench
+    ? "Recherchez un lieu ou utilisez votre position pour voir les résultats à proximité."
+    : "Search for a place or use your location to view nearby results.";
+  const emptyTitle = isFrench ? "Aucun lieu à afficher pour l’instant" : "No places to display yet";
+  const emptyDescription = isFrench
+    ? "Utilisez votre position ou recherchez une zone pour voir les résultats proches en direct."
+    : "Use your location or search an area to see nearby results live.";
+  const directionsLabel = isFrench ? "Itinéraire" : "Directions";
+  const searchButtonLabel = isFrench ? "Rechercher" : "Search";
+
   return <main className="page tool-page">
-    <PageHero title="Mosquée & recherche halal" subtitle="Trouvez les mosquées, centres islamiques et aliments halal proches de votre position." image={images.mosque} />
+    <PageHero title={pageTitle} subtitle={pageSubtitle} image={images.mosque} />
     <section className="section tool-section"><div className="container finder">
       <div className="finder-controls">
-        <button className="tool-button" onClick={locate}><LocateFixed />Utiliser ma position</button>
-        <form onSubmit={search}><Search /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Ville, quartier ou adresse" /><button aria-label="Rechercher"><Search /></button></form>
-        <select value={radius} onChange={event => { const value = event.target.value; setRadius(value); if (center) find(center, { radius: value }); }} aria-label="Rayon de recherche">{[1, 5, 10, 25].map(value => <option key={value} value={value}>{value} km</option>)}</select>
+        <button className="tool-button" onClick={locate}><LocateFixed />{useLocationLabel}</button>
+        <form onSubmit={search}><Search /><input value={query} onChange={event => setQuery(event.target.value)} placeholder={searchPlaceholder} /><button aria-label={searchButtonLabel}>{searchButtonLabel === "Search" ? <Search /> : <Search />}</button></form>
+        <select value={radius} onChange={event => { const value = event.target.value; setRadius(value); if (center) find(center, { radius: value }); }} aria-label={radiusLabel}>{[1, 5, 10, 25].map(value => <option key={value} value={value}>{value} km</option>)}</select>
       </div>
       <div className="finder-filters">
-        {["Tous", "Mosquées", "Nourriture halal", "Centres islamiques"].map(value => <button className={filter === value ? "active" : ""} onClick={() => { setFilter(value); if (center) find(center, { category: value }); }} key={value}>{value}</button>)}
+        {filterOptions.map(value => <button className={filter === value ? "active" : ""} onClick={() => { setFilter(value); if (center) find(center, { category: value }); }} key={value}>{value}</button>)}
         <span />
-        <button className={view === "map" ? "active" : ""} onClick={() => setView("map")}><Map />Carte</button>
-        <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}><Store />Liste</button>
+        <button className={view === "map" ? "active" : ""} onClick={() => setView("map")}><Map />{viewLabels.map}</button>
+        <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}><Store />{viewLabels.list}</button>
       </div>
       {message && <p className="tool-alert"><AlertCircle />{message}</p>}
       <div className="finder-content">
-        {view === "map" ? <div className="map-frame" style={{ height: "420px", overflow: "hidden", borderRadius: "12px", position: "relative" }}><iframe title="Carte des mosquées et lieux halal à proximité" src={mapUrl(center || defaultMapCenter, radius)} loading="lazy" style={{ width: "100%", height: "100%", border: 0 }} />{!center && <p className="map-hint">Recherchez un lieu ou utilisez votre position pour voir les résultats à proximité.</p>}</div> : <div className="places-list">{places.length ? places.map(place => <article key={place.id}><Building2 /><div><h3>{place.name}</h3><p>{place.address} · {place.distanceKm} km</p></div><a href={place.directionsUrl} target="_blank" rel="noreferrer">Itinéraire</a></article>) : <div className="tool-empty"><MapPin /><h2>Aucun lieu à afficher pour l’instant</h2><p>Utilisez votre position ou recherchez une zone pour voir les résultats proches en direct.</p></div>}</div>}
+        {view === "map" ? <div className="map-frame" style={{ height: "420px", overflow: "hidden", borderRadius: "12px", position: "relative" }}><iframe title={isFrench ? "Carte des mosquées et lieux halal à proximité" : "Map of nearby mosques and halal places"} src={mapUrl(center || defaultMapCenter, radius)} loading="lazy" style={{ width: "100%", height: "100%", border: 0 }} />{!center && <p className="map-hint">{mapHint}</p>}</div> : <div className="places-list">{places.length ? places.map(place => <article key={place.id}><Building2 /><div><h3>{place.name}</h3><p>{place.address} · {place.distanceKm} km</p></div><a href={place.directionsUrl} target="_blank" rel="noreferrer">{directionsLabel}</a></article>) : <div className="tool-empty"><MapPin /><h2>{emptyTitle}</h2><p>{emptyDescription}</p></div>}</div>}
       </div>
     </div></section>
   </main>;

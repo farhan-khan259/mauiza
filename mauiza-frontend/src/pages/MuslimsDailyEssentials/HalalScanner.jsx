@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FileText, ShieldAlert } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
+import { useLanguage } from "../../context/LanguageContext";
 import { images } from "../../data/images";
 import "./DailyEssentialsTools.css";
 
@@ -44,6 +45,8 @@ const getLocalFallback = (entry) => {
 };
 
 export default function HalalScanner() {
+  const { language } = useLanguage();
+  const isFrench = language === "fr";
   const [text, setText] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -88,23 +91,36 @@ export default function HalalScanner() {
     }
   };
 
+  const title = isFrench ? "Vérificateur d’ingrédients halal" : "Halal Ingredient Checker";
+  const subtitle = isFrench
+    ? "Saisissez chaque ingrédient ou additif pour voir s’il est généralement halal, s’il nécessite une vérification ou s’il peut être potentiellement haram."
+    : "Enter each ingredient or additive to see whether it is generally halal, needs verification, or may be potentially haram.";
+  const ingredientLabel = isFrench ? "Liste des ingrédients" : "Ingredient list";
+  const placeholder = isFrench
+    ? "Saisissez chaque ingrédient un par un, par exemple : sucre, gélatine, E471, huile de palme, shellac"
+    : "Enter each ingredient one by one, for example: sugar, gelatin, E471, palm oil, shellac";
+  const buttonText = loading ? (isFrench ? "Vérification…" : "Checking...") : isFrench ? "Vérifier les ingrédients" : "Check ingredients";
+  const disclaimer = isFrench
+    ? "Saisissez n’importe quel ingrédient ou additif ci-dessous. Mauiza vérifie chaque élément individuellement et vous indique s’il est généralement halal, s’il nécessite une vérification ou s’il peut être potentiellement haram."
+    : "Enter any ingredient or additive below. Mauiza checks each item individually and tells you whether it is generally halal, needs verification, or may be potentially haram.";
+
   return (
     <main className="page tool-page">
-      <PageHero title="Vérificateur d’ingrédients halal" subtitle="Saisissez chaque ingrédient ou additif pour voir s’il est généralement halal, s’il nécessite une vérification ou s’il peut être potentiellement haram." image={images.namaz} />
+      <PageHero title={title} subtitle={subtitle} image={images.namaz} />
       <section className="section tool-section">
         <div className="container scanner-layout">
           <div className="scanner-editor wide-editor">
-            <label htmlFor="ingredients"><FileText /> Liste des ingrédients</label>
+            <label htmlFor="ingredients"><FileText /> {ingredientLabel}</label>
             <textarea
               id="ingredients"
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Saisissez chaque ingrédient un par un, par exemple : sucre, gélatine, E471, huile de palme, shellac"
+              placeholder={placeholder}
               rows="9"
             />
 
             <button className="tool-button" onClick={analyze} disabled={loading}>
-              {loading ? "Vérification…" : "Vérifier les ingrédients"}
+              {buttonText}
             </button>
 
             {message && (
@@ -118,16 +134,14 @@ export default function HalalScanner() {
                     <strong>{item.name} {item.eNumber ? `(${item.eNumber})` : ""}</strong>
                     <span className={`status ${item.statusClass}`}>{item.classification}</span>
                     <p>{item.reason}</p>
-                    <small>{item.source || "Source non fournie"}</small>
+                    <small>{item.source || (isFrench ? "Source non fournie" : "Source not provided")}</small>
                   </article>
                 ))}
               </div>
             )}
           </div>
 
-          <p className="tool-disclaimer">
-            Saisissez n’importe quel ingrédient ou additif ci-dessous. Mauiza vérifie chaque élément individuellement et vous indique s’il est généralement halal, s’il nécessite une vérification ou s’il peut être potentiellement haram.
-          </p>
+          <p className="tool-disclaimer">{disclaimer}</p>
         </div>
       </section>
     </main>
