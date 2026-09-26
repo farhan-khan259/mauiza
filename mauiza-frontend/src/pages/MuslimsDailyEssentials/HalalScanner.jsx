@@ -90,21 +90,21 @@ export default function HalalScanner() {
 
   return (
     <main className="page tool-page">
-      <PageHero title="Halal Ingredient Checker" subtitle="Enter each ingredient or additive and see whether it is generally halal, needs verification, or may be potentially haram." image={images.namaz} />
+      <PageHero title="Vérificateur d’ingrédients halal" subtitle="Saisissez chaque ingrédient ou additif pour voir s’il est généralement halal, s’il nécessite une vérification ou s’il peut être potentiellement haram." image={images.namaz} />
       <section className="section tool-section">
         <div className="container scanner-layout">
           <div className="scanner-editor wide-editor">
-            <label htmlFor="ingredients"><FileText /> Ingredient list</label>
+            <label htmlFor="ingredients"><FileText /> Liste des ingrédients</label>
             <textarea
               id="ingredients"
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Enter each ingredient one by one, for example: sugar, gelatin, E471, palm oil, shellac"
+              placeholder="Saisissez chaque ingrédient un par un, par exemple : sucre, gélatine, E471, huile de palme, shellac"
               rows="9"
             />
 
             <button className="tool-button" onClick={analyze} disabled={loading}>
-              {loading ? "Checking…" : "Check ingredients"}
+              {loading ? "Vérification…" : "Vérifier les ingrédients"}
             </button>
 
             {message && (
@@ -118,7 +118,7 @@ export default function HalalScanner() {
                     <strong>{item.name} {item.eNumber ? `(${item.eNumber})` : ""}</strong>
                     <span className={`status ${item.statusClass}`}>{item.classification}</span>
                     <p>{item.reason}</p>
-                    <small>{item.source || "Source not provided"}</small>
+                    <small>{item.source || "Source non fournie"}</small>
                   </article>
                 ))}
               </div>
@@ -126,7 +126,7 @@ export default function HalalScanner() {
           </div>
 
           <p className="tool-disclaimer">
-            Enter any ingredient or additive below. Mauiza checks each item individually and tells you whether it is generally halal, requires verification, or may be potentially haram.
+            Saisissez n’importe quel ingrédient ou additif ci-dessous. Mauiza vérifie chaque élément individuellement et vous indique s’il est généralement halal, s’il nécessite une vérification ou s’il peut être potentiellement haram.
           </p>
         </div>
       </section>

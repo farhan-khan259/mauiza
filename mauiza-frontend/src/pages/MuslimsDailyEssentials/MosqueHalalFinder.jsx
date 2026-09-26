@@ -70,22 +70,22 @@ export default function MosqueHalalFinder() {
   };
 
   return <main className="page tool-page">
-    <PageHero title="Mosque & Halal Finder" subtitle="Find mosques, Islamic centres, and halal food near the places you are." image={images.mosque} />
+    <PageHero title="Mosquée & recherche halal" subtitle="Trouvez les mosquées, centres islamiques et aliments halal proches de votre position." image={images.mosque} />
     <section className="section tool-section"><div className="container finder">
       <div className="finder-controls">
-        <button className="tool-button" onClick={locate}><LocateFixed />Use my location</button>
-        <form onSubmit={search}><Search /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="City, area, or address" /><button aria-label="Search"><Search /></button></form>
-        <select value={radius} onChange={event => { const value = event.target.value; setRadius(value); if (center) find(center, { radius: value }); }} aria-label="Search radius">{[1, 5, 10, 25].map(value => <option key={value} value={value}>{value} km</option>)}</select>
+        <button className="tool-button" onClick={locate}><LocateFixed />Utiliser ma position</button>
+        <form onSubmit={search}><Search /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Ville, quartier ou adresse" /><button aria-label="Rechercher"><Search /></button></form>
+        <select value={radius} onChange={event => { const value = event.target.value; setRadius(value); if (center) find(center, { radius: value }); }} aria-label="Rayon de recherche">{[1, 5, 10, 25].map(value => <option key={value} value={value}>{value} km</option>)}</select>
       </div>
       <div className="finder-filters">
-        {["All", "Mosques", "Halal Food", "Islamic Centers"].map(value => <button className={filter === value ? "active" : ""} onClick={() => { setFilter(value); if (center) find(center, { category: value }); }} key={value}>{value}</button>)}
+        {["Tous", "Mosquées", "Nourriture halal", "Centres islamiques"].map(value => <button className={filter === value ? "active" : ""} onClick={() => { setFilter(value); if (center) find(center, { category: value }); }} key={value}>{value}</button>)}
         <span />
-        <button className={view === "map" ? "active" : ""} onClick={() => setView("map")}><Map />Map</button>
-        <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}><Store />List</button>
+        <button className={view === "map" ? "active" : ""} onClick={() => setView("map")}><Map />Carte</button>
+        <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}><Store />Liste</button>
       </div>
       {message && <p className="tool-alert"><AlertCircle />{message}</p>}
       <div className="finder-content">
-        {view === "map" ? <div className="map-frame" style={{ height: "420px", overflow: "hidden", borderRadius: "12px", position: "relative" }}><iframe title="Nearby mosques and halal places map" src={mapUrl(center || defaultMapCenter, radius)} loading="lazy" style={{ width: "100%", height: "100%", border: 0 }} />{!center && <p className="map-hint">Search for a place or use your location to find nearby results.</p>}</div> : <div className="places-list">{places.length ? places.map(place => <article key={place.id}><Building2 /><div><h3>{place.name}</h3><p>{place.address} · {place.distanceKm} km</p></div><a href={place.directionsUrl} target="_blank" rel="noreferrer">Directions</a></article>) : <div className="tool-empty"><MapPin /><h2>No places to show yet</h2><p>Use your location or search an area to see live nearby results.</p></div>}</div>}
+        {view === "map" ? <div className="map-frame" style={{ height: "420px", overflow: "hidden", borderRadius: "12px", position: "relative" }}><iframe title="Carte des mosquées et lieux halal à proximité" src={mapUrl(center || defaultMapCenter, radius)} loading="lazy" style={{ width: "100%", height: "100%", border: 0 }} />{!center && <p className="map-hint">Recherchez un lieu ou utilisez votre position pour voir les résultats à proximité.</p>}</div> : <div className="places-list">{places.length ? places.map(place => <article key={place.id}><Building2 /><div><h3>{place.name}</h3><p>{place.address} · {place.distanceKm} km</p></div><a href={place.directionsUrl} target="_blank" rel="noreferrer">Itinéraire</a></article>) : <div className="tool-empty"><MapPin /><h2>Aucun lieu à afficher pour l’instant</h2><p>Utilisez votre position ou recherchez une zone pour voir les résultats proches en direct.</p></div>}</div>}
       </div>
     </div></section>
   </main>;

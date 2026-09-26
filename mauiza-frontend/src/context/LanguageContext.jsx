@@ -615,8 +615,15 @@ const LanguageContext = createContext(null);
 
 function translateValue(dictionary, value) {
   if (typeof value !== "string") return value;
+
   const normalized = value.trim().replace(/\s+/g, " ");
-  if (dictionary[normalized]) return dictionary[normalized];
+  if (!normalized) return value;
+
+  const exactMatch = dictionary[normalized];
+  if (exactMatch) return exactMatch;
+
+  const lowerMatch = Object.keys(dictionary).find((key) => key.toLowerCase() === normalized.toLowerCase());
+  if (lowerMatch) return dictionary[lowerMatch];
 
   if (normalized.startsWith("Enroll in ")) {
     const courseName = normalized.slice("Enroll in ".length);
