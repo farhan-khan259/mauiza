@@ -8,6 +8,17 @@ import "./DailyEssentialsTools.css";
 const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
 const defaultMapCenter = { latitude: 21.4225, longitude: 39.8262 };
 
+function normalizeFilterValue(value) {
+  const normalized = String(value || "").toLowerCase().replace(/[\s_-]+/g, " ").trim();
+
+  if (["all", "tous"].includes(normalized)) return "All";
+  if (["mosque", "mosques", "mosquée", "mosquées"].includes(normalized)) return "Mosques";
+  if (["halal food", "halal-food", "nourriture halal"].includes(normalized)) return "Halal Food";
+  if (["islamic center", "islamic centers", "islamic centre", "islamic centres", "centres islamiques", "centers islamiques"].includes(normalized)) return "Islamic Centers";
+
+  return "All";
+}
+
 function mapUrl(center, radius) {
   const latitude = Number(center.latitude);
   const longitude = Number(center.longitude);
@@ -28,9 +39,23 @@ export default function MosqueHalalFinder() {
   const [places, setPlaces] = useState([]);
   const [view, setView] = useState("map");
 
+  const categoryOptions = isFrench
+    ? [
+        { value: "All", label: "Tous" },
+        { value: "Mosques", label: "Mosquées" },
+        { value: "Halal Food", label: "Nourriture halal" },
+        { value: "Islamic Centers", label: "Centres islamiques" },
+      ]
+    : [
+        { value: "All", label: "All" },
+        { value: "Mosques", label: "Mosques" },
+        { value: "Halal Food", label: "Halal Food" },
+        { value: "Islamic Centers", label: "Islamic Centers" },
+      ];
+
   const find = async (coords, options = {}) => {
     const searchRadius = options.radius ?? radius;
-    const searchFilter = options.category ?? filter;
+    const searchFilter = normalizeFilterValue(options.category ?? filter);
     setCenter(coords);
     setLoading(true);
     setMessage("");
@@ -79,7 +104,6 @@ export default function MosqueHalalFinder() {
   const useLocationLabel = isFrench ? "Utiliser ma position" : "Use my location";
   const searchPlaceholder = isFrench ? "Ville, quartier ou adresse" : "City, area, or address";
   const radiusLabel = isFrench ? "Rayon de recherche" : "Search radius";
-  const filterOptions = isFrench ? ["Tous", "Mosquées", "Nourriture halal", "Centres islamiques"] : ["All", "Mosques", "Halal food", "Islamic centres"];
   const viewLabels = isFrench ? { map: "Carte", list: "Liste" } : { map: "Map", list: "List" };
   const mapHint = isFrench
     ? "Recherchez un lieu ou utilisez votre position pour voir les résultats à proximité."
@@ -100,7 +124,9 @@ export default function MosqueHalalFinder() {
         <select value={radius} onChange={event => { const value = event.target.value; setRadius(value); if (center) find(center, { radius: value }); }} aria-label={radiusLabel}>{[1, 5, 10, 25].map(value => <option key={value} value={value}>{value} km</option>)}</select>
       </div>
       <div className="finder-filters">
-        {filterOptions.map(value => <button className={filter === value ? "active" : ""} onClick={() => { setFilter(value); if (center) find(center, { category: value }); }} key={value}>{value}</button>)}
+        {categoryOptions.map(({ value, label }) => (
+          <button className={filter === value ? "active" : ""} onClick={() => { setFilter(value); if (center) find(center, { category: value }); }} key={value}>{label}</button>
+        ))}
         <span />
         <button className={view === "map" ? "active" : ""} onClick={() => setView("map")}><Map />{viewLabels.map}</button>
         <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}><Store />{viewLabels.list}</button>
