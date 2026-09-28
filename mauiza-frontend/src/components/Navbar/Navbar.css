@@ -56,7 +56,7 @@ nav {
   position: relative;
   white-space: nowrap;
   padding-bottom: 6px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--muted);
   transition: color 0.2s ease;
@@ -110,7 +110,7 @@ nav {
   border-radius: 8px;
   background: var(--surface);
   color: var(--primary-dark);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -170,11 +170,11 @@ nav {
   }
 
   .nav-links {
-    gap: 12px !important;
+    gap: 14px !important;
   }
 
   .nav-links a {
-    font-size: 11px !important;
+    font-size: 14px !important;
   }
 
   .nav-actions {
@@ -186,8 +186,9 @@ nav {
   }
 
   .language-picker select {
-    min-width: 124px;
-    width: 124px !important;
+    min-width: 132px;
+    width: 132px !important;
+    font-size: 13px;
   }
 }
 
@@ -249,6 +250,10 @@ nav {
     grid-template-columns: 1fr;
   }
 
+  .nav-links a {
+    font-size: 12px;
+  }
+
   .nav-links a.active,
   .nav-links a:hover {
     background: var(--soft-green);
@@ -272,6 +277,61 @@ nav {
 
   .nav-actions .language-picker select {
     width: 100%;
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1100px) {
+  .navbar {
+    height: 72px;
+  }
+
+  .logo-image {
+    width: 54px;
+    height: 54px;
+  }
+
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .menu-button {
+    padding: 8px;
+  }
+
+  .menu-button svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  nav {
+    top: 72px;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .nav-links {
+    gap: 8px;
+  }
+
+  .nav-links a {
+    padding: 14px 16px;
+    font-size: 17px;
+  }
+
+  .nav-actions {
+    gap: 12px;
+  }
+
+  .nav-actions .nav-cta {
+    padding: 12px 16px;
+  }
+
+  .language-picker select {
+    min-height: 50px;
+    padding: 12px 34px 12px 14px;
+    font-size: 16px;
   }
 }
 
