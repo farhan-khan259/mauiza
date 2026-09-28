@@ -58,6 +58,10 @@ html[data-theme="dark"] body {
   background: var(--background);
 }
 
+html[data-theme="dark"] .welcome-quote p {
+  color: var(--text) !important;
+}
+
 html[data-theme="dark"] .course-card,
 html[data-theme="dark"] .feature-card,
 html[data-theme="dark"] .mission-section,
