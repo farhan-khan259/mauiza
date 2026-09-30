@@ -77,10 +77,10 @@ export default function About() {
               title="Welcome to a New Way of Learning"
             />
             <p>
-              {t("A non-profit online institution that aims to bridge the gap between Muslims and the Quran by combining modern technologies with traditional teaching methods.")}
+              {t("A non-profit online institution that aims to bridge the gap between Muslims and Islam by combining modern technologies with traditional teaching methods.")}
             </p>
             <p>
-              {t("Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn the Quran and teach it.")}
+              {t("Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn Islam and teach it.")}
             </p>
           </div>
           <div className="welcome-quote">
