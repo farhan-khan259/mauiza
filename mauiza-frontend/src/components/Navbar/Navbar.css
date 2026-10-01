@@ -39,16 +39,19 @@
 }
 
 nav {
+
+	min-width: 0;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 24px;
-  flex-wrap: wrap;
+  min-width: 0;
+  gap: 16px;
+  flex-wrap: nowrap;
   justify-content: center;
 }
 
@@ -166,15 +169,15 @@ nav {
 
 @media (min-width: 1101px) and (max-width: 1300px) {
   .navbar nav {
-    gap: 16px !important;
+    gap: 12px;
   }
 
   .nav-links {
-    gap: 14px !important;
+    gap: 10px;
   }
 
   .nav-links a {
-    font-size: 14px !important;
+    font-size: 13px;
   }
 
   .nav-actions {
@@ -213,6 +216,8 @@ nav {
   }
 
   nav {
+    flex: initial;
+    min-width: auto;
     position: absolute;
     top: 64px;
     left: 16px;
@@ -342,5 +347,19 @@ nav {
 
   .nav-links {
     gap: 2px;
+  }
+}
+
+@media (min-width: 1101px) {
+  html[lang="fil"] .language-picker select {
+    min-width: 160px;
+    width: 160px !important;
+  }
+}
+
+@media (min-width: 1101px) and (max-width: 1300px) {
+  html[lang="fil"] .language-picker select {
+    min-width: 156px;
+    width: 156px !important;
   }
 }
