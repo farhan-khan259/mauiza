@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CheckCircle2, Clapperboard, GraduationCap, HeartHandshake, Info, Smartphone } from "lucide-react";
+import { CheckCircle2, Clapperboard, GraduationCap, HeartHandshake, Info, Smartphone, X } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PageHero from "../../components/PageHero/PageHero";
 import WhatsAppIcon from "../../components/WhatsAppIcon";
@@ -439,6 +439,9 @@ export default function Volunteers() {
       {sent && (
         <div className="success-modal-backdrop" onClick={() => setSent(false)}>
           <div className="success-modal" onClick={(event) => event.stopPropagation()}>
+            <button className="success-modal-close" type="button" aria-label={t("Close")} title={t("Close")} onClick={() => setSent(false)}>
+              <X aria-hidden="true" />
+            </button>
             <div className="success-modal-icon"><CheckCircle2 /></div>
             <h3>{t("Your volunteer application has been submitted successfully.")}</h3>
             <p>{t("Thank you for volunteering with Mauiza. Our team will review it and contact you soon.")}</p>

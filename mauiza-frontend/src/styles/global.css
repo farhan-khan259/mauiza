@@ -34,6 +34,36 @@ textarea {
 button {
   cursor: pointer;
 }
+.success-modal {
+  position: relative;
+}
+.success-modal .success-modal-close {
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-end: 12px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--muted);
+  line-height: 1;
+}
+.success-modal .success-modal-close:hover {
+  background: var(--soft-green);
+  color: var(--primary);
+}
+.success-modal .success-modal-close:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+.success-modal .success-modal-close svg {
+  width: 18px;
+  height: 18px;
+}
 .container {
   width: min(1160px, calc(100% - 48px));
   margin: auto;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { getTimeZones } from "@vvo/tzdb";
 import PageHero from "../../components/PageHero/PageHero";
@@ -303,6 +303,9 @@ export default function Registration() {
 			{sent && (
 				<div className="success-modal-backdrop" onClick={() => setSent(false)}>
 					<div className="success-modal" onClick={(event) => event.stopPropagation()}>
+						<button className="success-modal-close" type="button" aria-label={t("Close")} title={t("Close")} onClick={() => setSent(false)}>
+							<X aria-hidden="true" />
+						</button>
 						<div className="success-modal-icon"><CheckCircle2 /></div>
 						<h3>{t("Your registration has been submitted successfully.")}</h3>
 						<p>{t("Thank you for choosing Mauiza. Our team will contact you soon.")}</p>

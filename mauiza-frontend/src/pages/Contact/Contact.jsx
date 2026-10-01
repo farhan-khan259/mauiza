@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle2, Clock, Mail, MapPin, Send } from "lucide-react";
+import { CheckCircle2, Clock, Mail, MapPin, Send, X } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
 import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
@@ -137,6 +137,9 @@ export default function Contact() {
             className="success-modal"
             onClick={(event) => event.stopPropagation()}
           >
+            <button className="success-modal-close" type="button" aria-label={t("Close")} title={t("Close")} onClick={() => setSent(false)}>
+              <X aria-hidden="true" />
+            </button>
             <div className="success-modal-icon">
               <CheckCircle2 />
             </div>
