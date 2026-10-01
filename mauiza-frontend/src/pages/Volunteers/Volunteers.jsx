@@ -168,6 +168,8 @@ export default function Volunteers() {
     const payload = {
       fullName: String(data.get("fullName") || "").trim(),
       email: String(data.get("email") || "").trim(),
+      phoneCountryCode: String(data.get("phoneCountryCode") || "").trim(),
+      phoneNumber: String(data.get("phoneNumber") || "").trim(),
       phone: String(data.get("phone") || "").trim(),
       country: String(data.get("country") || "").trim(),
       profession: String(data.get("profession") || "").trim(),
@@ -190,6 +192,8 @@ export default function Volunteers() {
     const requiredFields = [
       ["fullName", "Full name"],
       ["email", "Email"],
+      ["phoneCountryCode", "Country code"],
+      ["phoneNumber", "WhatsApp number"],
       ["phone", "WhatsApp number"],
       ["country", "Country"],
       ["profession", "Profession"],
@@ -238,7 +242,7 @@ export default function Volunteers() {
       const result = contentType.includes("application/json") ? await response.json() : {};
       if (!response.ok) throw new Error(result.message || t("Volunteer application failed. Please try again."));
 
-      const whatsappMessage = `Hello Mauiza, I have submitted my volunteer application as a ${payload.designation}. My name is ${payload.fullName} and my email is ${payload.email}. I would like to continue the conversation.`;
+      const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.fullName}\nEmail: ${payload.email}\n\nI have submitted the form.\n\nI would like to continue the conversation.`;
       setSuccessMessage(whatsappMessage);
       setSent(true);
       form.reset();

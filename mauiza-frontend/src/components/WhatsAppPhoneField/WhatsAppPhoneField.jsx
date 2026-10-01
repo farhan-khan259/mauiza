@@ -96,7 +96,7 @@ export default function WhatsAppPhoneField() {
 	}
 
 	return (
-		<div className="whatsapp-phone-field" ref={rootRef}>
+		<div className="whatsapp-phone-field" ref={rootRef} data-translation-owned="true">
 			<label htmlFor={`${fieldId}-number`}>{t("WhatsApp Number")}</label>
 			<div className="whatsapp-phone-control">
 				<button
@@ -114,6 +114,7 @@ export default function WhatsAppPhoneField() {
 					<span>{selected ? `${selected.dialCode} ${selected.name}` : t("Code")}</span>
 					<span aria-hidden="true">▾</span>
 				</button>
+				<input type="hidden" name="phoneCountryCode" value={selected?.dialCode || ""} />
 				<input
 					id={`${fieldId}-number`}
 					ref={phoneRef}
