@@ -30,7 +30,7 @@ const resourceGroups = [
 export default function Resources() {
   const { t } = useLanguage();
   return <main className="page resources-page">
-    <PageHero title={t("Learning Resources")} subtitle={t("Explore and keep useful study materials for every step of your Quranic learning journey.")} image={images.learning} />
+    <PageHero title={t("Learning Resources")} subtitle={t("Explore and keep useful study materials for every step of your Islamic learning journey.")} image={images.learning} />
     <section className="section resources-section">
       <div className="container">
         <div className="resources-intro">

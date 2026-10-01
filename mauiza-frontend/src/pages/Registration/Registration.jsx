@@ -163,7 +163,7 @@ export default function Registration() {
 		<main className="page">
 			<PageHero
 				title={t("Begin Your Learning Journey")}
-				subtitle={t("Complete the form below and take your next step towards meaningful Quranic learning.")}
+				subtitle={t("Complete the form below and take your next step towards meaningful Islamic learning.")}
 				image={images.learning}
 			/>
 			<section className="section">

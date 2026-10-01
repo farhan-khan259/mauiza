@@ -80,13 +80,13 @@ export default function About() {
               {t("A non-profit online institution that aims to bridge the gap between Muslims and Islam by combining modern technologies with traditional teaching methods.")}
             </p>
             <p>
-              {t("Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn Islam and teach it.")}
+              {t("Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best among you are those who learn the Quran and teach it.")}
             </p>
           </div>
           <div className="welcome-quote">
             <Heart />
             <p>
-              {t("“The best investment is the one that brings you closer to knowledge.”")}
+              {t("“The best action is the one that brings you closer to God.”")}
             </p>
             <span>{t("MAUIZA ONLINE ACADEMY")}</span>
           </div>
