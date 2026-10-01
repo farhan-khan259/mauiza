@@ -8,6 +8,7 @@ import { images } from "../../data/images";
 import { useLanguage } from "../../context/LanguageContext";
 import { countryCodes } from "../../data/countries";
 import instructionLanguages from "../../data/languages";
+import WhatsAppPhoneField from "../../components/WhatsAppPhoneField/WhatsAppPhoneField";
 import "./Registration.css";
 
 const timezones = getTimeZones({ includeUtc: true });
@@ -185,7 +186,7 @@ export default function Registration() {
 							<label>{t("Email Address")}<input required type="email" name="email" placeholder="mauizainstitute@gmail.com" /></label>
 						</div>
 						<div className="form-row">
-							<label>{t("WhatsApp Number")}<input required name="phone" placeholder={t("Your WhatsApp number")} /></label>
+							<WhatsAppPhoneField />
 							<label>
 								{t("Country")}
 								<select required name="country" defaultValue="">

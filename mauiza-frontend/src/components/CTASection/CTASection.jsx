@@ -22,7 +22,7 @@ export default function CTASection({
         <h2>{t(title)}</h2>
         <p>{t(description)}</p>
         <p className="cta-support">
-          {t("Start your Quranic learning journey today.")}
+          {t("Start your Islamic learning journey today.")}
         </p>
         <Button to={to} variant="light">
           {t(button)}

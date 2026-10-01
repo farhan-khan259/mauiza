@@ -8,6 +8,7 @@ import { countryCodes } from "../../data/countries";
 import instructionLanguages from "../../data/languages";
 import { useLanguage, translations } from "../../context/LanguageContext";
 import { getTimeZones } from "@vvo/tzdb";
+import WhatsAppPhoneField from "../../components/WhatsAppPhoneField/WhatsAppPhoneField";
 import "./Volunteers.css";
 
 const roles = ["Teacher", "Video Editor", "Media Manager"];
@@ -331,7 +332,7 @@ export default function Volunteers() {
                   <label>{t("Email Address")}<input required type="email" name="email" placeholder={t("you@example.com")} /></label>
                 </div>
                 <div className="volunteer-form-row">
-                  <label>{t("WhatsApp Number")}<input required name="phone" placeholder={t("Your WhatsApp number")} /></label>
+                  <WhatsAppPhoneField />
                   <label>
                     {t("Country")}
                     <select required name="country" defaultValue="">

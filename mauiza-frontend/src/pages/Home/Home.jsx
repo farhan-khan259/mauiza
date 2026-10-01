@@ -23,7 +23,7 @@ const features = [
   [
     GraduationCap,
     "Qualified Instructors",
-    "Learn from dedicated instructors who are committed to helping students improve their Quranic knowledge and understanding.",
+    "Learn from dedicated instructors who are committed to helping students improve their Islamic knowledge and understanding.",
   ],
   [
     Globe2,
@@ -43,7 +43,7 @@ const features = [
   [
     Clock3,
     "Flexible Learning",
-    "Choose a suitable learning schedule and make Quranic education part of your daily routine.",
+    "Choose a suitable learning schedule and make Islamic education part of your daily routine.",
   ],
   [
     Sparkles,
@@ -66,7 +66,7 @@ export default function Home() {
           >
             <p className="hero-kicker">{t("BISMILLAHIR RAHMANIR RAHEEM")}</p>
             <h1>
-              {t("Learn the Quran.")}
+              {t("Learn the Islam.")}
               <br />
               <em>{t("Strengthen Your Faith.")}</em>
               <br />
@@ -137,13 +137,13 @@ export default function Home() {
           <div>
             <SectionHeading
               eyebrow="OUR PURPOSE"
-              title="Your Journey Towards Quranic Learning Starts Here"
+              title={t("Your Journey Towards Islamic Learning Starts Here")}
             />
             <p>
               {t("Learning the Quran is a journey that brings knowledge, guidance and spiritual growth into our lives.")}
             </p>
             <p>
-              {t("Our online Islamic education platform is designed to make Quranic learning accessible to students of different ages and learning levels. Through structured lessons, dedicated instructors and a flexible learning environment, we help students build a stronger connection with the Quran and Islamic teachings.")}
+              {t("Our online Islamic education platform is designed to make Islamic learning accessible to students of different ages and learning levels. Through structured lessons, dedicated instructors and a flexible learning environment, we help students build a stronger connection with the Quran and Islamic teachings.")}
             </p>
             <Button to="/about" className="intro-btn">
               Learn More About Us
@@ -174,7 +174,7 @@ export default function Home() {
             center
             eyebrow="OUR COURSES"
             title="Explore Our Islamic Education Courses"
-            description="Start learning with courses designed to develop essential Quranic and Islamic knowledge."
+            description={t("Start learning with courses designed to develop essential Islamic knowledge.")}
           />
           <div className="course-grid">
             {courses.map((course, i) => (
@@ -233,7 +233,7 @@ export default function Home() {
           <div>
             <SectionHeading
               eyebrow="ABOUT US"
-              title="Making Quranic Education More Accessible"
+              title={t("Making Islamic Education More Accessible")}
             />
             <p>{t("A non-profit online institution that aims to bridge the gap between Muslims and Islam by combining modern technologies with traditional teaching methods.")}</p>
             <p>{t("Our institution's purpose is to unite conscious Muslims on a single platform for the sake of Allah, offering them the opportunity to immerse themselves in the light of Hadith. As the saying goes, The best of you are those who learn Islam and teach it.")}</p>
