@@ -15,7 +15,7 @@ export default function Courses() {
         subtitle={t(
           "Structured Islamic education designed to help you build knowledge, improve your skills and grow in your Quranic.",
         )}
-        image={images.hero}
+        image={images.about}
       />
       <section className="section courses-intro">
         <div className="container">
