@@ -216,6 +216,23 @@ Object.assign(translations.tr, {
   "Thank you for reaching out to Mauiza. We’ll be in touch soon.": "Mauiza ile iletişime geçtiğiniz için teşekkür ederiz. Yakında size dönüş yapacağız.",
   "Contact on WhatsApp": "WhatsApp'tan iletişime geçin"
 });
+Object.assign(translations.tr, {
+  "Revert Guide 1": "Yeni Müslüman Rehberi 1",
+  "Revert Guide 2": "Yeni Müslüman Rehberi 2",
+  "Revert Guide 3": "Yeni Müslüman Rehberi 3",
+  "Prayer Memorization 1": "Namaz Ezberleme 1",
+  "Prayer Memorization 2": "Namaz Ezberleme 2",
+  "Prayer Memorization 3": "Namaz Ezberleme 3",
+  "Quran Memorization 1": "Kuran Ezberleme 1",
+  "Quran Memorization 2": "Kuran Ezberleme 2",
+  "Quran Memorization 3": "Kuran Ezberleme 3",
+  "Arabic Reading Course 1": "Arapça Okuma Kursu 1",
+  "Arabic Reading Course 2": "Arapça Okuma Kursu 2",
+  "Arabic Reading Course 3": "Arapça Okuma Kursu 3",
+  "Arabic Reading Course 4": "Arapça Okuma Kursu 4",
+  "View": "Görüntüle",
+  "Download": "İndir"
+});
 Object.assign(translations.fr, {
   "Your registration has been submitted successfully.": "Votre inscription a été envoyée avec succès.",
   "Thank you for choosing Mauiza. Our team will contact you soon.": "Merci d’avoir choisi Mauiza. Notre équipe vous contactera bientôt.",
