@@ -132,7 +132,7 @@ export default function Registration() {
 		try {
 			setSubmitting(true);
 			setErrorMessage("");
-			const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
+			const apiBaseUrl = "https://mauiza.com";
 			const response = await fetch(`${apiBaseUrl}/api/registration`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },

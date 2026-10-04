@@ -5,8 +5,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { images } from "../../data/images";
 import "./DailyEssentialsTools.css";
 
-const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
-const API = `${apiBaseUrl}/api/halal/analyze`;
+const apiBaseUrl = "https://mauiza.com";
 
 const getLocalFallback = (entry) => {
   const value = String(entry || "").trim().toLowerCase();
@@ -65,7 +64,7 @@ export default function HalalScanner() {
     setResults([]);
 
     try {
-      const response = await fetch(API, {
+      const response = await fetch(`${apiBaseUrl}/api/halal/analyze`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ingredients: ingredients.join(", ") })

@@ -8,7 +8,7 @@ import "./DailyEssentialsRedesign.css";
 
 const prayerIcons = { Fajr: Sunrise, Sunrise, Dhuhr: Sun, Asr: Compass, Maghrib: Sunset, Isha: Moon };
 const prayerOrder = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
-const apiBaseUrl = (import.meta.env.VITE_API_URL || "https://mauiza-backend.onrender.com").replace(/\/+$/, "");
+const apiBaseUrl = "https://mauiza.com";
 const extraLabels = {
   en: { sunset: "Sunset", remaining: "Remaining" }, ur: { sunset: "غروب آفتاب", remaining: "باقی وقت" }, ar: { sunset: "الغروب", remaining: "متبقٍ" },
   sv: { sunset: "Solnedgång", remaining: "Återstår" }, tr: { sunset: "Gün batımı", remaining: "Kalan" }, fr: { sunset: "Coucher du soleil", remaining: "Restant" },
