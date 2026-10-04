@@ -103,6 +103,8 @@ Object.assign(arabic, {
   "Go beyond simply reading. Develop knowledge, confidence and a deeper connection with Islamic teachings.": "تجاوز مجرد القراءة. نمِّ المعرفة والثقة والصلة الأعمق بالتعاليم الإسلامية.",
   Understanding: "الفهم", Practice: "الممارسة", Consistency: "الاستمرارية", Guidance: "الإرشاد", Accessibility: "سهولة الوصول", Knowledge: "المعرفة", Excellence: "التميز", Respect: "الاحترام",
   "“The best investment is the one that brings you closer to knowledge.”": "«أفضل استثمار هو ما يقربك من المعرفة.»",
+  "Complete the form below and take your next step towards meaningful Islamic learning.": "أكمل النموذج أدناه واتخذ خطوتك التالية نحو تعلّم إسلامي هادف.",
+  "Share a few details about your learning goals and preferred schedule.": "شارك بعض التفاصيل عن أهدافك التعليمية وجدولك الزمني المفضل.",
   "Share a few details about your learning goals and preferred schedule. Our team will review your registration and contact you with the next steps.": "شارك بعض التفاصيل عن أهدافك التعليمية والوقت المفضل لديك. سيراجع فريقنا تسجيلك ويتواصل معك بالخطوات التالية.",
   "WhatsApp Number": "رقم واتساب", "Your WhatsApp number": "رقم واتساب الخاص بك", Gender: "الجنس", "Select gender": "اختر الجنس", Male: "ذكر", Female: "أنثى",
   "Thank you. Your registration has been received.": "شكرًا لك. تم استلام تسجيلك.",
