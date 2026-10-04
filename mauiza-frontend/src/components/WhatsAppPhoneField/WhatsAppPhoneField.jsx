@@ -8,14 +8,9 @@ const supportedCountries = getCountries();
 export default function WhatsAppPhoneField() {
 	const { language, t } = useLanguage();
 	const fieldId = useId();
-	const rootRef = useRef(null);
-	const searchRef = useRef(null);
 	const phoneRef = useRef(null);
 	const [selectedCountry, setSelectedCountry] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
-	const [search, setSearch] = useState("");
-	const [isOpen, setIsOpen] = useState(false);
-	const [activeIndex, setActiveIndex] = useState(0);
 	const displayNames = new Intl.DisplayNames([language], { type: "region" });
 	const countries = useMemo(() => supportedCountries.map((code) => ({
 		code,
@@ -23,36 +18,10 @@ export default function WhatsAppPhoneField() {
 		dialCode: `+${getCountryCallingCode(code)}`
 	})).sort((first, second) => new Intl.Collator(language).compare(first.name, second.name)), [language]);
 	const selected = countries.find((country) => country.code === selectedCountry);
-	const normalizedSearch = search.trim().toLocaleLowerCase(language);
-	const matchingCountries = countries.filter(({ code, name, dialCode }) =>
-		`${name} ${code} ${dialCode}`.toLocaleLowerCase(language).includes(normalizedSearch)
-	).sort((first, second) => {
-		const relevance = (country) => {
-			const countryCode = country.code.toLocaleLowerCase(language);
-			const name = country.name.toLocaleLowerCase(language);
-			const dialCode = country.dialCode.toLocaleLowerCase(language);
-			const dialDigits = dialCode.slice(1);
-			if (countryCode === normalizedSearch || dialCode === normalizedSearch || dialDigits === normalizedSearch) return 0;
-			if (name.startsWith(normalizedSearch)) return 1;
-			if (countryCode.startsWith(normalizedSearch) || dialCode.startsWith(normalizedSearch)) return 2;
-			return 3;
-		};
-		return relevance(first) - relevance(second) || new Intl.Collator(language).compare(first.name, second.name);
-	});
 	const parsedPhone = selectedCountry && phoneNumber
 		? parsePhoneNumberFromString(phoneNumber, selectedCountry)
 		: undefined;
 	const completePhoneNumber = parsedPhone?.isValid() ? parsedPhone.number : "";
-
-	useEffect(() => {
-		if (!isOpen) return undefined;
-		searchRef.current?.focus();
-		const closeOnOutsideClick = (event) => {
-			if (!rootRef.current?.contains(event.target)) setIsOpen(false);
-		};
-		document.addEventListener("pointerdown", closeOnOutsideClick);
-		return () => document.removeEventListener("pointerdown", closeOnOutsideClick);
-	}, [isOpen]);
 
 	useEffect(() => {
 		const input = phoneRef.current;
@@ -71,49 +40,28 @@ export default function WhatsAppPhoneField() {
 		const reset = () => {
 			setSelectedCountry("");
 			setPhoneNumber("");
-			setSearch("");
-			setIsOpen(false);
 		};
 		form?.addEventListener("reset", reset);
 		return () => form?.removeEventListener("reset", reset);
 	}, []);
 
-	function handleSearchKeyDown(event) {
-		if (event.key === "Escape") {
-			event.preventDefault();
-			setIsOpen(false);
-		} else if (event.key === "ArrowDown" && matchingCountries.length) {
-			event.preventDefault();
-			setActiveIndex((index) => (index + 1) % matchingCountries.length);
-		} else if (event.key === "ArrowUp" && matchingCountries.length) {
-			event.preventDefault();
-			setActiveIndex((index) => (index - 1 + matchingCountries.length) % matchingCountries.length);
-		} else if (event.key === "Enter" && matchingCountries[activeIndex]) {
-			event.preventDefault();
-			setSelectedCountry(matchingCountries[activeIndex].code);
-			setIsOpen(false);
-		}
-	}
-
 	return (
-		<div className="whatsapp-phone-field" ref={rootRef} data-translation-owned="true">
+		<div className="whatsapp-phone-field" data-translation-owned="true">
 			<label htmlFor={`${fieldId}-number`}>{t("WhatsApp Number")}</label>
 			<div className="whatsapp-phone-control">
-				<button
-					className="whatsapp-code-trigger"
-					type="button"
+				<select
+					className="whatsapp-country-select"
+					name="phoneCountry"
 					aria-label={t("Select country calling code")}
-					aria-haspopup="listbox"
-					aria-expanded={isOpen}
-					onClick={() => {
-						setSearch("");
-						setActiveIndex(0);
-						setIsOpen((open) => !open);
-					}}
+					value={selectedCountry}
+					onChange={(event) => setSelectedCountry(event.target.value)}
+					required
 				>
-					<span>{selected ? `${selected.dialCode} ${selected.name}` : t("Code")}</span>
-					<span aria-hidden="true">▾</span>
-				</button>
+					<option value="" disabled>{t("Code")}</option>
+					{countries.map((country) => (
+						<option key={country.code} value={country.code}>{country.dialCode} {country.name}</option>
+					))}
+				</select>
 				<input type="hidden" name="phoneCountryCode" value={selected?.dialCode || ""} />
 				<input
 					id={`${fieldId}-number`}
@@ -130,49 +78,6 @@ export default function WhatsAppPhoneField() {
 					onChange={(event) => setPhoneNumber(event.target.value)}
 				/>
 				<input type="hidden" name="phone" value={completePhoneNumber} />
-				{isOpen && (
-					<div className="whatsapp-country-menu">
-						<input
-							ref={searchRef}
-							className="whatsapp-country-search"
-							type="search"
-							role="combobox"
-							aria-label={t("Search country or calling code")}
-							aria-autocomplete="list"
-							aria-controls={`${fieldId}-country-list`}
-							aria-activedescendant={matchingCountries[activeIndex] ? `${fieldId}-country-${matchingCountries[activeIndex].code}` : undefined}
-							aria-expanded="true"
-							placeholder={t("Search country or calling code")}
-							value={search}
-							onChange={(event) => {
-								setSearch(event.target.value);
-								setActiveIndex(0);
-							}}
-							onKeyDown={handleSearchKeyDown}
-						/>
-						<div id={`${fieldId}-country-list`} className="whatsapp-country-options" role="listbox">
-							{matchingCountries.length ? matchingCountries.map((country, index) => (
-								<button
-									key={country.code}
-									id={`${fieldId}-country-${country.code}`}
-									className="whatsapp-country-option"
-									data-active={index === activeIndex}
-									role="option"
-									aria-selected={country.code === selectedCountry}
-									type="button"
-									onMouseEnter={() => setActiveIndex(index)}
-									onClick={() => {
-										setSelectedCountry(country.code);
-										setIsOpen(false);
-									}}
-								>
-									<span>{country.name}</span>
-									<strong>{country.dialCode}</strong>
-								</button>
-							)) : <p className="whatsapp-country-empty">{t("No countries found")}</p>}
-						</div>
-					</div>
-					)}
 			</div>
 		</div>
 	);
