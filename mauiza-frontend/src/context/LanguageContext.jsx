@@ -853,6 +853,24 @@ const aboutWelcomeTranslations = {
 
 Object.entries(aboutWelcomeTranslations).forEach(([language, dictionary]) => Object.assign(translations[language], dictionary));
 
+Object.assign(translations.ru, {
+  "Share your Islamic knowledge with students and help them build a stronger connection with the Qur'an, Sunnah, and Islamic teachings.": "Делитесь своими исламскими знаниями со студентами и помогайте им выстраивать более прочную связь с Кораном, Сунной и исламскими учениями.",
+  "Help us transform Islamic knowledge into engaging and meaningful video content for learners and audiences online.": "Помогите нам превратить исламские знания в увлекательный и содержательный видеоконтент для учащихся и онлайн-аудитории.",
+  "Have a question about a course or your learning journey? Get in touch with us.": "Есть вопрос о курсе или вашем пути обучения? Свяжитесь с нами.",
+  "We would be happy to answer your questions and help you find a course that suits your goals.": "Мы с радостью ответим на ваши вопросы и поможем найти курс, который подходит вашим целям.",
+  "Send us a message and our team will get back to you as soon as possible.": "Отправьте нам сообщение, и наша команда свяжется с вами как можно скорее.",
+  "Complete the form below and take your next step towards meaningful Quranic learning.": "Заполните форму ниже и сделайте следующий шаг к осмысленному изучению Корана.",
+  "Let’s Find the Right Learning Path for You.": "Давайте найдём для вас правильный путь обучения.",
+  "Share a few details about your learning goals and preferred schedule.": "Расскажите немного о своих учебных целях и предпочитаемом расписании.",
+  "Simple online registration": "Простая онлайн-регистрация",
+  "Choose a suitable course": "Выберите подходящий курс",
+  "Flexible schedule preferences": "Гибкие предпочтения по расписанию",
+  "GET IN TOUCH": "СВЯЖИТЕСЬ С НАМИ",
+  "Learn More About Us": "Узнать больше о нас",
+  "Contact on WhatsApp": "Связаться в WhatsApp",
+  "Thoughtful online Quranic education for meaningful, consistent learning.": "Продуманное онлайн-обучение Корану для осмысленного и постоянного изучения."
+});
+
 Object.assign(translations.fr, {
   Resources: "Ressources", Volunteers: "Bénévoles", "Daily Essentials": "Essentiels quotidiens",
   "Switch to light mode": "Passer au mode clair", "Switch to dark mode": "Passer au mode sombre",
