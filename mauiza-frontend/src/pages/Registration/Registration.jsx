@@ -147,7 +147,7 @@ export default function Registration() {
 				throw new Error(data.message || t("Registration failed"));
 			}
 
-			const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.fullName}\nEmail: ${payload.email}\n\nI have submitted the form.\n\nI would like to continue the conversation.`;
+			const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.fullName}\nEmail: ${payload.email}\n\nI have submitted the form.\nForm: Registration | Course: ${payload.course || "Not specified"}\n\nI would like to continue the conversation.`;
 			setSuccessMessage(whatsappMessage);
 			setSent(true);
 			form.reset();

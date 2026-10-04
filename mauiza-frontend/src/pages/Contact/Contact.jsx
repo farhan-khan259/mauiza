@@ -82,7 +82,7 @@ export default function Contact() {
                       };
                   if (!response.ok)
                     throw new Error(data.message || t("Failed to send message"));
-                  const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.name}\nEmail: ${payload.email}\n\nI have submitted the contact form.\nSubject: ${payload.subject}\n\nI would like to continue the conversation.`;
+                  const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.name}\nEmail: ${payload.email}\n\nI have submitted the contact form.\nForm: Feedback\nSubject: ${payload.subject}\n\nI would like to continue the conversation.`;
                   setSuccessMessage(whatsappMessage);
                   setSent(true);
                   form.reset();

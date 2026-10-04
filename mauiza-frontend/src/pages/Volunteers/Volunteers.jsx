@@ -242,7 +242,7 @@ export default function Volunteers() {
       const result = contentType.includes("application/json") ? await response.json() : {};
       if (!response.ok) throw new Error(result.message || t("Volunteer application failed. Please try again."));
 
-      const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.fullName}\nEmail: ${payload.email}\n\nI have submitted the form.\n\nI would like to continue the conversation.`;
+      const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.fullName}\nEmail: ${payload.email}\n\nI have submitted the form.\nForm: Volunteer | Category: ${payload.designation || "Not specified"}\n\nI would like to continue the conversation.`;
       setSuccessMessage(whatsappMessage);
       setSent(true);
       form.reset();
