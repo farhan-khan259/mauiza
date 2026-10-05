@@ -9,14 +9,30 @@ export default function WhatsAppPhoneField() {
 	const { language, t } = useLanguage();
 	const fieldId = useId();
 	const phoneRef = useRef(null);
+	const countryRef = useRef(null);
 	const [selectedCountry, setSelectedCountry] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
+	const [countrySearch, setCountrySearch] = useState("");
 	const displayNames = new Intl.DisplayNames([language], { type: "region" });
 	const countries = useMemo(() => supportedCountries.map((code) => ({
 		code,
 		name: displayNames.of(code) || code,
 		dialCode: `+${getCountryCallingCode(code)}`
-	})).sort((first, second) => new Intl.Collator(language).compare(first.name, second.name)), [language]);
+	})).sort((first, second) => {
+		const dialCodeDifference = Number(first.dialCode.slice(1)) - Number(second.dialCode.slice(1));
+		return dialCodeDifference || new Intl.Collator(language).compare(first.name, second.name);
+	}), [language]);
+	const visibleCountries = useMemo(() => {
+		const query = countrySearch.trim().toLocaleLowerCase(language);
+		if (!query) return countries;
+		return countries
+			.filter((country) => `${country.dialCode} ${country.name}`.toLocaleLowerCase(language).includes(query))
+			.sort((first, second) => {
+				const firstStartsWithQuery = first.name.toLocaleLowerCase(language).startsWith(query);
+				const secondStartsWithQuery = second.name.toLocaleLowerCase(language).startsWith(query);
+				return Number(secondStartsWithQuery) - Number(firstStartsWithQuery);
+			});
+	}, [countries, countrySearch, language]);
 	const selected = countries.find((country) => country.code === selectedCountry);
 	const parsedPhone = selectedCountry && phoneNumber
 		? parsePhoneNumberFromString(phoneNumber, selectedCountry)
@@ -36,10 +52,17 @@ export default function WhatsAppPhoneField() {
 	}, [phoneNumber, selectedCountry, t]);
 
 	useEffect(() => {
+		const input = countryRef.current;
+		if (!input) return;
+		input.setCustomValidity(selectedCountry ? "" : t("Please select a country code."));
+	}, [selectedCountry, t]);
+
+	useEffect(() => {
 		const form = phoneRef.current?.form;
 		const reset = () => {
 			setSelectedCountry("");
 			setPhoneNumber("");
+			setCountrySearch("");
 		};
 		form?.addEventListener("reset", reset);
 		return () => form?.removeEventListener("reset", reset);
@@ -49,19 +72,28 @@ export default function WhatsAppPhoneField() {
 		<div className="whatsapp-phone-field" data-translation-owned="true">
 			<label htmlFor={`${fieldId}-number`}>{t("WhatsApp Number")}</label>
 			<div className="whatsapp-phone-control">
-				<select
+				<input
+					ref={countryRef}
 					className="whatsapp-country-select"
 					name="phoneCountry"
+					type="text"
+					list={`${fieldId}-countries`}
 					aria-label={t("Select country calling code")}
-					value={selectedCountry}
-					onChange={(event) => setSelectedCountry(event.target.value)}
+					placeholder={t("Code")}
+					value={countrySearch}
+					onChange={(event) => {
+						const value = event.target.value;
+						const country = countries.find((item) => `${item.dialCode} ${item.name}` === value);
+						setCountrySearch(value);
+						setSelectedCountry(country?.code || "");
+					}}
 					required
-				>
-					<option value="" disabled>{t("Code")}</option>
-					{countries.map((country) => (
-						<option key={country.code} value={country.code}>{country.dialCode} {country.name}</option>
+				/>
+				<datalist id={`${fieldId}-countries`}>
+					{visibleCountries.map((country) => (
+						<option key={country.code} value={`${country.dialCode} ${country.name}`} />
 					))}
-				</select>
+				</datalist>
 				<input type="hidden" name="phoneCountryCode" value={selected?.dialCode || ""} />
 				<input
 					id={`${fieldId}-number`}
