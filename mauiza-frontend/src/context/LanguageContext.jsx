@@ -909,6 +909,12 @@ Object.assign(translations.ru, {
 });
 
 Object.assign(translations.ru, {
+  "OUR PURPOSE": "НАША ЦЕЛЬ",
+  "WHY CHOOSE US": "ПОЧЕМУ ВЫБИРАЮТ НАС",
+  "OUR COURSES": "НАШИ КУРСЫ",
+  "HOW IT WORKS": "КАК ЭТО РАБОТАЕТ",
+  "LEARN WITH PURPOSE": "УЧИТЕСЬ С ЦЕЛЬЮ",
+  "Learn with purpose.": "Учитесь с целью.",
   "Complete the form below and take your next step towards meaningful Islamic learning.": "Заполните форму ниже и сделайте следующий шаг к осмысленному изучению ислама.",
   "Structured Islamic education designed to help you build knowledge, improve your skills and grow in your Quranic.": "Структурированное исламское образование, которое помогает расширять знания, улучшать навыки и развиваться в изучении Корана.",
   "Revert Guide": "Руководство для новообращённых",
