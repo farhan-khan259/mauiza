@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AlertCircle, CheckCircle2, Compass, LocateFixed, MapPin, Navigation, RotateCcw, Smartphone, X } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
 import { images } from "../../data/images";
+import { getAccurateCurrentPosition, getLocationErrorMessage } from "../../utils/geolocation";
 import "./DailyEssentialsTools.css";
 
 const KAABA = { latitude: 21.4224779, longitude: 39.8251832 };
@@ -159,35 +160,20 @@ export default function QiblaDetector() {
     }
   }, [sensorAccuracy]);
 
-  const findMyQibla = () => {
-    if (!navigator.geolocation) {
-      setLocationError("Location services are not supported by this browser. Enter coordinates manually instead.");
-      setShowManualFallback(true);
-      return;
-    }
-
+  const findMyQibla = async () => {
     setLoading(true);
     setLocationError("");
     setShowManualFallback(false);
-
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => {
-        const nextLocation = { latitude: coords.latitude, longitude: coords.longitude };
-        setLocation(nextLocation);
-        setLocationAccuracy(coords.accuracy ?? null);
-        setLoading(false);
-      },
-      error => {
-        setLoading(false);
-        if (error.code === error.PERMISSION_DENIED) {
-          setLocationError("Location permission is required for automatic Qibla detection.");
-        } else {
-          setLocationError("We could not determine your location. Try again or select your location manually.");
-        }
-        setShowManualFallback(true);
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-    );
+    try {
+      const position = await getAccurateCurrentPosition();
+      setLocation({ latitude: position.latitude, longitude: position.longitude });
+      setLocationAccuracy(position.accuracy);
+    } catch (error) {
+      setLocationError(getLocationErrorMessage(error));
+      setShowManualFallback(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const enableCompass = async () => {

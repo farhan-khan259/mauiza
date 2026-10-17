@@ -2,6 +2,7 @@ const english = {
   title: "Daily Essentials",
   subtitle: "Essential Islamic tools designed to help Muslims organize their daily worship and stay connected with their prayers.",
   currentLocation: "Current Location",
+  gpsLocation: "Precise GPS location",
   noLocation: "No location selected",
   allowLocation: "Allow Location Access",
   detecting: "Detecting...",

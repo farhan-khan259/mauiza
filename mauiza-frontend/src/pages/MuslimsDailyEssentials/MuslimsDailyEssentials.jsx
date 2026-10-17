@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Clock3, Compass, LocateFixed, MapPin, Moon, MoonStar, Search, ShieldAlert, Sparkles, Sunrise, Sun, Sunset, Trash2 } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
 import { useLanguage } from "../../context/LanguageContext";
+import { getAccurateCurrentPosition, getLocationErrorMessage } from "../../utils/geolocation";
 import dailyTranslations from "./dailyEssentialsTranslations";
 import "./MuslimsDailyEssentials.css";
 import "./DailyEssentialsRedesign.css";
@@ -92,6 +93,22 @@ function getLocationKey(savedLocation) {
   return `${Number(savedLocation.latitude).toFixed(6)}:${Number(savedLocation.longitude).toFixed(6)}`;
 }
 
+function getStoredPrayerLocation() {
+  try {
+    const storedLocation = JSON.parse(sessionStorage.getItem("mauiza-daily-location"));
+    const latitude = Number(storedLocation?.latitude);
+    const longitude = Number(storedLocation?.longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+    if (storedLocation.source === "device") {
+      const age = Date.now() - Number(storedLocation.timestamp || 0);
+      return age >= 0 && age <= 120000 ? storedLocation : null;
+    }
+    return ["search", "saved"].includes(storedLocation.source) ? storedLocation : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function MuslimsDailyEssentials() {
   const { language } = useLanguage();
   const t = (key) => extraLabels[language]?.[key] || dailyTranslations[language]?.[key] || dailyTranslations.en[key] || key;
@@ -100,9 +117,7 @@ export default function MuslimsDailyEssentials() {
     document.title = `${t("title")} | Mauiza`;
     return () => { document.title = previousTitle; };
   }, [language]);
-  const [location, setLocation] = useState(() => {
-    try { return JSON.parse(sessionStorage.getItem("mauiza-daily-location")) || null; } catch { return null; }
-  });
+  const [location, setLocation] = useState(getStoredPrayerLocation);
   const [savedLocations, setSavedLocations] = useState(() => {
     try {
       const storedLocations = JSON.parse(localStorage.getItem("mauiza-saved-locations"));
@@ -124,6 +139,7 @@ export default function MuslimsDailyEssentials() {
     setLocation(nextLocation);
     sessionStorage.setItem("mauiza-daily-location", JSON.stringify(nextLocation));
     setLoading(true);
+    setPrayerData(null);
     setError("");
     try {
       const response = await fetch(`${apiBaseUrl}/api/prayer-times?latitude=${nextLocation.latitude}&longitude=${nextLocation.longitude}&date=${getTodayDate()}`);
@@ -147,18 +163,16 @@ export default function MuslimsDailyEssentials() {
     }
   };
 
-  const allowLocation = () => {
-    if (!navigator.geolocation) {
-      setError(t("locationUnavailable"));
-      return;
-    }
+  const allowLocation = async () => {
     setLocationLoading(true);
     setError("");
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => requestPrayerTimes({ latitude: coords.latitude, longitude: coords.longitude }),
-      () => { setLocationLoading(false); setError(t("locationDenied")); },
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
-    );
+    try {
+      const position = await getAccurateCurrentPosition();
+      await requestPrayerTimes(position);
+    } catch (locationError) {
+      setLocationLoading(false);
+      setError(getLocationErrorMessage(locationError));
+    }
   };
 
   useEffect(() => {
@@ -212,6 +226,9 @@ export default function MuslimsDailyEssentials() {
       longitude: lon,
       city: place.city || place.name || place.label?.split(",")[0] || "Selected location",
       country: place.country || place.country_name || place.region || "Location",
+      accuracy: null,
+      timestamp: Date.now(),
+      source: "search",
     };
 
     setSearch("");
@@ -223,7 +240,8 @@ export default function MuslimsDailyEssentials() {
   const saveLocation = () => {
     if (!location) return;
     setSavedLocations((currentLocations) => {
-      const nextLocations = [location, ...currentLocations.filter((savedLocation) => getLocationKey(savedLocation) !== getLocationKey(location))];
+      const savedLocation = { ...location, source: "saved", timestamp: Date.now() };
+      const nextLocations = [savedLocation, ...currentLocations.filter((item) => getLocationKey(item) !== getLocationKey(location))];
       localStorage.setItem("mauiza-saved-locations", JSON.stringify(nextLocations));
       return nextLocations;
     });
@@ -262,7 +280,7 @@ export default function MuslimsDailyEssentials() {
       <section className="section daily-dashboard-section">
         <div className="container">
           <div className="daily-location-bar">
-            <div className="daily-location-copy"><MapPin /><div><span>{t("currentLocation")}</span><strong>{location?.city && location?.country ? `${location.city}, ${location.country}` : t("noLocation")}</strong></div>{location && savedLocations.some((savedLocation) => getLocationKey(savedLocation) === getLocationKey(location)) && <button type="button" className="daily-location-remove" onClick={() => deleteSavedLocation(location)} aria-label={t("deleteSavedLocation")} title={t("deleteSavedLocation")}><Trash2 aria-hidden="true" /></button>}</div>
+            <div className="daily-location-copy"><MapPin /><div><span>{t("currentLocation")}</span><strong>{location?.city && location?.country ? `${location.city}, ${location.country}` : location ? t("gpsLocation") : t("noLocation")}</strong>{location && <small className="daily-coordinate-readout">{Number(location.latitude).toFixed(6)}, {Number(location.longitude).toFixed(6)}{Number.isFinite(location.accuracy) ? ` · ±${Math.round(location.accuracy)} m` : ""}</small>}</div>{location && savedLocations.some((savedLocation) => getLocationKey(savedLocation) === getLocationKey(location)) && <button type="button" className="daily-location-remove" onClick={() => deleteSavedLocation(location)} aria-label={t("deleteSavedLocation")} title={t("deleteSavedLocation")}><Trash2 aria-hidden="true" /></button>}</div>
             <div className="daily-location-actions">
               <button type="button" className="daily-button daily-button-light" onClick={allowLocation} disabled={locationLoading}><LocateFixed />{locationLoading ? t("detecting") : t("allowLocation")}</button>
               <label className="daily-place-search"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={"Search your location"} aria-label={t("searchCity")} /></label>
@@ -273,7 +291,7 @@ export default function MuslimsDailyEssentials() {
           {savedLocations.length > 0 && <section className="saved-locations" aria-labelledby="saved-locations-title">
             <div className="saved-locations-heading"><div><span className="eyebrow">{t("tracker")}</span><h2 id="saved-locations-title">{t("savedLocations")}</h2></div></div>
             <div className="saved-location-list">{savedLocations.map((savedLocation) => <div className={`saved-location-row ${location && getLocationKey(location) === getLocationKey(savedLocation) ? "active" : ""}`} key={getLocationKey(savedLocation)}>
-              <button type="button" className="saved-location-select" onClick={() => requestPrayerTimes(savedLocation)}>
+              <button type="button" className="saved-location-select" onClick={() => requestPrayerTimes({ ...savedLocation, source: "saved", timestamp: Date.now() })}>
                 <MapPin aria-hidden="true" /><span>{savedLocation.city && savedLocation.country ? `${savedLocation.city}, ${savedLocation.country}` : `${savedLocation.latitude}, ${savedLocation.longitude}`}</span>
               </button>
               <button type="button" className="saved-location-delete" onClick={() => deleteSavedLocation(savedLocation)} aria-label={t("deleteSavedLocation")} title={t("deleteSavedLocation")}><Trash2 aria-hidden="true" /></button>
