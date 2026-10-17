@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AlertCircle, CheckCircle2, Compass, LocateFixed, MapPin, Navigation, RotateCcw, Smartphone, X } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
 import { images } from "../../data/images";
@@ -58,15 +58,24 @@ const smoothAngle = (previousAngle, newAngle, smoothingFactor = 0.22) => {
   return normalizeAngle(previousAngle + difference * smoothingFactor);
 };
 
+const getScreenOrientationAngle = () => {
+  const angle = Number(window.screen?.orientation?.angle ?? window.orientation ?? 0);
+  return Number.isFinite(angle) ? angle : 0;
+};
+
 const getDeviceHeading = event => {
   if (!event) return null;
 
-  if (Number.isFinite(event.webkitCompassHeading)) {
-    return normalizeAngle(event.webkitCompassHeading);
+  if (Number.isFinite(event.webkitCompassHeading) && event.webkitCompassHeading >= 0) {
+    return { heading: normalizeAngle(event.webkitCompassHeading), source: "iOS compass" };
   }
 
-  if (Number.isFinite(event.alpha)) {
-    return normalizeAngle(360 - event.alpha);
+  const isAbsoluteReading = event.absolute === true || event.type === "deviceorientationabsolute";
+  if (isAbsoluteReading && Number.isFinite(event.alpha)) {
+    return {
+      heading: normalizeAngle(360 - event.alpha + getScreenOrientationAngle()),
+      source: "Absolute device orientation"
+    };
   }
 
   return null;
@@ -102,18 +111,25 @@ export default function QiblaDetector() {
   const [sensorAvailable, setSensorAvailable] = useState(false);
   const [compassEnabled, setCompassEnabled] = useState(false);
   const [showCalibration, setShowCalibration] = useState(false);
+  const [headingSource, setHeadingSource] = useState("");
+  const [headingUpdatedAt, setHeadingUpdatedAt] = useState(null);
+  const [deviceTilt, setDeviceTilt] = useState(null);
+  const [sensorClock, setSensorClock] = useState(Date.now());
+  const absoluteEventTimeRef = useRef(0);
 
   const supportsOrientation = typeof window !== "undefined" && "DeviceOrientationEvent" in window;
   const qiblaBearing = useMemo(() => (location ? calculateQiblaBearing(location) : null), [location]);
   const directionalLabel = qiblaBearing == null ? "--" : getCompassDirection(qiblaBearing);
-  const effectiveHeading = compassEnabled && deviceHeading != null ? deviceHeading : null;
-  const relativeQiblaAngle = qiblaBearing == null || effectiveHeading == null ? 0 : normalizeAngle(qiblaBearing - effectiveHeading);
+  const headingIsFresh = headingUpdatedAt != null && sensorClock - headingUpdatedAt <= 3000;
+  const effectiveHeading = compassEnabled && deviceHeading != null && headingIsFresh ? deviceHeading : null;
+  const relativeQiblaAngle = qiblaBearing == null
+    ? 0
+    : effectiveHeading == null ? qiblaBearing : normalizeAngle(qiblaBearing - effectiveHeading);
   const turnAngle = effectiveHeading == null ? 0 : shortestAngleDifference(qiblaBearing, effectiveHeading);
   const aligned = effectiveHeading != null && Math.abs(turnAngle) <= ALIGNMENT_THRESHOLD;
   const distanceKm = location ? calculateDistanceKm(location) : null;
 
   useEffect(() => {
-    setSensorAvailable(Boolean(supportsOrientation));
     if (!supportsOrientation) {
       setSensorPermission("unsupported");
     }
@@ -125,15 +141,26 @@ export default function QiblaDetector() {
     }
 
     const handleOrientation = event => {
-      const nextHeading = getDeviceHeading(event);
-      if (nextHeading == null) {
+      const reading = getDeviceHeading(event);
+      if (reading == null) {
         return;
       }
 
-      setSensorAvailable(true);
-      setDeviceHeading(current => smoothAngle(current, nextHeading, 0.25));
+      const isAbsoluteEvent = event.type === "deviceorientationabsolute";
+      const isIosHeading = Number.isFinite(event.webkitCompassHeading);
+      if (isAbsoluteEvent) absoluteEventTimeRef.current = Date.now();
+      if (!isAbsoluteEvent && !isIosHeading && Date.now() - absoluteEventTimeRef.current < 1500) return;
 
-      if (Number.isFinite(event.webkitCompassAccuracy)) {
+      setSensorAvailable(true);
+      setHeadingSource(reading.source);
+      setHeadingUpdatedAt(Date.now());
+      setDeviceHeading(current => smoothAngle(current, reading.heading, 0.2));
+
+      if (Number.isFinite(event.beta) && Number.isFinite(event.gamma)) {
+        setDeviceTilt(Math.max(Math.abs(event.beta), Math.abs(event.gamma)));
+      }
+
+      if (Number.isFinite(event.webkitCompassAccuracy) && event.webkitCompassAccuracy >= 0) {
         setSensorAccuracy(event.webkitCompassAccuracy);
       }
     };
@@ -146,6 +173,20 @@ export default function QiblaDetector() {
       window.removeEventListener("deviceorientation", handleOrientation, true);
     };
   }, [compassEnabled, supportsOrientation]);
+
+  useEffect(() => {
+    if (!compassEnabled || deviceHeading != null) return undefined;
+    const timeout = window.setTimeout(() => {
+      setLocationError("No earth-referenced compass heading was received. Keep using the numeric Qibla bearing, or try another mobile browser over HTTPS.");
+    }, 5000);
+    return () => window.clearTimeout(timeout);
+  }, [compassEnabled, deviceHeading]);
+
+  useEffect(() => {
+    if (!compassEnabled) return undefined;
+    const interval = window.setInterval(() => setSensorClock(Date.now()), 1000);
+    return () => window.clearInterval(interval);
+  }, [compassEnabled]);
 
   useEffect(() => {
     if (sensorAccuracy == null) {
@@ -177,6 +218,12 @@ export default function QiblaDetector() {
   };
 
   const enableCompass = async () => {
+    if (!window.isSecureContext) {
+      setSensorPermission("unsupported");
+      setLocationError("Live compass guidance requires HTTPS. The calculated north-referenced Qibla bearing remains available.");
+      return;
+    }
+
     if (!supportsOrientation) {
       setSensorPermission("unsupported");
       setLocationError("Your device does not provide a compass sensor. Your Qibla direction is still available.");
@@ -185,7 +232,13 @@ export default function QiblaDetector() {
 
     try {
       if (typeof window.DeviceOrientationEvent !== "undefined" && typeof window.DeviceOrientationEvent.requestPermission === "function") {
-        const permission = await window.DeviceOrientationEvent.requestPermission();
+        let permission;
+        try {
+          permission = await window.DeviceOrientationEvent.requestPermission(true);
+        } catch (permissionError) {
+          if (permissionError?.name !== "TypeError") throw permissionError;
+          permission = await window.DeviceOrientationEvent.requestPermission();
+        }
         if (permission !== "granted") {
           setSensorPermission("denied");
           setLocationError("Compass access was not granted. You can still use the calculated Qibla bearing.");
@@ -193,8 +246,13 @@ export default function QiblaDetector() {
         }
       }
 
+      setDeviceHeading(null);
+      setSensorAvailable(false);
+      setHeadingUpdatedAt(null);
+      absoluteEventTimeRef.current = 0;
       setCompassEnabled(true);
       setSensorPermission("granted");
+      setShowCalibration(true);
       setLocationError("");
     } catch (error) {
       setSensorPermission("denied");
@@ -231,7 +289,15 @@ export default function QiblaDetector() {
     return `Qibla is ${Math.abs(Math.round(turnAngle))}° to your ${direction}`;
   })();
 
-  const sensorStatus = sensorPermission === "granted" && sensorAvailable ? "Compass Active" : sensorPermission === "denied" ? "Compass permission denied" : sensorAvailable ? "Compass available" : "Compass not available";
+  const sensorStatus = sensorPermission === "granted" && sensorAvailable && headingIsFresh
+    ? `Compass active${headingSource ? ` · ${headingSource}` : ""}`
+    : sensorPermission === "granted" && sensorAvailable
+      ? "Compass reading paused"
+    : sensorPermission === "granted"
+      ? "Waiting for an absolute heading"
+      : sensorPermission === "denied"
+        ? "Compass permission denied"
+        : supportsOrientation ? "Compass not enabled" : "Compass not available";
 
   return (
     <main className="page tool-page">
@@ -294,7 +360,11 @@ export default function QiblaDetector() {
             {location && qiblaBearing != null ? (
               <>
                 <div className={`qibla-view ${aligned ? "aligned" : ""}`}>
-                  <div className="qibla-ring" aria-label="Qibla direction ring">
+                  <div
+                    className="qibla-ring"
+                    style={{ "--compass-heading": `${effectiveHeading ?? 0}deg` }}
+                    aria-label="Earth-referenced compass direction ring"
+                  >
                     <span className="direction-label north">N</span>
                     <span className="direction-label east">E</span>
                     <span className="direction-label south">S</span>
@@ -347,6 +417,22 @@ export default function QiblaDetector() {
                     <span className="detail-label"><Smartphone /> Sensor status</span>
                     <strong>{sensorStatus}</strong>
                   </div>
+                  {effectiveHeading !== null && (
+                    <div className="detail-row">
+                      <span className="detail-label"><Compass /> Device heading</span>
+                      <strong>{Math.round(effectiveHeading)}° {getCompassDirection(effectiveHeading)}</strong>
+                    </div>
+                  )}
+                  {compassEnabled && deviceTilt !== null && deviceTilt > 45 && (
+                    <div className="tool-alert qibla-inline-warning">
+                      <AlertCircle /> Keep the phone flat for more reliable compass guidance.
+                    </div>
+                  )}
+                  {headingUpdatedAt && sensorClock - headingUpdatedAt > 3000 && (
+                    <div className="tool-alert qibla-inline-warning">
+                      <AlertCircle /> Compass readings have stopped. Move the phone slightly or re-enable the compass.
+                    </div>
+                  )}
                   {locationAccuracy !== null && (
                     <div className="detail-row">
                       <span className="detail-label"><Compass /> Location accuracy</span>

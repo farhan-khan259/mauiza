@@ -134,6 +134,116 @@
   margin-top: 0;
 }
 
+.scanner-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.scanner-editor {
+  display: block;
+  padding: 24px;
+}
+
+.scanner-editor > label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.scanner-editor > label svg {
+  width: 18px;
+}
+
+.scanner-editor textarea {
+  min-height: 190px;
+  resize: vertical;
+}
+
+.ingredient-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.ingredient-summary span {
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  background: rgba(13, 65, 58, 0.08);
+  color: #254a45;
+  font-size: 13px;
+}
+
+.ingredient-summary strong {
+  display: block;
+  font-size: 20px;
+}
+
+.ingredient-results {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.ingredient-results article {
+  padding: 18px;
+  border: 1px solid rgba(18, 58, 52, 0.14);
+  border-radius: 14px;
+  background: #f8fcfb;
+  color: #24413d;
+}
+
+.ingredient-result-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ingredient-result-heading > strong {
+  color: #102f2a;
+  font-size: 17px;
+}
+
+.ingredient-results .status {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ingredient-results .status.generally-halal { background: #dff7eb; color: #12623f; }
+.ingredient-results .status.requires-verification-mushbooh { background: #fff2cf; color: #795600; }
+.ingredient-results .status.potentially-haram { background: #ffe2df; color: #8a2820; }
+.ingredient-results p { margin: 10px 0 0; line-height: 1.55; }
+.ingredient-results .ingredient-guidance { color: #44645f; }
+.ingredient-results small { display: block; margin-top: 12px; }
+.ingredient-results small a { color: #0b766c; text-decoration: underline; }
+
+.ingredient-disclaimer {
+  display: flex;
+  gap: 9px;
+  margin: 16px 0 0;
+  padding: 14px;
+  border-radius: 12px;
+  background: #fff8e7;
+  color: #67511b;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.ingredient-disclaimer svg { width: 17px; flex: 0 0 auto; }
+
+@media (max-width: 680px) {
+  .ingredient-summary { grid-template-columns: 1fr; }
+  .ingredient-result-heading { flex-direction: column; }
+}
+
 .finder {
   max-width: 1100px;
   margin: 0 auto;
@@ -534,6 +644,9 @@
   border: 1.5px solid rgba(255, 255, 255, 0.18);
   background: radial-gradient(circle at center, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01) 65%);
   box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.03);
+  transform: rotate(calc(-1 * var(--compass-heading, 0deg)));
+  transition: transform 0.18s ease-out;
+  will-change: transform;
 }
 
 .direction-label {
@@ -553,25 +666,30 @@
 .direction-label.north {
   top: 18px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) rotate(var(--compass-heading, 0deg));
 }
 
 .direction-label.east {
   right: 18px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) rotate(var(--compass-heading, 0deg));
 }
 
 .direction-label.south {
   bottom: 18px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) rotate(var(--compass-heading, 0deg));
 }
 
 .direction-label.west {
   left: 18px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) rotate(var(--compass-heading, 0deg));
+}
+
+.qibla-inline-warning {
+  margin: 0;
+  grid-column: 1 / -1;
 }
 
 .alignment-guide {

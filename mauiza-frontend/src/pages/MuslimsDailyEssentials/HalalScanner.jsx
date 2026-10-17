@@ -5,43 +5,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { images } from "../../data/images";
 import "./DailyEssentialsTools.css";
 
-const apiBaseUrl = "https://mauiza.com";
-
-const getLocalFallback = (entry) => {
-  const value = String(entry || "").trim().toLowerCase();
-  if (!value) return null;
-
-  const haramTerms = ["bear", "pork", "bacon", "ham", "lard", "rumen", "suet", "blood", "carmine", "cochineal"]; 
-  const halalTerms = ["sugar", "salt", "flour", "water", "olive oil", "palm oil", "rice", "corn starch", "cornstarch", "citric acid", "ascorbic acid", "sodium bicarbonate", "beta-carotene", "curcumin"]; 
-
-  if (haramTerms.some((term) => value.includes(term))) {
-    return {
-      name: entry.trim(),
-      eNumber: undefined,
-      classification: "Potentially Haram",
-      reason: "This ingredient is commonly associated with animal-based or restricted sources and should be checked before use.",
-      source: "Mauiza ingredient reference — local safety check"
-    };
-  }
-
-  if (halalTerms.some((term) => value.includes(term))) {
-    return {
-      name: entry.trim(),
-      eNumber: undefined,
-      classification: "Generally Halal",
-      reason: "This ingredient is usually accepted as halal when no prohibited processing aids or cross-contamination are involved.",
-      source: "Mauiza ingredient reference — local safety check"
-    };
-  }
-
-  return {
-    name: entry.trim(),
-    eNumber: undefined,
-    classification: "Requires Verification / Mushbooh",
-    reason: "This ingredient did not match the current halal reference list. Please confirm the source and packaging information before relying on it.",
-    source: "Mauiza ingredient reference — local safety check"
-  };
-};
+const apiBaseUrl = (import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5001" : window.location.origin)).replace(/\/$/, "");
 
 export default function HalalScanner() {
   const { language } = useLanguage();
@@ -50,18 +14,23 @@ export default function HalalScanner() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
+  const [summary, setSummary] = useState(null);
+  const [serverDisclaimer, setServerDisclaimer] = useState("");
 
-  const analyze = async () => {
+  const analyze = async (event) => {
+    event?.preventDefault();
     const ingredients = text.split(/[\n,;]+/).map((item) => item.trim()).filter(Boolean);
 
     if (!ingredients.length) {
       setResults([]);
+      setSummary(null);
       return setMessage("Add at least one ingredient or additive before checking.");
     }
 
     setLoading(true);
     setMessage("");
     setResults([]);
+    setSummary(null);
 
     try {
       const response = await fetch(`${apiBaseUrl}/api/halal/analyze`, {
@@ -74,17 +43,19 @@ export default function HalalScanner() {
       if (!response.ok) throw new Error(data.message || "The ingredient database could not be reached.");
 
       const serverResults = Array.isArray(data.results) ? data.results : [];
-      const resultItems = (serverResults.length ? serverResults : ingredients.map((ingredient) => getLocalFallback(ingredient))).map((item, index) => ({
+      const resultItems = serverResults.map((item, index) => ({
         ...item,
         id: item.id || `${String(item.name || "ingredient").trim() || "ingredient"}-${index}`,
-        statusClass: String(item.classification || "Requires Verification / Mushbooh").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
+        statusClass: String(item.classification || "Requires Verification / Mushbooh").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
       }));
 
       setResults(resultItems);
+      setSummary(data.summary || null);
+      setServerDisclaimer(data.disclaimer || "");
     } catch (error) {
-      const fallbackResults = ingredients.map((ingredient) => getLocalFallback(ingredient)).filter(Boolean);
-      setResults(fallbackResults);
-      setMessage(error.message);
+      setResults([]);
+      setSummary(null);
+      setMessage(`${error.message} No offline guess was shown because ingredient safety should not be inferred from an incomplete fallback list.`);
     } finally {
       setLoading(false);
     }
@@ -108,7 +79,7 @@ export default function HalalScanner() {
       <PageHero title={title} subtitle={subtitle} image={images.namaz} />
       <section className="section tool-section">
         <div className="container scanner-layout">
-          <div className="scanner-editor wide-editor">
+          <form className="scanner-editor wide-editor" onSubmit={analyze}>
             <label htmlFor="ingredients"><FileText /> {ingredientLabel}</label>
             <textarea
               id="ingredients"
@@ -118,27 +89,38 @@ export default function HalalScanner() {
               rows="9"
             />
 
-            <button className="tool-button" onClick={analyze} disabled={loading}>
+            <button className="tool-button" type="submit" disabled={loading}>
               {buttonText}
             </button>
 
             {message && (
-              <p className="tool-alert"><ShieldAlert />{message}</p>
+              <p className="tool-alert" role="alert"><ShieldAlert />{message}</p>
             )}
 
             {results.length > 0 && (
-              <div className="ingredient-results">
-                {results.map((item) => (
-                  <article key={item.id}>
-                    <strong>{item.name} {item.eNumber ? `(${item.eNumber})` : ""}</strong>
-                    <span className={`status ${item.statusClass}`}>{item.classification}</span>
-                    <p>{item.reason}</p>
-                    <small>{item.source || (isFrench ? "Source non fournie" : "Source not provided")}</small>
-                  </article>
-                ))}
-              </div>
+              <>
+                {summary && <div className="ingredient-summary" aria-label="Ingredient classification summary">
+                  <span className="generally-halal"><strong>{summary.generallyHalal}</strong> Generally halal</span>
+                  <span className="requires-verification-mushbooh"><strong>{summary.requiresVerification}</strong> Verify</span>
+                  <span className="potentially-haram"><strong>{summary.potentiallyHaram}</strong> Potentially haram</span>
+                </div>}
+                <div className="ingredient-results">
+                  {results.map((item) => (
+                    <article key={item.id}>
+                      <div className="ingredient-result-heading">
+                        <strong>{item.name} {item.eNumber && !String(item.name).toUpperCase().includes(item.eNumber) ? `(${item.eNumber})` : ""}</strong>
+                        <span className={`status ${item.statusClass}`}>{item.classification}</span>
+                      </div>
+                      <p>{item.reason}</p>
+                      {item.guidance && <p className="ingredient-guidance"><strong>{isFrench ? "À vérifier :" : "What to check:"}</strong> {item.guidance}</p>}
+                      <small>{item.sourceUrl ? <a href={item.sourceUrl} target="_blank" rel="noreferrer">{item.source}</a> : item.source || (isFrench ? "Source non fournie" : "Source not provided")}</small>
+                    </article>
+                  ))}
+                </div>
+                {serverDisclaimer && <p className="ingredient-disclaimer"><ShieldAlert />{serverDisclaimer}</p>}
+              </>
             )}
-          </div>
+          </form>
 
           <p className="tool-disclaimer">{disclaimer}</p>
         </div>
