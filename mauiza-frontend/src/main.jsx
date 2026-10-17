@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import { applyLanguageToDocument, getSavedLanguage } from './context/LanguageContext';
 import './styles/variables.css';
 import './styles/global.css';
 import './styles/responsive.css';
@@ -10,5 +11,6 @@ import './styles/overrides.css';
 
 const savedTheme = localStorage.getItem('mauiza-theme');
 if (savedTheme === 'dark') document.documentElement.dataset.theme = 'dark';
+applyLanguageToDocument(getSavedLanguage());
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><App /></BrowserRouter></React.StrictMode>);

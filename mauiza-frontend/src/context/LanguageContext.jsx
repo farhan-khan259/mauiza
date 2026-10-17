@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import volunteerCompleteTranslations from "../data/volunteerTranslations";
 
 export const languages = [
@@ -1398,6 +1398,51 @@ Object.assign(translations.fil, {
 });
 
 const LanguageContext = createContext(null);
+const LANGUAGE_STORAGE_KEY = "mauiza-language";
+
+export function getSavedLanguage() {
+  try {
+    const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    return languages.some((item) => item.code === savedLanguage) ? savedLanguage : "en";
+  } catch {
+    return "en";
+  }
+}
+
+export function applyLanguageToDocument(language) {
+  const selectedLanguage = languages.find((item) => item.code === language) || languages[0];
+  document.documentElement.lang = selectedLanguage.code;
+  document.documentElement.dir = selectedLanguage.direction;
+  document.body?.classList.toggle("rtl-language", selectedLanguage.direction === "rtl");
+}
+
+function saveLanguage(language) {
+  try {
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+  } catch {
+    // The in-memory language still works when storage is disabled or full.
+  }
+}
+
+const translationSources = new Map();
+Object.values(translations).forEach((dictionary) => {
+  Object.entries(dictionary).forEach(([source, translated]) => {
+    if (typeof translated !== "string") return;
+    const normalizedTranslation = translated.trim().replace(/\s+/g, " ");
+    if (!translationSources.has(normalizedTranslation)) {
+      translationSources.set(normalizedTranslation, source);
+    }
+  });
+});
+
+function getOriginalValue(value) {
+  if (typeof value !== "string") return value;
+
+  const normalized = value.trim().replace(/\s+/g, " ");
+  const source = translationSources.get(normalized);
+  if (!source) return value;
+  return `${value.match(/^\s*/)[0]}${source}${value.match(/\s*$/)[0]}`;
+}
 
 function translateValue(dictionary, value) {
   if (typeof value !== "string") return value;
@@ -1434,28 +1479,37 @@ function translateValue(dictionary, value) {
   return value;
 }
 
-function translateDocument(language, originalText) {
+function translateDocument(language, originalText, originalAttributes) {
   const dictionary = translations[language] || {};
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let node;
   while ((node = walker.nextNode())) {
     if (!node.parentElement.closest("script, style, [data-translation-owned]")) {
-      const original = originalText.current.get(node) || node.textContent;
-      originalText.current.set(node, original);
+      const current = node.textContent;
+      const previous = originalText.current.get(node);
+      const original = !previous || current !== previous.lastRendered
+        ? getOriginalValue(current)
+        : previous.original;
       const leading = original.match(/^\s*/)[0];
       const trailing = original.match(/\s*$/)[0];
       const translated = `${leading}${translateValue(dictionary, original)}${trailing}`;
+      originalText.current.set(node, { original, lastRendered: translated });
       if (node.textContent !== translated) node.textContent = translated;
     }
   }
   ["placeholder", "alt", "aria-label", "title"].forEach((attribute) => {
     document.querySelectorAll(`[${attribute}]`).forEach((element) => {
       if (element.closest("[data-translation-owned]")) return;
-      const dataKey = `original${attribute.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()).replace(/^./, (letter) => letter.toUpperCase())}`;
-      const original = element.dataset[dataKey] || element.getAttribute(attribute);
+      const current = element.getAttribute(attribute);
+      const elementAttributes = originalAttributes.current.get(element) || new Map();
+      const previous = elementAttributes.get(attribute);
+      const original = !previous || current !== previous.lastRendered
+        ? getOriginalValue(current)
+        : previous.original;
       if (original) {
-        element.dataset[dataKey] = original;
         const translated = translateValue(dictionary, original);
+        elementAttributes.set(attribute, { original, lastRendered: translated });
+        originalAttributes.current.set(element, elementAttributes);
         if (element.getAttribute(attribute) !== translated) {
           element.setAttribute(attribute, translated);
         }
@@ -1465,14 +1519,20 @@ function translateDocument(language, originalText) {
 }
 
 export function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState(() => {
-    const savedLanguage = localStorage.getItem("mauiza-language");
-    return languages.some((item) => item.code === savedLanguage) ? savedLanguage : "en";
-  });
+  const [language, setLanguageState] = useState(getSavedLanguage);
   const [theme, setTheme] = useState(() => localStorage.getItem("mauiza-theme") || "light");
-  const selected = languages.find((item) => item.code === language) || languages[0];
-  const originalText = useRef(new Map());
-  const t = (value) => translateValue(translations[language] || {}, value);
+  const selected = useMemo(() => languages.find((item) => item.code === language) || languages[0], [language]);
+  const originalText = useRef(new WeakMap());
+  const originalAttributes = useRef(new WeakMap());
+  const t = useCallback((value) => translateValue(translations[language] || {}, value), [language]);
+  const setLanguage = useCallback((nextLanguage) => {
+    const resolvedLanguage = typeof nextLanguage === "function" ? nextLanguage(language) : nextLanguage;
+    const validLanguage = languages.some((item) => item.code === resolvedLanguage) ? resolvedLanguage : "en";
+
+    saveLanguage(validLanguage);
+    applyLanguageToDocument(validLanguage);
+    setLanguageState(validLanguage);
+  }, [language]);
 
   useEffect(() => {
     const nextTheme = theme === "dark" ? "dark" : "light";
@@ -1481,11 +1541,9 @@ export function LanguageProvider({ children }) {
   }, [theme]);
 
   useEffect(() => {
-    localStorage.setItem("mauiza-language", language);
-    document.documentElement.lang = language;
-    document.documentElement.dir = selected.direction;
-    document.body.classList.toggle("rtl-language", selected.direction === "rtl");
-    translateDocument(language, originalText);
+    saveLanguage(language);
+    applyLanguageToDocument(language);
+    translateDocument(language, originalText, originalAttributes);
 
     // React creates new DOM nodes when the route changes and when conditional
     // UI (such as form confirmation messages) appears. Translating only when
@@ -1495,14 +1553,16 @@ export function LanguageProvider({ children }) {
       const hasRelevantChange = mutations.some(
         (mutation) =>
           mutation.type === "childList" ||
+          mutation.type === "characterData" ||
           (mutation.type === "attributes" && ["placeholder", "alt", "aria-label", "title"].includes(mutation.attributeName))
       );
 
-      if (hasRelevantChange) translateDocument(language, originalText);
+      if (hasRelevantChange) translateDocument(language, originalText, originalAttributes);
     });
 
     observer.observe(document.body, {
       childList: true,
+      characterData: true,
       subtree: true,
       attributes: true,
       attributeFilter: ["placeholder", "alt", "aria-label", "title"],
@@ -1511,7 +1571,28 @@ export function LanguageProvider({ children }) {
     return () => observer.disconnect();
   }, [language, selected.direction]);
 
-  return <LanguageContext.Provider value={{ language, setLanguage, selected, theme, t, toggleTheme: () => setTheme((current) => current === "dark" ? "light" : "dark") }}>{children}</LanguageContext.Provider>;
+  useEffect(() => {
+    const syncLanguageAcrossTabs = (event) => {
+      if (event.key !== LANGUAGE_STORAGE_KEY) return;
+      const nextLanguage = languages.some((item) => item.code === event.newValue) ? event.newValue : "en";
+      applyLanguageToDocument(nextLanguage);
+      setLanguageState(nextLanguage);
+    };
+
+    window.addEventListener("storage", syncLanguageAcrossTabs);
+    return () => window.removeEventListener("storage", syncLanguageAcrossTabs);
+  }, []);
+
+  const value = useMemo(() => ({
+    language,
+    setLanguage,
+    selected,
+    theme,
+    t,
+    toggleTheme: () => setTheme((current) => current === "dark" ? "light" : "dark"),
+  }), [language, selected, setLanguage, t, theme]);
+
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 
 export function useLanguage() {
