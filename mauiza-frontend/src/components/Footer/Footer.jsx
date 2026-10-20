@@ -34,9 +34,9 @@ export default function Footer() {
             <Mail />
             mauizainstitute@gmail.com
           </a>
-          <a href="https://wa.me/447460020357">
+          <a href="https://wa.me/447338700371">
             <WhatsAppIcon />
-            +44 7460020357
+            +44 7338700371
           </a>
           <a href="/contact">
             <MapPin />

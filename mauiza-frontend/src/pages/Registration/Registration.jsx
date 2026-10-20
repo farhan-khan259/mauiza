@@ -311,7 +311,7 @@ export default function Registration() {
 						<p>{t("Thank you for choosing Mauiza. Our team will contact you soon.")}</p>
 						<a
 							className="whatsapp-cta"
-							href={`https://wa.me/447460020357?text=${encodeURIComponent(successMessage)}`}
+							href={`https://wa.me/447338700371?text=${encodeURIComponent(successMessage)}`}
 							target="_blank"
 							rel="noreferrer"
 						>

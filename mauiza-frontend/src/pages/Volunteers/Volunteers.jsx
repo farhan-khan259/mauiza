@@ -447,7 +447,7 @@ export default function Volunteers() {
             <p>{t("Thank you for volunteering with Mauiza. Our team will review it and contact you soon.")}</p>
             <a
               className="whatsapp-cta"
-              href={`https://wa.me/447460020357?text=${encodeURIComponent(successMessage)}`}
+              href={`https://wa.me/447338700371?text=${encodeURIComponent(successMessage)}`}
               target="_blank"
               rel="noreferrer"
             >
