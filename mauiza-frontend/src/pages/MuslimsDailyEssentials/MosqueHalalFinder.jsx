@@ -1,155 +1,36 @@
-import { useRef, useState } from "react";
-import { LocateFixed, Map, MapPin, Search, Store, Building2, AlertCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { AlertCircle, Building2, LocateFixed, Map, MapPin, Search, Store } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
-import { useLanguage } from "../../context/LanguageContext";
 import { images } from "../../data/images";
-import { getAccurateCurrentPosition, getLocationErrorMessage } from "../../utils/geolocation";
+import { apiUrl } from "../../utils/api";
 import NearbyPlacesMap from "./NearbyPlacesMap";
 import "./DailyEssentialsTools.css";
 
-const apiBaseUrl = (import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5001" : window.location.origin)).replace(/\/$/, "");
+const categories = [["all", "All"], ["mosques", "Mosques"], ["halal_food", "Halal food"], ["islamic_centers", "Islamic centres"]];
+const reliability = ["community_confirmed", "tagged", "partial", "likely", "possible", "reported_not_halal"];
+const badge = value => ({ community_confirmed: "Confirmed by community", tagged: "Tagged halal", partial: "Some halal options", likely: "Likely halal", possible: "Possibly halal", reported_not_halal: "Reported not halal" }[value] || value);
 
-function normalizeFilterValue(value) {
-  const normalized = String(value || "").toLowerCase().replace(/[\s_-]+/g, " ").trim();
-
-  if (["all", "tous"].includes(normalized)) return "All";
-  if (["mosque", "mosques", "mosquée", "mosquées"].includes(normalized)) return "Mosques";
-  if (["halal food", "halal-food", "nourriture halal"].includes(normalized)) return "Halal Food";
-  if (["islamic center", "islamic centers", "islamic centre", "islamic centres", "centres islamiques", "centers islamiques"].includes(normalized)) return "Islamic Centers";
-
-  return "All";
+function preciseLocation(onBetter) {
+  return new Promise((resolve, reject) => {
+    let best, watchId, finished = false; const started = Date.now();
+    const done = (callback, value) => { if (finished) return; finished = true; clearTimeout(timer); if (watchId != null) navigator.geolocation.clearWatch(watchId); callback(value); };
+    const success = position => { const value = { latitude: position.coords.latitude, longitude: position.coords.longitude, accuracy: position.coords.accuracy, source: "device" }; if (!best || value.accuracy < best.accuracy) { best = value; onBetter?.(value); } if (value.accuracy <= 30 || (Date.now() - started >= 4000 && value.accuracy <= 150)) done(resolve, best); };
+    const timer = setTimeout(() => best ? done(resolve, best) : navigator.geolocation.getCurrentPosition(p => done(resolve, { latitude: p.coords.latitude, longitude: p.coords.longitude, accuracy: p.coords.accuracy }), e => done(reject, e), { enableHighAccuracy: false, maximumAge: 600000, timeout: 8000 }), 15000);
+    try { watchId = navigator.geolocation.watchPosition(success, error => { if (error.code === 1) done(reject, error); }, { enableHighAccuracy: true, maximumAge: 0 }); } catch (error) { done(reject, error); }
+  });
 }
 
 export default function MosqueHalalFinder() {
-  const { language } = useLanguage();
-  const isFrench = language === "fr";
-  const [center, setCenter] = useState(null);
-  const [query, setQuery] = useState("");
-  const [radius, setRadius] = useState("5");
-  const [filter, setFilter] = useState("All");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [locationAccuracy, setLocationAccuracy] = useState(null);
-  const [places, setPlaces] = useState([]);
-  const [view, setView] = useState("map");
-  const requestToken = useRef(0);
-
-  const categoryOptions = isFrench
-    ? [
-        { value: "All", label: "Tous" },
-        { value: "Mosques", label: "Mosquées" },
-        { value: "Halal Food", label: "Nourriture halal" },
-        { value: "Islamic Centers", label: "Centres islamiques" },
-      ]
-    : [
-        { value: "All", label: "All" },
-        { value: "Mosques", label: "Mosques" },
-        { value: "Halal Food", label: "Halal Food" },
-        { value: "Islamic Centers", label: "Islamic Centers" },
-      ];
-
-  const find = async (coords, options = {}) => {
-    const token = ++requestToken.current;
-    const searchRadius = options.radius ?? radius;
-    const searchFilter = normalizeFilterValue(options.category ?? filter);
-    setCenter(coords);
-    setLoading(true);
-    setMessage("");
-    setPlaces([]);
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/nearby-places?latitude=${coords.latitude}&longitude=${coords.longitude}&radius=${searchRadius}&category=${encodeURIComponent(searchFilter)}&language=${language}`);
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Nearby places could not be loaded.");
-      if (token !== requestToken.current) return;
-      setPlaces(data.results || []);
-    } catch (error) {
-      if (token !== requestToken.current) return;
-      setPlaces([]);
-      setMessage(error.message);
-    } finally {
-      if (token === requestToken.current) setLoading(false);
-    }
-  };
-
-  const locate = async () => {
-    const locationToken = ++requestToken.current;
-    setLoading(true);
-    setMessage("");
-    setCenter(null);
-    setPlaces([]);
-    setLocationAccuracy(null);
-    try {
-      const position = await getAccurateCurrentPosition();
-      if (locationToken !== requestToken.current) return;
-      setLocationAccuracy(position.accuracy);
-      await find(position);
-    } catch (error) {
-      setLoading(false);
-      setMessage(getLocationErrorMessage(error));
-    }
-  };
-
-  const search = async event => {
-    event.preventDefault();
-    if (!query.trim()) return setMessage("Enter a city, area, or address first.");
-    const searchToken = ++requestToken.current;
-    setLoading(true);
-    setMessage("");
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/geocode?q=${encodeURIComponent(query)}`);
-      const data = await response.json();
-      if (!response.ok || !data.data?.length) throw new Error("That location could not be found. Try a more specific search.");
-      if (searchToken !== requestToken.current) return;
-      setLocationAccuracy(null);
-      find({ latitude: Number(data.data[0].latitude), longitude: Number(data.data[0].longitude), source: "search" });
-    } catch (error) {
-      setLoading(false);
-      setMessage(error.message);
-    }
-  };
-
-  const pageTitle = isFrench ? "Mosquée & recherche halal" : "Mosque & Halal Finder";
-  const pageSubtitle = isFrench
-    ? "Trouvez les mosquées, centres islamiques et aliments halal proches de votre position."
-    : "Find nearby mosques, Islamic centres, and halal food options close to your location.";
-  const useLocationLabel = isFrench ? "Utiliser ma position" : "Use my location";
-  const searchPlaceholder = isFrench ? "Ville, quartier ou adresse" : "City, area, or address";
-  const radiusLabel = isFrench ? "Rayon de recherche" : "Search radius";
-  const viewLabels = isFrench ? { map: "Carte", list: "Liste" } : { map: "Map", list: "List" };
-  const emptyTitle = isFrench ? "Aucun lieu à afficher pour l’instant" : "No places to display yet";
-  const emptyDescription = isFrench
-    ? "Utilisez votre position ou recherchez une zone pour voir les résultats proches en direct."
-    : "Use your location or search an area to see nearby results live.";
-  const noResultsDescription = isFrench
-    ? `Aucun résultat Google Places correspondant dans un rayon de ${radius} km. Essayez un rayon plus grand ou une autre catégorie.`
-    : `No matching Google Places results were found within ${radius} km. Try a larger radius or another category.`;
-  const directionsLabel = isFrench ? "Itinéraire" : "Directions";
-  const searchButtonLabel = isFrench ? "Rechercher" : "Search";
-
-  return <main className="page tool-page">
-    <PageHero title={pageTitle} subtitle={pageSubtitle} image={images.mosque} />
-    <section className="section tool-section"><div className="container finder">
-      <div className="finder-controls">
-        <button className="tool-button" onClick={locate} disabled={loading}><LocateFixed />{loading ? (isFrench ? "Chargement…" : "Loading…") : useLocationLabel}</button>
-        <form onSubmit={search}><Search /><input value={query} onChange={event => setQuery(event.target.value)} placeholder={searchPlaceholder} /><button aria-label={searchButtonLabel}>{searchButtonLabel === "Search" ? <Search /> : <Search />}</button></form>
-        <select value={radius} onChange={event => { const value = event.target.value; setRadius(value); if (center) find(center, { radius: value }); }} aria-label={radiusLabel}>{[1, 5, 10, 25].map(value => <option key={value} value={value}>{value} km</option>)}</select>
-      </div>
-      {center && <p className="location-quality"><LocateFixed />{Number(center.latitude).toFixed(6)}, {Number(center.longitude).toFixed(6)}{Number.isFinite(locationAccuracy) ? ` · GPS accuracy ±${Math.round(locationAccuracy)} m` : ""}</p>}
-      <div className="finder-filters">
-        {categoryOptions.map(({ value, label }) => (
-          <button className={filter === value ? "active" : ""} onClick={() => { setFilter(value); if (center) find(center, { category: value }); }} key={value}>{label}</button>
-        ))}
-        <span />
-        <button className={view === "map" ? "active" : ""} onClick={() => setView("map")}><Map />{viewLabels.map}</button>
-        <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}><Store />{viewLabels.list}</button>
-      </div>
-      {message && <p className="tool-alert"><AlertCircle />{message}</p>}
-      {loading && <p className="tool-alert" role="status"><LocateFixed />{isFrench ? "Recherche des lieux réels à proximité…" : "Finding real nearby places…"}</p>}
-      {center && !loading && !message && <p className="results-summary"><strong>{places.length}</strong> {filter === "All" ? (isFrench ? "lieux à proximité" : "nearby places") : filter} · {radius} km</p>}
-      {center && !loading && !message && <p className="google-maps-attribution" translate="no">Results and route data provided by Google Maps</p>}
-      <div className="finder-content">
-        {view === "map" ? <NearbyPlacesMap center={center} places={places} radiusKm={radius} accuracy={locationAccuracy} /> : <div className="places-list">{places.length ? places.map(place => <article key={place.id}><Building2 /><div><span className={`place-category ${place.category.toLowerCase().replaceAll(" ", "-")}`}>{place.category}</span><h3>{place.name}</h3><p>{place.address}</p><p className="place-route">{place.distanceKm != null && place.travelTime ? `${place.distanceKm} km driving · ${place.travelTime}` : (isFrench ? "Itinéraire indisponible" : "Route distance unavailable")}{place.rating ? ` · ★ ${place.rating}${place.userRatingCount ? ` (${place.userRatingCount})` : ""}` : ""}</p></div><a href={place.directionsUrl} target="_blank" rel="noreferrer">{directionsLabel}</a></article>) : <div className="tool-empty"><MapPin /><h2>{center ? (isFrench ? "Aucun résultat trouvé" : "No results found") : emptyTitle}</h2><p>{center ? noResultsDescription : emptyDescription}</p></div>}</div>}
-      </div>
-    </div></section>
-  </main>;
+  const [center, setCenter] = useState(null), [accuracy, setAccuracy] = useState(null), [query, setQuery] = useState(""), [radius, setRadius] = useState("5"), [category, setCategory] = useState("all"), [possible, setPossible] = useState(false), [sort, setSort] = useState("nearest"), [places, setPlaces] = useState([]), [loading, setLoading] = useState(false), [message, setMessage] = useState(""), [view, setView] = useState("map"), [selected, setSelected] = useState(null);
+  const token = useRef(0), abort = useRef(null); useEffect(() => () => abort.current?.abort(), []);
+  async function find(point, options = {}) { const id = ++token.current; abort.current?.abort(); abort.current = new AbortController(); const r = options.radius || radius, c = options.category || category, p = options.possible ?? possible; setCenter(point); setLoading(true); setMessage(""); try { const response = await fetch(apiUrl(`/api/nearby-places?latitude=${point.latitude}&longitude=${point.longitude}&radius=${r}&category=${c}&includePossible=${p ? 1 : 0}`), { signal: abort.current.signal }); const data = await response.json(); if (!response.ok) throw new Error(data.message || "Nearby places could not be loaded."); if (id !== token.current) return; setPlaces(data.results || []); } catch (error) { if (error.name !== "AbortError" && id === token.current) setMessage(error.message); } finally { if (id === token.current) setLoading(false); } }
+  async function locate() { if (!window.isSecureContext) return setMessage("Precise location requires HTTPS."); setLoading(true); setMessage(""); try { const point = await preciseLocation(value => { setCenter(value); setAccuracy(value.accuracy); }); await find(point); } catch (_error) { setLoading(false); setMessage("Location could not be determined. Check browser permissions or search for a place."); } }
+  async function geocode(event) { event.preventDefault(); const id = ++token.current; abort.current?.abort(); abort.current = new AbortController(); setLoading(true); try { const response = await fetch(apiUrl(`/api/geocode?q=${encodeURIComponent(query)}`), { signal: abort.current.signal }); const data = await response.json(); if (!response.ok || !data.data?.length) throw new Error("That location could not be found."); if (id !== token.current) return; const point = { latitude: Number(data.data[0].latitude), longitude: Number(data.data[0].longitude), source: "search" }; setAccuracy(null); await find(point); } catch (error) { if (error.name !== "AbortError") { setLoading(false); setMessage(error.message); } } }
+  async function report(place, type) { try { const response = await fetch(apiUrl(`/api/nearby-places/${place.osmType}/${place.osmId}/report`), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type }) }); const data = await response.json(); if (!response.ok) throw new Error(data.message); setPlaces(items => items.map(item => item.id === place.id ? { ...item, ...data } : item)); } catch (error) { setMessage(error.message); } }
+  const shown = [...places].sort((a, b) => sort === "reliable" ? reliability.indexOf(a.halal?.level) - reliability.indexOf(b.halal?.level) || a.distanceKm - b.distanceKm : a.distanceKm - b.distanceKm);
+  return <main className="page tool-page"><PageHero title="Mosque & Halal Finder" subtitle="Find nearby mosques, Islamic centres, and halal food using OpenStreetMap community data." image={images.mosque} /><section className="section tool-section"><div className="container finder"><div className="finder-controls"><button className="tool-button" onClick={locate} disabled={loading}><LocateFixed />Use my location</button><form onSubmit={geocode}><Search /><input value={query} onChange={e => setQuery(e.target.value)} placeholder="City, area, or address" /><button aria-label="Search"><Search /></button></form><select value={radius} onChange={e => { setRadius(e.target.value); if (center) find(center, { radius: e.target.value }); }}>{[.5, 1, 3, 5, 10, 25].map(value => <option key={value} value={value}>{value} km</option>)}</select></div>
+    <div className="finder-filters">{categories.map(([value, label]) => <button key={value} className={category === value ? "active" : ""} onClick={() => { setCategory(value); if (center) find(center, { category: value }); }}>{label}</button>)}<label className="possible-toggle"><input type="checkbox" checked={possible} onChange={e => { setPossible(e.target.checked); if (center) find(center, { possible: e.target.checked }); }} /> Include possibly halal</label><select value={sort} onChange={e => setSort(e.target.value)}><option value="nearest">Nearest</option><option value="reliable">Most reliable</option></select><span /><button className={view === "map" ? "active" : ""} onClick={() => setView("map")}><Map />Map</button><button className={view === "list" ? "active" : ""} onClick={() => setView("list")}><Store />List</button></div>
+    {center && <p className="location-quality"><LocateFixed />{center.latitude.toFixed(5)}, {center.longitude.toFixed(5)}{accuracy ? ` · ±${Math.round(accuracy)} m` : ""}</p>}{message && <p className="tool-alert"><AlertCircle />{message}</p>}{loading && <p className="tool-alert"><LocateFixed />Searching OpenStreetMap…</p>}{center && !loading && <p className="results-summary"><strong>{shown.length}</strong> nearby places · {radius} km</p>}
+    <div className="finder-content">{view === "map" ? <NearbyPlacesMap center={center} places={shown} radiusKm={radius} accuracy={accuracy} onMoveUser={point => { setCenter(point); setAccuracy(null); find(point); }} onSearchArea={find} onSelect={setSelected} /> : <div className="places-list">{shown.length ? shown.map(place => <article key={place.id} className={selected === place.id ? "selected" : ""}><Building2 /><div><span className={`place-category ${place.category}`}>{place.category.replaceAll("_", " ")}</span><span className={`halal-badge ${place.halal?.level}`}>{badge(place.halal?.level)}</span><h3>{place.name}{place.nameLocal && place.nameLocal !== place.name ? ` · ${place.nameLocal}` : ""}</h3><p>{place.address || "Address unavailable"} · {place.distanceKm} km</p>{place.cuisine && <p>{place.cuisine}</p>}<p>{place.halal?.reason}</p>{place.openingHours && <p>{place.openingHours}</p>}<div className="place-actions">{place.phone && <a href={`tel:${place.phone}`}>Call</a>}{place.website && <a href={place.website} target="_blank" rel="noreferrer">Website</a>}<a href={place.directionsUrl} target="_blank" rel="noreferrer">Directions</a><a href={`${place.osmUrl}/edit`} target="_blank" rel="noreferrer">Fix on OSM</a><button onClick={() => report(place, "closed")}>Report closed</button>{["halal_food", "halal_shop"].includes(place.category) && <><button onClick={() => report(place, "halal")}>Serves halal</button><button onClick={() => report(place, "not_halal")}>Not halal</button></>}</div></div></article>) : <div className="tool-empty"><MapPin /><h2>No results found</h2><p>Try a larger radius or include possibly halal places.</p></div>}<p className="osm-list-attribution">© OpenStreetMap contributors</p></div>}</div>
+  </div></section></main>;
 }

@@ -4,6 +4,7 @@ import PageHero from "../../components/PageHero/PageHero";
 import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
 import { useLanguage } from "../../context/LanguageContext";
+import { apiUrl } from "../../utils/api";
 import "./Contact.css";
 const infos = [
   [Mail, "Email Us", "mauizainstitute@gmail.com"],
@@ -65,9 +66,8 @@ export default function Contact() {
                 try {
                   setSubmitting(true);
                   setErrorMessage("");
-                  const apiBaseUrl = "https://mauiza.com";
                   const response = await fetch(
-                    `${apiBaseUrl}/api/contact`,
+                    apiUrl("/api/contact"),
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },

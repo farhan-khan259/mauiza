@@ -3,16 +3,15 @@ import { AlertCircle, CheckCircle2, Compass, LocateFixed, MapPin, Navigation, Ro
 import PageHero from "../../components/PageHero/PageHero";
 import { images } from "../../data/images";
 import { getAccurateCurrentPosition, getLocationErrorMessage } from "../../utils/geolocation";
+import { cardinalOffset, normalizeAngle, qiblaBearing, qiblaDistance, shortestArc, smoothHeading } from "../../utils/qibla";
 import "./DailyEssentialsTools.css";
 
-const KAABA = { latitude: 21.4224779, longitude: 39.8251832 };
 const ALIGNMENT_THRESHOLD = 5;
 const DIRECTIONS = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
 
 const toRadians = value => value * Math.PI / 180;
 const toDegrees = value => value * 180 / Math.PI;
-const normalizeAngle = value => ((value % 360) + 360) % 360;
-const shortestAngleDifference = (target, current) => ((target - current + 540) % 360) - 180;
+const shortestAngleDifference = shortestArc;
 
 const getCompassDirection = angle => {
   const index = Math.round(normalizeAngle(angle) / 22.5) % 16;
@@ -114,20 +113,34 @@ export default function QiblaDetector() {
   const [headingSource, setHeadingSource] = useState("");
   const [headingUpdatedAt, setHeadingUpdatedAt] = useState(null);
   const [deviceTilt, setDeviceTilt] = useState(null);
+  const [declination, setDeclination] = useState(null);
+  const [declinationWarning, setDeclinationWarning] = useState("");
   const [sensorClock, setSensorClock] = useState(Date.now());
   const absoluteEventTimeRef = useRef(0);
+  const declinationRef = useRef(0);
 
   const supportsOrientation = typeof window !== "undefined" && "DeviceOrientationEvent" in window;
-  const qiblaBearing = useMemo(() => (location ? calculateQiblaBearing(location) : null), [location]);
-  const directionalLabel = qiblaBearing == null ? "--" : getCompassDirection(qiblaBearing);
+  const bearing = useMemo(() => (location ? qiblaBearing(location) : null), [location]);
+  const directionalLabel = bearing == null ? "--" : getCompassDirection(bearing);
   const headingIsFresh = headingUpdatedAt != null && sensorClock - headingUpdatedAt <= 3000;
   const effectiveHeading = compassEnabled && deviceHeading != null && headingIsFresh ? deviceHeading : null;
-  const relativeQiblaAngle = qiblaBearing == null
+  const relativeQiblaAngle = bearing == null
     ? 0
-    : effectiveHeading == null ? qiblaBearing : normalizeAngle(qiblaBearing - effectiveHeading);
-  const turnAngle = effectiveHeading == null ? 0 : shortestAngleDifference(qiblaBearing, effectiveHeading);
+    : effectiveHeading == null ? bearing : normalizeAngle(shortestArc(bearing, effectiveHeading));
+  const turnAngle = effectiveHeading == null ? 0 : shortestAngleDifference(bearing, effectiveHeading);
   const aligned = effectiveHeading != null && Math.abs(turnAngle) <= ALIGNMENT_THRESHOLD;
-  const distanceKm = location ? calculateDistanceKm(location) : null;
+  const distanceKm = location ? qiblaDistance(location) : null;
+
+  useEffect(() => {
+    if (!location) return undefined;
+    let cancelled = false;
+    import("geomagnetism").then(module => {
+      const geomagnetism = module.default || module;
+      const value = geomagnetism.model(new Date(), { allowOutOfBoundsModel: true }).point([location.latitude, location.longitude]).decl;
+      if (!cancelled && Number.isFinite(value)) { declinationRef.current = value; setDeclination(value); setDeclinationWarning(""); }
+    }).catch(() => { if (!cancelled) { declinationRef.current = 0; setDeclination(null); setDeclinationWarning("Magnetic model unavailable; the compass points to magnetic north."); } });
+    return () => { cancelled = true; };
+  }, [location]);
 
   useEffect(() => {
     if (!supportsOrientation) {
@@ -154,7 +167,8 @@ export default function QiblaDetector() {
       setSensorAvailable(true);
       setHeadingSource(reading.source);
       setHeadingUpdatedAt(Date.now());
-      setDeviceHeading(current => smoothAngle(current, reading.heading, 0.2));
+      const trueHeading = normalizeAngle(reading.heading + declinationRef.current);
+      setDeviceHeading(current => smoothHeading(current, trueHeading));
 
       if (Number.isFinite(event.beta) && Number.isFinite(event.gamma)) {
         setDeviceTilt(Math.max(Math.abs(event.beta), Math.abs(event.gamma)));
@@ -278,7 +292,7 @@ export default function QiblaDetector() {
 
   const turnDirection = (() => {
     if (effectiveHeading == null) {
-      return `Qibla bearing: ${Math.round(qiblaBearing ?? 0)}° ${directionalLabel}`;
+      return `Face ${Math.round(bearing ?? 0)}° from North — ${cardinalOffset(bearing ?? 0)}`;
     }
 
     if (Math.abs(turnAngle) <= ALIGNMENT_THRESHOLD) {
@@ -357,7 +371,7 @@ export default function QiblaDetector() {
           </div>
 
           <div className="qibla-result">
-            {location && qiblaBearing != null ? (
+            {location && bearing != null ? (
               <>
                 <div className={`qibla-view ${aligned ? "aligned" : ""}`}>
                   <div
@@ -391,13 +405,13 @@ export default function QiblaDetector() {
                   <p className="qibla-status-text">
                     {aligned ? <><CheckCircle2 /> You are facing Qibla</> : turnDirection}
                   </p>
-                  <h2 className="qibla-bearing">{Math.round(qiblaBearing)}° <small>{directionalLabel}</small></h2>
+                  <h2 className="qibla-bearing">{Math.round(bearing)}° <small>{directionalLabel}</small></h2>
                 </div>
 
                 <div className="result-details">
                   <div className="detail-row">
                     <span className="detail-label"><Compass /> Qibla bearing</span>
-                    <strong>{Math.round(qiblaBearing)}° {directionalLabel}</strong>
+                    <strong>{Math.round(bearing)}° · {cardinalOffset(bearing)}</strong>
                   </div>
                   <div className="detail-row">
                     <span className="detail-label"><Navigation /> Turn guidance</span>
@@ -423,6 +437,11 @@ export default function QiblaDetector() {
                       <strong>{Math.round(effectiveHeading)}° {getCompassDirection(effectiveHeading)}</strong>
                     </div>
                   )}
+                  <div className="detail-row">
+                    <span className="detail-label"><Compass /> Magnetic declination</span>
+                    <strong>{declination == null ? "Unavailable" : `${declination >= 0 ? "+" : ""}${declination.toFixed(1)}° east`}</strong>
+                  </div>
+                  {declinationWarning && <div className="tool-alert qibla-inline-warning"><AlertCircle />{declinationWarning}</div>}
                   {compassEnabled && deviceTilt !== null && deviceTilt > 45 && (
                     <div className="tool-alert qibla-inline-warning">
                       <AlertCircle /> Keep the phone flat for more reliable compass guidance.

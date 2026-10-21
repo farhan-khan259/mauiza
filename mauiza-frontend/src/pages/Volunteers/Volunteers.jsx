@@ -9,6 +9,7 @@ import instructionLanguages from "../../data/languages";
 import { useLanguage, translations } from "../../context/LanguageContext";
 import { getTimeZones } from "@vvo/tzdb";
 import WhatsAppPhoneField from "../../components/WhatsAppPhoneField/WhatsAppPhoneField";
+import { apiUrl } from "../../utils/api";
 import "./Volunteers.css";
 
 const roles = ["Teacher", "Video Editor", "Media Manager"];
@@ -232,8 +233,7 @@ export default function Volunteers() {
     try {
       setSubmitting(true);
       setErrorMessage("");
-      const apiBaseUrl = "https://mauiza.com";
-      const response = await fetch(`${apiBaseUrl}/api/volunteers`, {
+      const response = await fetch(apiUrl("/api/volunteers"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

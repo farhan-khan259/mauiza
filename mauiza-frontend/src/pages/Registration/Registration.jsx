@@ -9,6 +9,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { countryCodes } from "../../data/countries";
 import instructionLanguages from "../../data/languages";
 import WhatsAppPhoneField from "../../components/WhatsAppPhoneField/WhatsAppPhoneField";
+import { apiUrl } from "../../utils/api";
 import "./Registration.css";
 
 const timezones = getTimeZones({ includeUtc: true });
@@ -132,8 +133,7 @@ export default function Registration() {
 		try {
 			setSubmitting(true);
 			setErrorMessage("");
-			const apiBaseUrl = "https://mauiza.com";
-			const response = await fetch(`${apiBaseUrl}/api/registration`, {
+			const response = await fetch(apiUrl("/api/registration"), {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(payload)

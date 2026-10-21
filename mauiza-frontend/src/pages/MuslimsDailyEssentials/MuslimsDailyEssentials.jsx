@@ -3,13 +3,13 @@ import { Clock3, Compass, LocateFixed, MapPin, Moon, MoonStar, Search, ShieldAle
 import PageHero from "../../components/PageHero/PageHero";
 import { useLanguage } from "../../context/LanguageContext";
 import { getAccurateCurrentPosition, getLocationErrorMessage } from "../../utils/geolocation";
+import { apiUrl } from "../../utils/api";
 import dailyTranslations from "./dailyEssentialsTranslations";
 import "./MuslimsDailyEssentials.css";
 import "./DailyEssentialsRedesign.css";
 
 const prayerIcons = { Fajr: Sunrise, Sunrise, Dhuhr: Sun, Asr: Compass, Maghrib: Sunset, Isha: Moon };
 const prayerOrder = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
-const apiBaseUrl = "https://mauiza.com";
 const extraLabels = {
   en: { sunset: "Sunset", remaining: "Remaining" }, ur: { sunset: "غروب آفتاب", remaining: "باقی وقت" }, ar: { sunset: "الغروب", remaining: "متبقٍ" },
   sv: { sunset: "Solnedgång", remaining: "Återstår" }, tr: { sunset: "Gün batımı", remaining: "Kalan" }, fr: { sunset: "Coucher du soleil", remaining: "Restant" },
@@ -142,7 +142,7 @@ export default function MuslimsDailyEssentials() {
     setPrayerData(null);
     setError("");
     try {
-      const response = await fetch(`${apiBaseUrl}/api/prayer-times?latitude=${nextLocation.latitude}&longitude=${nextLocation.longitude}&date=${getTodayDate()}`);
+      const response = await fetch(apiUrl(`/api/prayer-times?latitude=${nextLocation.latitude}&longitude=${nextLocation.longitude}&date=${getTodayDate()}`));
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || t("prayerUnavailable"));
       if (token !== requestToken.current) return;
@@ -185,7 +185,7 @@ export default function MuslimsDailyEssentials() {
     const controller = new AbortController();
     const timer = setTimeout(async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/geocode?q=${encodeURIComponent(search.trim())}`, { signal: controller.signal });
+        const response = await fetch(apiUrl(`/api/geocode?q=${encodeURIComponent(search.trim())}`), { signal: controller.signal });
         if (response.ok) setPlaces((await response.json()).data || []);
       } catch (requestError) { if (requestError.name !== "AbortError") setPlaces([]); }
     }, 350);
