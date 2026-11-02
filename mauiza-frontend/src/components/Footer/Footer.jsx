@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Mail, MapPin } from "lucide-react";
-import WhatsAppIcon from "../WhatsAppIcon";
 import logo from "../../pictures/logo.jpeg";
 import { useLanguage } from "../../context/LanguageContext";
 import "./Footer.css";
@@ -33,10 +32,6 @@ export default function Footer() {
           <a href="mailto:mauizainstitute@gmail.com">
             <Mail />
             mauizainstitute@gmail.com
-          </a>
-          <a href="https://wa.me/447338700371">
-            <WhatsAppIcon />
-            +44 7338700371
           </a>
           <a href="/contact">
             <MapPin />

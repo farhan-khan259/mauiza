@@ -2,13 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Clapperboard, GraduationCap, HeartHandshake, Info, Smartphone, X } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PageHero from "../../components/PageHero/PageHero";
-import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
 import { countryCodes } from "../../data/countries";
 import instructionLanguages from "../../data/languages";
 import { useLanguage, translations } from "../../context/LanguageContext";
 import { getTimeZones } from "@vvo/tzdb";
-import WhatsAppPhoneField from "../../components/WhatsAppPhoneField/WhatsAppPhoneField";
 import { apiUrl } from "../../utils/api";
 import "./Volunteers.css";
 
@@ -116,7 +114,6 @@ export default function Volunteers() {
   const [role, setRole] = useState(() => formOnly ? requestedRole : "");
   const [step, setStep] = useState(() => formOnly ? 2 : 1);
   const [sent, setSent] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [availability, setAvailability] = useState({ start: "", end: "" });
@@ -169,9 +166,6 @@ export default function Volunteers() {
     const payload = {
       fullName: String(data.get("fullName") || "").trim(),
       email: String(data.get("email") || "").trim(),
-      phoneCountryCode: String(data.get("phoneCountryCode") || "").trim(),
-      phoneNumber: String(data.get("phoneNumber") || "").trim(),
-      phone: String(data.get("phone") || "").trim(),
       country: String(data.get("country") || "").trim(),
       profession: String(data.get("profession") || "").trim(),
       designation: String(data.get("designation") || "").trim(),
@@ -193,9 +187,6 @@ export default function Volunteers() {
     const requiredFields = [
       ["fullName", "Full name"],
       ["email", "Email"],
-      ["phoneCountryCode", "Country code"],
-      ["phoneNumber", "WhatsApp number"],
-      ["phone", "WhatsApp number"],
       ["country", "Country"],
       ["profession", "Profession"],
       ["designation", "Volunteer role"],
@@ -242,8 +233,6 @@ export default function Volunteers() {
       const result = contentType.includes("application/json") ? await response.json() : {};
       if (!response.ok) throw new Error(result.message || t("Volunteer application failed. Please try again."));
 
-      const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.fullName}\nEmail: ${payload.email}\n\nI have submitted the form.\nForm: Volunteer | Category: ${payload.designation || "Not specified"}\n\nI would like to continue the conversation.`;
-      setSuccessMessage(whatsappMessage);
       setSent(true);
       form.reset();
       setAvailability({ start: "", end: "" });
@@ -336,7 +325,6 @@ export default function Volunteers() {
                   <label>{t("Email Address")}<input required type="email" name="email" placeholder={t("you@example.com")} /></label>
                 </div>
                 <div className="volunteer-form-row">
-                  <WhatsAppPhoneField />
                   <label>
                     {t("Country")}
                     <select required name="country" defaultValue="">
@@ -445,14 +433,6 @@ export default function Volunteers() {
             <div className="success-modal-icon"><CheckCircle2 /></div>
             <h3>{t("Your volunteer application has been submitted successfully.")}</h3>
             <p>{t("Thank you for volunteering with Mauiza. Our team will review it and contact you soon.")}</p>
-            <a
-              className="whatsapp-cta"
-              href={`https://wa.me/447338700371?text=${encodeURIComponent(successMessage)}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <WhatsAppIcon /> {t("Contact on WhatsApp")}
-            </a>
           </div>
         </div>
       )}

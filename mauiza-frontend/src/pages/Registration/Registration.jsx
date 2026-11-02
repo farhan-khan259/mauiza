@@ -3,12 +3,10 @@ import { CheckCircle2, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { getTimeZones } from "@vvo/tzdb";
 import PageHero from "../../components/PageHero/PageHero";
-import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
 import { useLanguage } from "../../context/LanguageContext";
 import { countryCodes } from "../../data/countries";
 import instructionLanguages from "../../data/languages";
-import WhatsAppPhoneField from "../../components/WhatsAppPhoneField/WhatsAppPhoneField";
 import { apiUrl } from "../../utils/api";
 import "./Registration.css";
 
@@ -40,7 +38,6 @@ export default function Registration() {
 	const { language, t } = useLanguage();
 	const location = useLocation();
 	const [sent, setSent] = useState(false);
-	const [successMessage, setSuccessMessage] = useState("");
 	const [submitting, setSubmitting] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [selectedCourse, setSelectedCourse] = useState(location.state?.selectedCourse || "");
@@ -106,9 +103,6 @@ export default function Registration() {
 		const payload = {
 			fullName: String(formData.get("name") || "").trim(),
 			email: String(formData.get("email") || "").trim(),
-			phoneCountryCode: String(formData.get("phoneCountryCode") || "").trim(),
-			phoneNumber: String(formData.get("phoneNumber") || "").trim(),
-			phone: String(formData.get("phone") || "").trim(),
 			country: String(formData.get("country") || "").trim(),
 			ageGroup: String(formData.get("ageGroup") || "").trim(),
 			gender: String(formData.get("gender") || "").trim(),
@@ -147,8 +141,6 @@ export default function Registration() {
 				throw new Error(data.message || t("Registration failed"));
 			}
 
-			const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.fullName}\nEmail: ${payload.email}\n\nI have submitted the form.\nForm: Registration | Course: ${payload.course || "Not specified"}\n\nI would like to continue the conversation.`;
-			setSuccessMessage(whatsappMessage);
 			setSent(true);
 			form.reset();
 			setSelectedCourse("");
@@ -188,7 +180,6 @@ export default function Registration() {
 							<label>{t("Email Address")}<input required type="email" name="email" placeholder="mauizainstitute@gmail.com" /></label>
 						</div>
 						<div className="form-row">
-							<WhatsAppPhoneField />
 							<label>
 								{t("Country")}
 								<select required name="country" defaultValue="">
@@ -309,15 +300,6 @@ export default function Registration() {
 						<div className="success-modal-icon"><CheckCircle2 /></div>
 						<h3>{t("Your registration has been submitted successfully.")}</h3>
 						<p>{t("Thank you for choosing Mauiza. Our team will contact you soon.")}</p>
-						<a
-							className="whatsapp-cta"
-							href={`https://wa.me/447338700371?text=${encodeURIComponent(successMessage)}`}
-							target="_blank"
-							rel="noreferrer"
-						>
-							<WhatsAppIcon />
-							{t("Contact on WhatsApp")}
-						</a>
 					</div>
 				</div>
 			)}

@@ -1,21 +1,18 @@
 import { useState } from "react";
 import { CheckCircle2, Clock, Mail, MapPin, Send, X } from "lucide-react";
 import PageHero from "../../components/PageHero/PageHero";
-import WhatsAppIcon from "../../components/WhatsAppIcon";
 import { images } from "../../data/images";
 import { useLanguage } from "../../context/LanguageContext";
 import { apiUrl } from "../../utils/api";
 import "./Contact.css";
 const infos = [
   [Mail, "Email Us", "mauizainstitute@gmail.com"],
-  [WhatsAppIcon, "WhatsApp Number", "+44 7338700371"],
   [Clock, "Availability", "Flexible online learning"],
   [MapPin, "Our Classroom", "Online, worldwide"],
 ];
 export default function Contact() {
   const { t } = useLanguage();
   const [sent, setSent] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   return (
@@ -82,8 +79,6 @@ export default function Contact() {
                       };
                   if (!response.ok)
                     throw new Error(data.message || t("Failed to send message"));
-                  const whatsappMessage = `Hello Mauiza\n\nMy Name: ${payload.name}\nEmail: ${payload.email}\n\nI have submitted the contact form.\nForm: Feedback\nSubject: ${payload.subject}\n\nI would like to continue the conversation.`;
-                  setSuccessMessage(whatsappMessage);
                   setSent(true);
                   form.reset();
                 } catch (error) {
@@ -142,14 +137,6 @@ export default function Contact() {
             </div>
             <h3>{t("Your message has been sent successfully.")}</h3>
             <p>{t("Thank you for reaching out to Mauiza. We’ll be in touch soon.")}</p>
-            <a
-              className="whatsapp-cta"
-              href={`https://wa.me/447338700371?text=${encodeURIComponent(successMessage)}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <WhatsAppIcon /> {t("Contact on WhatsApp")}
-            </a>
           </div>
         </div>
       )}
