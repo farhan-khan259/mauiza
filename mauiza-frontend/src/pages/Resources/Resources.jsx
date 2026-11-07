@@ -17,9 +17,18 @@ import arabicReading2 from "../../pictures/Arabic Reading Course2.pdf";
 import arabicReading4 from "../../pictures/Arabic Reading Course4.pdf";
 import arabicReading3 from "../../pictures/Arabic Reading Course3.pdf";
 import tajweed from "../../pictures/Tajweed.pdf";
+import roadmapEnglish from "../../pictures/Human Development Roadmap - English.pdf";
+import roadmapUrdu from "../../pictures/Human Development Roadmap - Urdu.pdf";
+import roadmapSpanish from "../../pictures/Human Development Roadmap - Spanish.pdf";
 import "./Resources.css";
 
 const resourceGroups = [
+  {
+    title: "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)",
+    description: "Explore this guide in English, Urdu, and Spanish.",
+    icon: GraduationCap,
+    documents: [["English", roadmapEnglish], ["Urdu", roadmapUrdu], ["Spanish", roadmapSpanish]],
+  },
   { title: "Revert Guide", description: "A gentle collection of practical guides for those beginning their journey in Islam.", icon: HeartHandshake, documents: [["Revert Guide 1", revertGuide1], ["Revert Guide 2", revertGuide2], ["Revert Guide 3", revertGuide3]] },
   { title: "Prayer Memorization", description: "Build confidence in your prayer by learning the essential words and supplications.", icon: BookOpen, documents: [["Prayer Memorization 1", prayerMemorization1], ["Prayer Memorization 2", prayerMemorization2], ["Prayer Memorization 3", prayerMemorization3]] },
   { title: "Quran Memorization", description: "Helpful materials to support a steady and meaningful Quran memorization routine.", icon: GraduationCap, documents: [["Quran Memorization 1", quranMemorization1], ["Quran Memorization 2", quranMemorization2], ["Quran Memorization 3", quranMemorization3]] },
