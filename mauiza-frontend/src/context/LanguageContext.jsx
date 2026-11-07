@@ -1400,6 +1400,90 @@ Object.assign(translations.fil, {
 const LanguageContext = createContext(null);
 const LANGUAGE_STORAGE_KEY = "mauiza-language";
 
+const roadmapTranslations = {
+  ur: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "نبی کریم ﷺ کی رہنمائی میں انسانی ترقی کا روڈ میپ",
+    "Explore this guide in English, Urdu, and Spanish.": "اس رہنما کتاب کا انگریزی، اردو اور ہسپانوی زبانوں میں مطالعہ کریں۔",
+    English: "انگریزی",
+    Urdu: "اردو",
+    Spanish: "ہسپانوی",
+  },
+  ar: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "خارطة طريق التنمية البشرية في ظل هدي النبي محمد ﷺ",
+    "Explore this guide in English, Urdu, and Spanish.": "استكشف هذا الدليل باللغات الإنجليزية والأردية والإسبانية.",
+    English: "الإنجليزية",
+    Urdu: "الأردية",
+    Spanish: "الإسبانية",
+  },
+  sv: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "Färdplan för mänsklig utveckling under profeten Muhammeds (frid vare med honom) vägledning",
+    "Explore this guide in English, Urdu, and Spanish.": "Utforska denna guide på engelska, urdu och spanska.",
+    English: "Engelska",
+    Urdu: "Urdu",
+    Spanish: "Spanska",
+  },
+  tr: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "Hz. Muhammed'in (sav) rehberliğinde insani gelişim yol haritası",
+    "Explore this guide in English, Urdu, and Spanish.": "Bu rehberi İngilizce, Urduca ve İspanyolca keşfedin.",
+    English: "İngilizce",
+    Urdu: "Urduca",
+    Spanish: "İspanyolca",
+  },
+  fr: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "Feuille de route du développement humain sous la guidance du prophète Muhammad (PSL)",
+    "Explore this guide in English, Urdu, and Spanish.": "Découvrez ce guide en anglais, en ourdou et en espagnol.",
+    English: "Anglais",
+    Urdu: "Ourdou",
+    Spanish: "Espagnol",
+  },
+  es: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "Hoja de ruta del desarrollo humano bajo la guía del profeta Muhammad (la paz y las bendiciones de Dios sean con él)",
+    "Explore this guide in English, Urdu, and Spanish.": "Explora esta guía en inglés, urdu y español.",
+    English: "Inglés",
+    Urdu: "Urdu",
+    Spanish: "Español",
+  },
+  "zh-CN": {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "在先知穆罕默德（愿主福安之）的指导下实现人类发展的路线图",
+    "Explore this guide in English, Urdu, and Spanish.": "探索英语、乌尔都语和西班牙语版本的指南。",
+    English: "英语",
+    Urdu: "乌尔都语",
+    Spanish: "西班牙语",
+  },
+  pt: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "Roteiro do desenvolvimento humano sob a orientação do Profeta Muhammad (que a paz esteja com ele)",
+    "Explore this guide in English, Urdu, and Spanish.": "Explore este guia em inglês, urdu e espanhol.",
+    English: "Inglês",
+    Urdu: "Urdu",
+    Spanish: "Espanhol",
+  },
+  fil: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "Gabay sa Pag-unlad ng Tao sa Ilalim ng Patnubay ni Propeta Muhammad (sumakanya nawa ang kapayapaan)",
+    "Explore this guide in English, Urdu, and Spanish.": "Tuklasin ang gabay na ito sa Ingles, Urdu, at Espanyol.",
+    English: "Ingles",
+    Urdu: "Urdu",
+    Spanish: "Espanyol",
+  },
+  hi: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "पैगंबर मुहम्मद (सल्लल्लाहु अलैहि वसल्लम) के मार्गदर्शन में मानव विकास का रोडमैप",
+    "Explore this guide in English, Urdu, and Spanish.": "इस गाइड को अंग्रेज़ी, उर्दू और स्पेनिश में देखें।",
+    English: "अंग्रेज़ी",
+    Urdu: "उर्दू",
+    Spanish: "स्पेनिश",
+  },
+  ru: {
+    "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)": "План развития человека под руководством пророка Мухаммада (мир ему и благословение Аллаха)",
+    "Explore this guide in English, Urdu, and Spanish.": "Изучите это руководство на английском, урду и испанском языках.",
+    English: "Английский",
+    Urdu: "Урду",
+    Spanish: "Испанский",
+  },
+};
+
+Object.entries(roadmapTranslations).forEach(([language, dictionary]) => {
+  Object.assign(translations[language], dictionary);
+});
+
 export function getSavedLanguage() {
   try {
     const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
