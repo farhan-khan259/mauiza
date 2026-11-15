@@ -20,14 +20,18 @@ import tajweed from "../../pictures/Tajweed.pdf";
 import roadmapEnglish from "../../pictures/Human Development Roadmap - English.pdf";
 import roadmapUrdu from "../../pictures/Human Development Roadmap - Urdu.pdf";
 import roadmapSpanish from "../../pictures/Human Development Roadmap - Spanish.pdf";
+import roadmapArabic from "../../pictures/arabic.pdf";
+import roadmapChinese from "../../pictures/CHINESE.pdf";
+import roadmapFilipino from "../../pictures/FILIPINO.pdf";
+import roadmapJapanese from "../../pictures/JAPANESE.pdf";
 import "./Resources.css";
 
 const resourceGroups = [
   {
     title: "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)",
-    description: "Explore this guide in English, Urdu, and Spanish.",
+    description: "Explore this guide in English, Urdu, Spanish, Arabic, Chinese, Filipino, and Japanese.",
     icon: GraduationCap,
-    documents: [["English", roadmapEnglish], ["Urdu", roadmapUrdu], ["Spanish", roadmapSpanish]],
+    documents: [["English", roadmapEnglish], ["Urdu", roadmapUrdu], ["Spanish", roadmapSpanish], ["Arabic", roadmapArabic], ["Chinese", roadmapChinese], ["Filipino", roadmapFilipino], ["Japanese", roadmapJapanese]],
   },
   { title: "Revert Guide", description: "A gentle collection of practical guides for those beginning their journey in Islam.", icon: HeartHandshake, documents: [["Revert Guide 1", revertGuide1], ["Revert Guide 2", revertGuide2], ["Revert Guide 3", revertGuide3]] },
   { title: "Prayer Memorization", description: "Build confidence in your prayer by learning the essential words and supplications.", icon: BookOpen, documents: [["Prayer Memorization 1", prayerMemorization1], ["Prayer Memorization 2", prayerMemorization2], ["Prayer Memorization 3", prayerMemorization3]] },
