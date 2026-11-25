@@ -1,0 +1,49 @@
+import { Link } from "react-router-dom";
+import { Mail, MapPin } from "lucide-react";
+import logo from "../../pictures/logo.jpeg";
+import { useLanguage } from "../../context/LanguageContext";
+import "./Footer.css";
+export default function Footer() {
+  const { t } = useLanguage();
+  return (
+    <footer>
+      <div className="container footer-grid">
+        <div>
+          <Link to="/" className="logo footer-logo">
+            <img className="logo-image" src={logo} alt={t("Mauiza logo")} />
+          </Link>
+          <p>
+            {t(
+              "Thoughtful online Quranic education for meaningful, consistent learning.",
+            )}
+          </p>
+        </div>
+        <div>
+          <h4>{t("Explore")}</h4>
+          <Link to="/about">{t("About Us")}</Link>
+          <Link to="/courses">{t("Courses")}</Link>
+          <Link to="/resources">{t("Resources")}</Link>
+          <Link to="/volunteers">{t("Volunteers")}</Link>
+          {/* <Link to="/muslims-daily-essentials">{t("Daily Essentials")}</Link> */}
+          <Link to="/live-quran-contemplation">{t("Quran Contemplation")}</Link>
+          <Link to="/registration">{t("Registration")}</Link>
+        </div>
+        <div>
+          <h4>{t("Connect")}</h4>
+          <a href="mailto:mauizainstitute@gmail.com">
+            <Mail />
+            mauizainstitute@gmail.com
+          </a>
+          <a href="/contact">
+            <MapPin />
+            {t("Online, worldwide")}
+          </a>
+        </div>
+      </div>
+      <div className="container footer-bottom">
+        © {new Date().getFullYear()} Mauiza Online Academy{" "}
+        <span>{t("Learn with purpose.")}</span>
+      </div>
+    </footer>
+  );
+}

@@ -1,0 +1,145 @@
+import { useState } from "react";
+import { CheckCircle2, Clock, Mail, MapPin, Send, X } from "lucide-react";
+import PageHero from "../../components/PageHero/PageHero";
+import { images } from "../../data/images";
+import { useLanguage } from "../../context/LanguageContext";
+import { apiUrl } from "../../utils/api";
+import "./Contact.css";
+const infos = [
+  [Mail, "Email Us", "mauizainstitute@gmail.com"],
+  [Clock, "Availability", "Flexible online learning"],
+  [MapPin, "Our Classroom", "Online, worldwide"],
+];
+export default function Contact() {
+  const { t } = useLanguage();
+  const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  return (
+    <main className="page">
+      <PageHero
+        title={t("We’re Here to Help")}
+        subtitle={t("Have a question about a course or your learning journey? Get in touch with us.")}
+        image={images.mosque}
+      />
+      <section className="section">
+        <div className="container">
+          <div className="contact-info-grid">
+            {infos.map(([Icon, title, text]) => (
+              <div key={title}>
+                <Icon />
+                <small>{t(title)}</small>
+                <b>{t(text)}</b>
+              </div>
+            ))}
+          </div>
+          <div className="contact-layout">
+            <div>
+              <p className="eyebrow">{t("GET IN TOUCH")}</p>
+              <h2>{t("Let’s Start a Conversation.")}</h2>
+              <p>
+                {t("We would be happy to answer your questions and help you find a course that suits your goals.")}
+              </p>
+              <p>
+                {t("Send us a message and our team will get back to you as soon as possible.")}
+              </p>
+            </div>
+            <form
+              className="contact-form"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const formData = new FormData(form);
+                const payload = {
+                  name: formData.get("name")?.trim(),
+                  email: formData.get("email")?.trim(),
+                  subject: formData.get("subject")?.trim(),
+                  message: formData.get("message")?.trim(),
+                };
+                if (Object.values(payload).some((value) => !value)) {
+                  setErrorMessage(t("Please complete all required fields."));
+                  return;
+                }
+                try {
+                  setSubmitting(true);
+                  setErrorMessage("");
+                  const response = await fetch(
+                    apiUrl("/api/contact"),
+                    {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(payload),
+                    },
+                  );
+                  const contentType = response.headers.get("content-type") || "";
+                  const data = contentType.includes("application/json")
+                    ? await response.json()
+                    : {
+                        message: t("Contact request failed. Please try again."),
+                      };
+                  if (!response.ok)
+                    throw new Error(data.message || t("Failed to send message"));
+                  setSent(true);
+                  form.reset();
+                } catch (error) {
+                  console.error("Contact form error:", error);
+                  setErrorMessage(t(error.message || "Failed to send message. Please try again."));
+                } finally {
+                  setSubmitting(false);
+                }
+              }}
+            >
+              <label>
+                {t("Your Name")}
+                <input required name="name" placeholder={t("Your name")} />
+              </label>
+              <label>
+                {t("Email Address")}
+                <input
+                  required
+                  type="email"
+                  name="email"
+                  placeholder="mauizainstitute@gmail.com"
+                />
+              </label>
+              <label>
+                {t("Subject")}
+                <input required name="subject" placeholder={t("How can we help?")} />
+              </label>
+              <label>
+                {t("Your Message")}
+                <textarea
+                  required
+                  rows="5"
+                  name="message"
+                  placeholder={t("Write your message here...")}
+                />
+              </label>
+              {errorMessage && <p className="contact-error" role="alert">{errorMessage}</p>}
+              <button type="submit" disabled={submitting}>
+                <Send /> {submitting ? t("Sending...") : t("Send Message")}
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+      {sent && (
+        <div className="success-modal-backdrop" onClick={() => setSent(false)}>
+          <div
+            className="success-modal"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button className="success-modal-close" type="button" aria-label={t("Close")} title={t("Close")} onClick={() => setSent(false)}>
+              <X aria-hidden="true" />
+            </button>
+            <div className="success-modal-icon">
+              <CheckCircle2 />
+            </div>
+            <h3>{t("Your message has been sent successfully.")}</h3>
+            <p>{t("Thank you for reaching out to Mauiza. We’ll be in touch soon.")}</p>
+          </div>
+        </div>
+      )}
+    </main>
+  );
+}

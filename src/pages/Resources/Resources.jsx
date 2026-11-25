@@ -1,0 +1,76 @@
+import { BookOpen, Download, ExternalLink, FileText, GraduationCap, HeartHandshake, Languages, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import PageHero from "../../components/PageHero/PageHero";
+import { images } from "../../data/images";
+import { useLanguage } from "../../context/LanguageContext";
+import revertGuide1 from "../../pictures/Revert Guide1.pdf";
+import revertGuide2 from "../../pictures/Revert Guide2.pdf";
+import revertGuide3 from "../../pictures/Revert Guide3.pdf";
+import prayerMemorization1 from "../../pictures/Prayer Memorization1.pdf";
+import prayerMemorization2 from "../../pictures/Prayer Memorization2.pdf";
+import prayerMemorization3 from "../../pictures/Prayer Memorization3.pdf";
+import quranMemorization1 from "../../pictures/Quran Memorization1.pdf";
+import quranMemorization2 from "../../pictures/Quran Memorization2.pdf";
+import quranMemorization3 from "../../pictures/Quran Memorization3.pdf";
+import arabicReading1 from "../../pictures/Arabic Reading Course1.pdf";
+import arabicReading2 from "../../pictures/Arabic Reading Course2.pdf";
+import arabicReading4 from "../../pictures/Arabic Reading Course4.pdf";
+import arabicReading3 from "../../pictures/Arabic Reading Course3.pdf";
+import tajweed from "../../pictures/Tajweed.pdf";
+import roadmapEnglish from "../../pictures/Human Development Roadmap - English.pdf";
+import roadmapUrdu from "../../pictures/Human Development Roadmap - Urdu.pdf";
+import roadmapSpanish from "../../pictures/Human Development Roadmap - Spanish.pdf";
+import roadmapArabic from "../../pictures/arabic.pdf";
+import roadmapChinese from "../../pictures/CHINESE.pdf";
+import roadmapFilipino from "../../pictures/FILIPINO.pdf";
+import roadmapJapanese from "../../pictures/JAPANESE.pdf";
+import "./Resources.css";
+
+const resourceGroups = [
+  {
+    title: "Human Development Roadmap Under the Guidance of Prophet Muhammad (PBUH)",
+    description: "Explore this guide in English, Urdu, Spanish, Arabic, Chinese, Filipino, and Japanese.",
+    icon: GraduationCap,
+    documents: [["English", roadmapEnglish], ["Urdu", roadmapUrdu], ["Spanish", roadmapSpanish], ["Arabic", roadmapArabic], ["Chinese", roadmapChinese], ["Filipino", roadmapFilipino], ["Japanese", roadmapJapanese]],
+  },
+  { title: "Revert Guide", description: "A gentle collection of practical guides for those beginning their journey in Islam.", icon: HeartHandshake, documents: [["Revert Guide 1", revertGuide1], ["Revert Guide 2", revertGuide2], ["Revert Guide 3", revertGuide3]] },
+  { title: "Prayer Memorization", description: "Build confidence in your prayer by learning the essential words and supplications.", icon: BookOpen, documents: [["Prayer Memorization 1", prayerMemorization1], ["Prayer Memorization 2", prayerMemorization2], ["Prayer Memorization 3", prayerMemorization3]] },
+  { title: "Quran Memorization", description: "Helpful materials to support a steady and meaningful Quran memorization routine.", icon: GraduationCap, documents: [["Quran Memorization 1", quranMemorization1], ["Quran Memorization 2", quranMemorization2], ["Quran Memorization 3", quranMemorization3]] },
+  { title: "Arabic Reading", description: "Step-by-step resources for recognizing Arabic letters, sounds, and Quranic words.", icon: Languages, documents: [["Arabic Reading Course 1", arabicReading1], ["Arabic Reading Course 2", arabicReading2], ["Arabic Reading Course 3", arabicReading3, "pdf"], ["Arabic Reading Course 4", arabicReading4]] },
+  { title: "Tajweed", description: "A clear reference for strengthening pronunciation and reciting the Quran with care.", icon: Sparkles, documents: [["Tajweed", tajweed]] },
+];
+
+export default function Resources() {
+  const { t } = useLanguage();
+  return <main className="page resources-page">
+    <PageHero title={t("Learning Resources")} subtitle={t("Explore and keep useful study materials for every step of your Islamic learning journey.")} image={images.learning} />
+    <section className="section resources-section">
+      <div className="container">
+        <div className="resources-intro">
+          <div className="eyebrow">{t("STUDY LIBRARY")}</div>
+          <h2 className="resource-title22">{t("Learn at your own pace.")}</h2>
+          <p className="lead">{t("Open a resource whenever you need it, or download it to keep learning offline. Each collection is organized around a focused part of your journey.")}</p>
+        </div>
+        <div className="resource-groups">
+          {resourceGroups.map(({ title, description, icon: Icon, documents }, index) => (
+            <motion.article className="resource-group surface" key={title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .15 }} transition={{ duration: .45, delay: index * .05 }}>
+              <header className="resource-group-heading">
+                <span className="resource-icon"><Icon /></span>
+                <div><p className="resource-kicker">{t("RESOURCE COLLECTION")}</p><h3>{t(title)}</h3><p>{t(description)}</p></div>
+              </header>
+              <div className="resource-documents">
+                {documents.map(([name, file, type]) => <div className="resource-document" key={name}>
+                  <div className="document-name"><FileText /><span>{t(name)}</span><small>{type === "presentation" ? "PPTX" : "PDF"}</small></div>
+                  <div className="document-actions">
+                    {type !== "presentation" && <a href={file} target="_blank" rel="noopener noreferrer" className="document-action view-action" aria-label={`${t("View")} ${t(name)}`}><ExternalLink /><span>{t("View")}</span></a>}
+                    <a href={file} download className="document-action download-action" aria-label={`${t("Download")} ${t(name)}`}><Download /><span>{t("Download")}</span></a>
+                  </div>
+                </div>)}
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>;
+}

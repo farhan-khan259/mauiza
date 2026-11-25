@@ -1,0 +1,110 @@
+.daily-essentials-page{overflow:hidden;background:var(--background)}
+.daily-page-hero{min-height:430px}
+.daily-page-hero .page-hero-content{padding:92px 0}
+.daily-page-hero h1{max-width:760px;line-height:1.05;overflow-wrap:anywhere}
+.daily-page-hero p{max-width:620px}
+.daily-dashboard-section{position:relative;padding:72px 0 100px;background:linear-gradient(180deg,var(--background),var(--soft-green) 46%,var(--background))}
+.daily-dashboard-section>.container{position:relative;z-index:1}
+.daily-location-bar{border-color:var(--line);background:linear-gradient(135deg, var(--soft-green), var(--surface));box-shadow:var(--shadow);color:var(--text)}
+.daily-location-copy{min-width:0}
+.daily-location-copy>svg{flex:0 0 auto;width:42px;height:42px;padding:10px;border-radius:12px;background:rgba(18,184,176,.12);color:var(--primary)}
+.daily-location-copy span{color:var(--muted)}
+.daily-location-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--dark)}
+.daily-location-actions{flex-wrap:wrap;justify-content:flex-end}
+.daily-place-search{position:relative;display:block}
+.daily-place-search svg{left:12px;color:var(--muted)}
+.daily-place-search input{width:220px;padding:11px 12px 11px 38px;border:1px solid var(--line);border-radius:10px;background:var(--field);color:var(--text);font:inherit;font-size:12px;outline:0}
+.daily-place-search input::placeholder{color:var(--muted)}
+.daily-place-search input:focus{border-color:var(--secondary);box-shadow:0 0 0 3px rgba(18,184,176,.18)}
+.place-results{position:absolute;z-index:4;top:calc(100% + 8px);right:0;display:grid;width:min(360px,calc(100vw - 56px));padding:6px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+.place-results button{padding:10px 12px;border:0;border-radius:8px;background:transparent;color:var(--text);font:inherit;font-size:12px;text-align:left;cursor:pointer}
+.place-results button:hover{background:var(--soft-green);color:var(--primary)}
+
+html[data-theme="dark"] .daily-location-bar,
+html[data-theme="dark"] .saved-locations,
+html[data-theme="dark"] .daily-date-row,
+html[data-theme="dark"] .current-prayer-card,
+html[data-theme="dark"] .prayer-card,
+html[data-theme="dark"] .timeline-panel,
+html[data-theme="dark"] .prohibited-panel,
+html[data-theme="dark"] .voluntary-panel,
+html[data-theme="dark"] .daily-empty,
+html[data-theme="dark"] .calculation-note,
+html[data-theme="dark"] .daily-message {
+  color: var(--text);
+}
+.daily-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:42px 0 22px}
+.daily-feature-grid .feature-card{min-height:144px}
+.daily-feature-grid .feature-card h3{font-size:17px}
+.daily-button{box-shadow:0 8px 18px rgba(6,61,50,.1);transition:transform .2s ease,box-shadow .2s ease}
+.daily-button:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(6,61,50,.16)}
+.daily-date-row{align-items:center;margin:50px 0 24px;padding:0 4px 20px;border-bottom:1px solid var(--line)}
+.daily-date-row h2{font-size:34px}
+.hijri-date{font-size:20px}
+.daily-change{padding:10px 14px;border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:background .2s ease,border-color .2s ease}
+.daily-change:hover{border-color:var(--secondary);background:var(--soft-green)}
+.current-prayer-card{position:relative;overflow:hidden;min-height:188px;padding:34px 38px;border-radius:20px;box-shadow:0 22px 48px rgba(6,61,50,.18)}
+.current-prayer-card:after{position:absolute;right:8%;bottom:-70px;width:220px;height:220px;border:1px solid rgba(214,168,79,.25);border-radius:50%;content:""}
+.current-prayer-card>div{position:relative;z-index:1}
+.current-prayer-card h2{font-size:48px}
+.current-prayer-card .eyebrow{color:#d7eee8}
+.current-prayer-card .eyebrow:before{background:var(--gold)}
+.current-prayer-card p{font-size:15px}
+.countdown{position:relative;z-index:1;min-width:190px;padding-left:30px;border-left:1px solid rgba(255,255,255,.18)}
+.countdown strong{font-size:48px;line-height:1.1}
+.countdown span{display:block;margin-top:8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.daily-section-heading{align-items:center;margin:64px 0 22px}
+.daily-section-heading h2{font-size:35px}
+.calculation-note{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white)}
+.prayer-grid{gap:16px}
+.prayer-card{position:relative;padding:21px 18px 20px;border-color:var(--line);border-radius:16px;background:var(--white);box-shadow:0 12px 28px rgba(6,61,50,.07);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.prayer-card:hover{transform:translateY(-5px);border-color:rgba(18,184,176,.45);box-shadow:var(--shadow)}
+.prayer-card-top svg{width:22px;height:22px;padding:4px;border-radius:7px;background:var(--soft-green);box-sizing:content-box}
+.prayer-card h3{margin-top:22px;font-size:14px;letter-spacing:.04em}
+.prayer-card>strong{font-size:24px}
+.prayer-card.now{border-color:var(--secondary);box-shadow:0 14px 30px rgba(18,184,176,.14)}
+.timeline-panel{margin-top:54px;padding:30px;border-color:var(--line);border-radius:18px;background:var(--white);box-shadow:0 12px 28px rgba(6,61,50,.06)}
+.timeline-panel .daily-section-heading{margin:0 0 30px}
+.timeline-item{gap:10px}
+.timeline-item strong{font-size:12px}
+.timeline-item small{font-size:11px}
+.prohibited-panel{margin-top:54px;padding:32px;border:1px solid rgba(214,168,79,.4);border-radius:20px;background:var(--soft-green);box-shadow:0 12px 28px rgba(6,61,50,.05)}
+.prohibited-heading>svg{width:30px;height:30px;padding:8px;border-radius:12px;background:var(--white);box-sizing:content-box}
+.prohibited-panel h2{font-size:35px}
+.prohibited-intro{max-width:720px;margin:15px 0 24px;font-size:13px}
+.prohibited-grid{gap:16px}
+.prohibited-card{border-color:var(--line);border-radius:14px;background:var(--white);box-shadow:0 8px 20px rgba(6,61,50,.05)}
+.prohibited-card strong{font-size:21px}
+.voluntary-panel{background:var(--white);border-color:var(--line)}
+.voluntary-panel .prohibited-heading>svg{color:var(--gold);background:var(--soft-green)}
+.voluntary-card{border-top:3px solid var(--gold)}
+.voluntary-card h3{font-family:var(--serif);font-size:25px;font-weight:400;letter-spacing:0}
+.voluntary-card strong{color:var(--primary);font-size:17px;white-space:normal}
+.voluntary-card p{margin-top:12px}
+.daily-empty{min-height:330px;padding:90px 20px;border:1px dashed rgba(11,93,75,.25);border-radius:20px;background:var(--white)}
+.daily-info{position:relative}
+.timing-disclaimer{max-width:780px;margin:24px auto 0;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--soft-green);color:var(--muted);font-size:12px;line-height:1.7;text-align:center}
+@media(max-width:900px){.daily-dashboard-section{padding-top:54px}.current-prayer-card{padding:30px}.prayer-grid{gap:12px}.timeline-panel,.prohibited-panel{padding:24px}}
+@media(max-width:760px){.daily-page-hero{min-height:360px}.daily-page-hero .page-hero-content{padding:78px 0 68px}.daily-location-actions{justify-content:stretch}.daily-location-actions>*{flex:1 1 190px}.daily-section-heading{align-items:flex-start;flex-direction:column;gap:12px}.calculation-note{border-radius:8px}.current-prayer-card{gap:22px}.countdown{min-width:0;padding-left:0;border-left:0}.timeline-panel{overflow:hidden}.prayer-timeline{margin-inline:-8px;padding-inline:8px}}
+@media(max-width:640px){.daily-date-row{align-items:flex-start;display:grid;gap:14px;margin-top:34px}.hijri-date{margin-right:0}.daily-change{justify-self:start}.daily-feature-grid{grid-template-columns:1fr;margin-top:32px}.current-prayer-card{min-height:0;padding:26px}.current-prayer-card h2{font-size:40px}.countdown strong{font-size:40px}.daily-section-heading h2,.prohibited-panel h2{font-size:30px}.prohibited-panel{padding:22px}.prohibited-heading{align-items:flex-start}.prohibited-grid{grid-template-columns:1fr}.voluntary-card h3{font-size:23px}}
+@media(max-width:480px){.daily-page-hero{min-height:330px}.daily-page-hero .page-hero-content{padding:66px 0 58px}.daily-location-bar{padding:16px}.daily-location-actions>*{flex-basis:100%}.daily-date-row h2{font-size:29px}.current-prayer-card{border-radius:16px;padding:22px}.current-prayer-card h2{font-size:35px}.countdown strong{font-size:34px}.timeline-panel{padding:20px}.timeline-panel .daily-section-heading{margin-bottom:22px}.prohibited-panel{padding:19px}.daily-empty{padding:65px 18px}}
+@media(max-width:390px){.daily-page-hero h1{font-size:2.65rem}.current-prayer-card h2{font-size:32px}.prayer-grid{grid-template-columns:1fr 1fr}.prayer-card{padding:17px 12px}.prayer-card>strong{font-size:21px}.calculation-note{font-size:10px}}
+@media(max-width:360px){.daily-page-hero h1{font-size:2.45rem}.prayer-grid{grid-template-columns:1fr}.current-prayer-card{padding:20px}.current-prayer-card h2{font-size:30px}}
+.daily-button-save{background:var(--primary-dark)}
+@media(max-width:560px){.saved-locations{padding:16px}.saved-location-row{padding-left:8px}}
+.daily-image-card,.daily-summary-card,.current-prayer-card,.prayer-card,.prohibited-card{border:1px solid var(--line);border-radius:17px;background:var(--white);box-shadow:none}.daily-card-image{display:none}.daily-card-body{padding:20px 22px}.daily-card-body small{color:var(--gold);font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.daily-card-body h3{margin:8px 0 7px}.daily-card-body p{margin:0;color:var(--muted);font-size:13px;line-height:1.65}.daily-location-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 20px}.daily-location-bar .daily-location-copy{padding:0}.daily-location-bar .daily-location-actions{padding-right:0}.daily-feature-grid{margin:42px 0 22px}.current-prayer-card{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:34px 38px}.current-prayer-card .current-prayer-content{padding:0}.current-prayer-card .countdown{margin-right:0}.prayer-card{padding:18px}.prayer-card .daily-card-body{padding:0}.prayer-card .daily-card-body h3{margin-top:7px}.prayer-card .daily-card-body>strong{font-size:24px}.prayer-card.now{border-color:var(--secondary);box-shadow:0 14px 30px rgba(18,184,176,.14)}.prohibited-card{padding:0}.prohibited-card .daily-card-image{height:98px}.prohibited-card .daily-card-body{padding:16px 18px 18px}.prohibited-card .daily-card-body h3{font-family:var(--serif);font-size:23px;font-weight:400}.prohibited-card .daily-card-body strong{font-size:18px}.prohibited-card .daily-card-body p{margin-top:10px}.prohibited-panel{padding:32px}.prohibited-panel>.prohibited-heading,.prohibited-panel>.prohibited-intro{position:relative;z-index:1}.prohibited-panel>.prohibited-heading{margin-bottom:0}.prohibited-panel>.prohibited-intro{margin-bottom:24px}
+.current-prayer-card{
+  border-color:rgba(214,168,79,.22);
+  background-color:var(--primary-dark);
+  background-image:linear-gradient(135deg,rgba(18,184,176,.16),transparent 55%);
+  color:#fff;
+}
+.current-prayer-card h2,.current-prayer-card .countdown strong{color:#fff}
+.current-prayer-card p,.current-prayer-card .countdown span{color:rgba(255,255,255,.72)}
+@media(max-width:760px){.daily-location-bar{grid-template-columns:92px minmax(0,1fr)}.daily-location-bar .daily-card-image{height:92px}.daily-location-bar .daily-location-actions{grid-column:1/-1;padding:0 16px 16px}.current-prayer-card{grid-template-columns:110px minmax(0,1fr)}.current-prayer-card .daily-card-image{height:170px}.current-prayer-card .countdown{grid-column:1/-1;margin:0;padding:0 26px 24px}.current-prayer-card .current-prayer-content{padding-left:24px}}
+@media(max-width:480px){.daily-location-bar{grid-template-columns:1fr}.daily-location-bar .daily-card-image{height:120px}.daily-location-bar .daily-location-copy{padding:16px}.current-prayer-card{grid-template-columns:1fr}.current-prayer-card .daily-card-image{height:150px}.current-prayer-card .current-prayer-content{padding:22px}.current-prayer-card .countdown{padding:0 22px 22px}.daily-summary-card .daily-card-image{height:120px}}
+@media(min-width:1101px){.daily-dashboard-section>.container{width:min(1160px,calc(100% - 48px))}.daily-feature-grid{gap:20px}.prayer-grid,.prohibited-grid{gap:20px}}
+@media(min-width:761px) and (max-width:1100px){.daily-dashboard-section{padding:58px 0 82px}.daily-location-bar{grid-template-columns:105px minmax(0,1fr);gap:0}.daily-location-bar .daily-card-image{height:104px}.daily-location-bar .daily-location-actions{grid-column:1/-1;justify-content:flex-start;padding:14px 18px 18px;border-top:1px solid var(--line)}.daily-feature-grid{margin-top:36px}.current-prayer-card{grid-template-columns:120px minmax(0,1fr) auto}.current-prayer-card .daily-card-image{height:176px}.current-prayer-card .current-prayer-content{padding-left:26px}.current-prayer-card .countdown{margin-right:26px;padding-left:22px}.daily-section-heading{margin-top:52px}.timeline-panel,.prohibited-panel{margin-top:42px}}
+@media(max-width:760px){.daily-dashboard-section{padding:42px 0 68px}.daily-dashboard-section>.container{width:min(100% - 32px,1160px)}.daily-location-bar{width:100%;gap:0}.daily-feature-grid{gap:14px;margin:30px 0 18px}.daily-summary-card .daily-card-body{padding:17px 18px 19px}.current-prayer-card{width:100%;margin-top:18px}.daily-section-heading{margin:44px 0 18px}.timeline-panel,.prohibited-panel{margin-top:38px;border-radius:16px}.prohibited-panel{padding:22px}.timing-disclaimer{margin-top:20px}.daily-info{padding:64px 0}}
+@media(max-width:560px){.daily-dashboard-section>.container{width:calc(100% - 28px)}.daily-location-bar .daily-location-actions{padding:0 16px 16px}.daily-location-actions>*{min-width:0}.daily-feature-grid{margin-top:26px}.daily-card-body{padding:17px 18px}.prayer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.prayer-card .daily-card-image{height:122px}.prayer-card .daily-card-body{padding:14px 14px 16px}.prayer-card .daily-card-body h3{font-size:15px}.prayer-card .daily-card-body>strong{font-size:20px}.timeline-panel,.prohibited-panel{padding:18px;margin-top:32px}.prohibited-panel{border-radius:15px}.prohibited-panel h2{font-size:27px}.prohibited-intro{margin:12px 0 18px}.prohibited-grid{gap:12px}.prohibited-card .daily-card-image{height:82px}.prohibited-card .daily-card-body{padding:13px 14px 15px}.prohibited-card .daily-card-body h3{font-size:20px}.daily-empty{min-height:280px;padding:64px 18px}.daily-info h2{font-size:30px}}
+@media(max-width:390px){.daily-dashboard-section>.container{width:calc(100% - 24px)}.daily-location-bar .daily-card-image{height:108px}.daily-location-bar .daily-location-copy{padding:14px}.daily-location-copy strong{font-size:14px}.current-prayer-card .daily-card-image{height:132px}.current-prayer-card .current-prayer-content{padding:19px}.current-prayer-card h2{font-size:31px}.current-prayer-card .countdown{padding:0 19px 19px}.countdown strong{font-size:31px}.prayer-grid{grid-template-columns:1fr}.prayer-card .daily-card-image{height:138px}.daily-section-heading h2{font-size:28px}.calculation-note{max-width:100%;overflow-wrap:anywhere}}

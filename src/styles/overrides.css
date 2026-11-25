@@ -1,0 +1,180 @@
+/* Keep the small section labels visually consistent across every page. */
+.eyebrow,
+.section-heading .eyebrow,
+.section-heading.center .eyebrow,
+.page-hero .eyebrow,
+html[dir="rtl"] .section-heading:not(.center) .eyebrow,
+html[dir="rtl"] .page-hero .eyebrow {
+  justify-content: center;
+  text-align: center;
+}
+
+.section-heading.center,
+.section-heading.center h2 {
+  text-align: center;
+}
+
+.section-heading.center h2,
+.section-heading.center .lead {
+  margin-inline: auto;
+}
+
+.page-hero-content,
+.page-hero h1,
+.page-hero p {
+  text-align: center;
+}
+
+.page-hero h1,
+.page-hero p {
+  margin-inline: auto;
+}
+
+/* Center the text-led panels that sit beside visual or form content. */
+.welcome > div:first-child,
+.about-grid > div:first-child,
+.contact-layout > div:first-child,
+.cta-inner,
+.cta-inner h2,
+.cta-inner p {
+  text-align: center;
+}
+
+.welcome > div:first-child .section-heading h2,
+.about-grid > div:first-child .section-heading h2,
+.contact-layout > div:first-child h2 {
+  text-align: center;
+}
+
+.welcome > div:first-child .section-heading h2,
+.about-grid > div:first-child .section-heading h2,
+.welcome > div:first-child p,
+.about-grid > div:first-child > p,
+.contact-layout > div:first-child > p:not(.eyebrow) {
+  margin-inline: auto;
+}
+
+html[data-theme="dark"] body {
+  background: var(--background);
+}
+
+html[data-theme="dark"] .welcome-quote p {
+  color: var(--text) !important;
+}
+
+html[data-theme="dark"] .course-card,
+html[data-theme="dark"] .feature-card,
+html[data-theme="dark"] .mission-section,
+html[data-theme="dark"] .contact-info-grid > div,
+html[data-theme="dark"] .resource-group,
+html[data-theme="dark"] .registration-form,
+html[data-theme="dark"] .volunteer-form,
+html[data-theme="dark"] .daily-location-bar,
+html[data-theme="dark"] .calculation-note,
+html[data-theme="dark"] .prayer-card,
+html[data-theme="dark"] .timeline-panel,
+html[data-theme="dark"] .prohibited-card,
+html[data-theme="dark"] .prohibited-panel,
+html[data-theme="dark"] .saved-locations,
+html[data-theme="dark"] .daily-empty,
+html[data-theme="dark"] .success-modal,
+html[data-theme="dark"] .intro-float,
+html[data-theme="dark"] .quran-card {
+  background: var(--surface) !important;
+  color: var(--text);
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background: var(--field) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+html[data-theme="dark"] .resources-section {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--soft-green) 100%);
+}
+
+html[data-theme="dark"] .role-choice-intro,
+html[data-theme="dark"] .role-panel,
+html[data-theme="dark"] .selected-role-strip {
+  background: var(--soft-green) !important;
+  color: var(--text);
+}
+
+html[data-theme="dark"] .opportunity-note {
+  background: #2d281b;
+}
+
+html[data-theme="dark"] .button.light,
+html[data-theme="dark"] .document-name small {
+  background: var(--soft-green);
+  color: var(--primary);
+}
+
+html[data-theme="dark"] .view-action:hover {
+  background: var(--soft-green);
+}
+
+html[data-theme="dark"] .footer-grid p,
+html[data-theme="dark"] .footer-grid a:not(.logo) {
+  color: #c5d7d2;
+}
+
+html[data-theme="dark"] .course-card,
+html[data-theme="dark"] .contact-info-grid > div,
+html[data-theme="dark"] .registration-form,
+html[data-theme="dark"] .volunteer-form,
+html[data-theme="dark"] .daily-location-bar,
+html[data-theme="dark"] .resources-section,
+html[data-theme="dark"] .works,
+html[data-theme="dark"] .about-preview {
+  background: var(--surface) !important;
+}
+
+html[data-theme="dark"] .about-preview,
+html[data-theme="dark"] .why,
+html[data-theme="dark"] .resources-section {
+  background: var(--soft-green) !important;
+}
+
+html[data-theme="dark"] .course-body h3,
+html[data-theme="dark"] .resource-group h3,
+html[data-theme="dark"] .document-name,
+html[data-theme="dark"] .contact-info-grid b,
+html[data-theme="dark"] .contact-info-grid small,
+html[data-theme="dark"] .step h3,
+html[data-theme="dark"] .step p,
+html[data-theme="dark"] .detailed-content h2,
+html[data-theme="dark"] .detailed-content h3,
+html[data-theme="dark"] .detailed-content h4,
+html[data-theme="dark"] .detailed-content li,
+html[data-theme="dark"] .registration-form label,
+html[data-theme="dark"] .volunteer-form label {
+  color: var(--text);
+}
+
+html[data-theme="dark"] .intro-float,
+html[data-theme="dark"] .quran-card,
+html[data-theme="dark"] .light,
+html[data-theme="dark"] .course-image span {
+  background: var(--surface) !important;
+  color: var(--text);
+}
+
+html[data-theme="dark"] .works .step > span {
+  border-color: var(--soft-green);
+}
+
+html[data-theme="dark"] .view-action:hover,
+html[data-theme="dark"] .document-name small {
+  background: var(--soft-green);
+  color: var(--primary);
+}
+
+html[data-theme="dark"] .contact-error,
+html[data-theme="dark"] .form-error,
+html[data-theme="dark"] .volunteer-error {
+  color: #ff9b91;
+}
