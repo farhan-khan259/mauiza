@@ -299,8 +299,12 @@ export default function Workspace({ id, auth, initialAudio = false, initialVideo
       {detailsOpen && <aside className="td-live-sidebar td-details-sidebar" aria-label="Meeting details">
         <div className="td-sidebar-heading"><h2>Meeting Details</h2><button className="td-icon-button" type="button" aria-label="Close meeting details" onClick={() => setDetailsOpen(false)}><X size={18} /></button></div>
         <div className="td-details-card"><small>Meeting</small><strong>{room.title}</strong><small>Time remaining</small><strong className="td-countdown">{countdown(remaining)}</strong><small>Created by</small><strong>{room.members.find(person => person.role === 'host')?.name || 'Meeting creator'}</strong></div>
-        {isHost && <div className="td-details-invite"><h3>Invite guests</h3><p>Guests need your approval before they can enter.</p><label>Invitation link<input readOnly value={shareUrl(room)} onFocus={event => event.target.select()} /></label><button className="td-button" type="button" onClick={() => void copyLink()}>{copied === true ? <Check size={17} /> : <Copy size={17} />}{copied === 'failed' ? 'Copy manually' : copied ? 'Copied' : 'Copy Link'}</button></div>}
-        {isHost && <button className="td-quiet td-danger td-end-button" type="button" disabled={meetingBusy} onClick={() => { if (window.confirm('End this meeting for everyone?')) void action('end'); }}>End for Everyone</button>}
+        {isHost && <div className="td-details-invite"><h3>Invite guests</h3><p>Guests need your approval before they can enter.</p><label>Invitation link<input readOnly value={shareUrl(room)} onFocus={event => event.target.select()} /></label>
+          <div className="td-invite-actions">
+            <button className="td-button" type="button" onClick={() => void copyLink()}>{copied === true ? <Check size={17} /> : <Copy size={17} />}{copied === 'failed' ? 'Copy manually' : copied ? 'Copied' : 'Copy Link'}</button>
+            <button className="td-quiet td-danger td-end-button" type="button" disabled={meetingBusy} onClick={() => { if (window.confirm('End this meeting for everyone?')) void action('end'); }}>End for Everyone</button>
+          </div>
+        </div>}
       </aside>}
     </div>
   </div>;
