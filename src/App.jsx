@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -19,9 +19,43 @@ import { LanguageProvider } from "./context/LanguageContext";
 import TadabburLanding from "./pages/Tadabbur/Landing";
 import { landingPath, platformPath } from "./pages/Tadabbur/client";
 const TadabburPlatform = lazy(() => import("./pages/Tadabbur/Platform"));
+
+const pageTitles = {
+  "/": "Home",
+  "/about": "About Us",
+  "/courses": "Courses",
+  "/resources": "Resources",
+  "/registration": "Registration",
+  "/volunteers": "Volunteers",
+  "/contact": "Contact Us",
+  "/muslims-daily-essentials": "Daily Essentials",
+  "/daily-essentials": "Daily Essentials",
+  "/daily-essentials/qibla": "Qibla Finder",
+  "/daily-essentials/halal-scanner": "Halal Scanner",
+  "/daily-essentials/mosque-halal-finder": "Mosque & Halal Finder",
+  "/daily-essentials/prayer-timings": "Prayer Timings",
+  [landingPath]: "Live Quran Contemplation",
+};
+
+function getPageTitle(pathname) {
+  const normalizedPath = pathname.replace(/\/+$/, "") || "/";
+  if (normalizedPath.startsWith(`${platformPath}/room/`)) return "Live Study Room";
+  if (normalizedPath === platformPath || normalizedPath.startsWith(`${platformPath}/`)) return "Research";
+  return pageTitles[normalizedPath] || "Page Not Found";
+}
+
 export default function App() {
   const { pathname } = useLocation();
   const inPlatform = pathname === platformPath || pathname.startsWith(platformPath + "/");
+
+  useEffect(() => {
+    document.title = `Mauiza | ${getPageTitle(pathname)}`;
+    const canonicalPath = pathname.replace(/\/+$/, "") || "/";
+    const canonicalUrl = new URL(canonicalPath, window.location.origin).href;
+    document.querySelector('link[rel="canonical"]')?.setAttribute("href", canonicalUrl);
+    document.querySelector('meta[property="og:url"]')?.setAttribute("content", canonicalUrl);
+  }, [pathname]);
+
   if (inPlatform) return (
     <LanguageProvider>
       <ScrollToTop />

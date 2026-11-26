@@ -112,11 +112,6 @@ function getStoredPrayerLocation() {
 export default function MuslimsDailyEssentials() {
   const { language } = useLanguage();
   const t = (key) => extraLabels[language]?.[key] || dailyTranslations[language]?.[key] || dailyTranslations.en[key] || key;
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = `${t("title")} | Mauiza`;
-    return () => { document.title = previousTitle; };
-  }, [language]);
   const [location, setLocation] = useState(getStoredPrayerLocation);
   const [savedLocations, setSavedLocations] = useState(() => {
     try {
