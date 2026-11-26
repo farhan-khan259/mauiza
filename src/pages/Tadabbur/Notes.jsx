@@ -136,6 +136,7 @@ export function printNotes(title, text) {
   body.dir = 'auto';
   print.document.body.append(heading, body);
   print.opener = null;
+  print.addEventListener('afterprint', () => print.close(), { once: true });
   print.focus();
   print.print();
 }
