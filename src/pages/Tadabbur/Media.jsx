@@ -166,7 +166,7 @@ export function RoomAudio({ rtc }) {
     [...person.audioTrackPublications.values()].filter(pub => pub.track).map(pub => <MediaTrack key={pub.trackSid} track={pub.track} audio />));
 }
 
-export function CallControls({ rtc, settings, raised, shareMenu, onShareMenu, documentReady, onDocumentShare, onDocumentStop, onSettings, onHand, onPeople, onExtend, onLeave, onEnd, host, onFullscreen, fullscreen, layout, setLayout }) {
+export function CallControls({ rtc, settings, raised, shareMenu, onShareMenu, documentReady, onDocumentShare, onDocumentStop, onSettings, onHand, onPeople, onInvite, inviteCount, onExtend, onLeave, onEnd, host, onFullscreen, fullscreen, layout, setLayout }) {
   const [menu, setMenu] = useState(false);
   const { local, ready, busy, perform } = rtc;
   const available = Boolean(navigator.mediaDevices?.getDisplayMedia);
@@ -202,6 +202,7 @@ export function CallControls({ rtc, settings, raised, shareMenu, onShareMenu, do
         <button className="qs-button" type="button" onClick={() => { setMenu(false); onSettings(); }}><Settings2 size={16} /> Video and audio settings</button>
         <button className="qs-button" type="button" onClick={() => { setMenu(false); onPeople(); }}><UsersRound size={16} /> Participants</button>
         <button className="qs-button" type="button" onClick={() => { setMenu(false); onFullscreen(); }}><Maximize size={16} /> {fullscreen ? 'Exit full screen' : 'Enter full screen'}</button>
+        {host && <button className="qs-button qs-invite" type="button" onClick={() => { setMenu(false); onInvite(); }}>Invite{inviteCount > 0 && <span className="qs-count">{inviteCount}</span>}</button>}
         {host && <button className="qs-button" type="button" onClick={() => { setMenu(false); onExtend(); }}>Extend meeting</button>}
         {host && <button className="qs-button qs-danger-text" type="button" onClick={() => { setMenu(false); onEnd(); }}>End for everyone</button>}
       </div>}

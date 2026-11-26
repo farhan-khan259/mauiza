@@ -182,7 +182,6 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
       {host && <label className="qs-mobile-phase"><select aria-label="Study phase" value={study.phase} onChange={event => lead('phase', event.target.value)}>{phases.map(phase => <option value={phase} key={phase}>{phase}</option>)}</select><small>{remaining}</small></label>}
       <div className="qs-actions qs-header-actions">
         <small>{roomBadge}</small>
-        {host && <button type="button" className="qs-button qs-invite" onClick={onInvite}>Invite{room.pending?.length > 0 && <span className="qs-count">{room.pending.length}</span>}</button>}
         <button type="button" className="qs-icon" aria-label="Participants and join requests" onClick={onPeople}><Hand size={15} /></button>
       </div>
     </header>
@@ -259,7 +258,9 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
         onDocumentStop={study.document && (host || study.document.presenter === room.me.id) ? () => {
           setShareMenu(false); void documentControls.current?.stop();
         } : undefined} onSettings={() => setMediaOpen(true)} onHand={onHand}
-        raised={room.members.some(person => person.id === room.me.id && person.raised)} onPeople={onPeople} onExtend={onExtend} onLeave={onLeave} onEnd={onEnd} host={host} onFullscreen={onFullscreen} fullscreen={fullscreen} layout={layout} setLayout={chooseLayout} />
+        raised={room.members.some(person => person.id === room.me.id && person.raised)} onPeople={onPeople} onInvite={onInvite}
+        inviteCount={room.pending?.length || 0} onExtend={onExtend} onLeave={onLeave} onEnd={onEnd} host={host}
+        onFullscreen={onFullscreen} fullscreen={fullscreen} layout={layout} setLayout={chooseLayout} />
     </footer>
     {mediaOpen && <Suspense fallback={<p role="status">Loading device settings…</p>}><DeviceSettings settings={settings} close={() => setMediaOpen(false)} apply={values => { setSettings(values); setMediaOpen(false); }} /></Suspense>}
     <dialog className="qs-modal qs-research-sheet" style={{ "--qs-research-height": researchHeight + "dvh" }} ref={researchDialog} onCancel={event => { event.preventDefault(); setResearchOpen(false); }}>
