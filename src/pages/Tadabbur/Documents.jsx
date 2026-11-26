@@ -54,18 +54,42 @@ export function Documents({ call, records, reload, presenter, controlsRef, onDoc
     setPages(0); setLoaded({}); setError('');
     async function load() {
       try {
-        const data = await (current.file ? current.file.arrayBuffer() : call('/study/documents/' + current.id, { signal: controller.signal, output: 'buffer' }));
-        if (controller.signal.aborted) return;
         if (current.type === 'application/pdf') {
           const [pdf, worker] = await Promise.all([import('pdfjs-dist'), import('pdfjs-dist/build/pdf.worker.min.mjs?url')]);
           if (controller.signal.aborted) return;
           const workerUrl = new URL(worker.default, window.location.origin);
           workerUrl.searchParams.set('mauiza-worker', '2');
           pdf.GlobalWorkerOptions.workerSrc = workerUrl.href;
-          loadingTask = pdf.getDocument({ data, isEvalSupported: false, useSystemFonts: true });
+          class DocumentRangeTransport extends pdf.PDFDataRangeTransport {
+            requestDataRange(begin, end) {
+              const range = current.file
+                ? current.file.slice(begin, end).arrayBuffer()
+                : call(`/study/documents/${current.id}`, {
+                  signal: controller.signal, output: 'buffer',
+                  headers: { Range: `bytes=${begin}-${end - 1}` }
+                });
+              void range.then(data => {
+                if (!controller.signal.aborted) this.onDataRange(begin, new Uint8Array(data));
+              }).catch(error => {
+                if (!controller.signal.aborted) {
+                  setError(error.message || 'The document could not be opened.');
+                  controller.abort();
+                }
+              });
+            }
+            abort() { controller.abort(); }
+          }
+          const range = new DocumentRangeTransport(current.size || current.file.size, null);
+          loadingTask = pdf.getDocument({
+            range, length: current.size || current.file.size, rangeChunkSize: 65536,
+            disableStream: true, disableAutoFetch: true,
+            isEvalSupported: false, useSystemFonts: true
+          });
           const doc = await loadingTask.promise;
           if (!controller.signal.aborted) { setPages(doc.numPages); setLoaded({ id: current.id, doc }); }
         } else {
+          const data = await (current.file ? current.file.arrayBuffer() : call('/study/documents/' + current.id, { signal: controller.signal, output: 'buffer' }));
+          if (controller.signal.aborted) return;
           imageUrl = URL.createObjectURL(new Blob([data], { type: current.type }));
           setPages(1); setLoaded({ id: current.id, imageUrl });
         }
@@ -120,16 +144,16 @@ export function Documents({ call, records, reload, presenter, controlsRef, onDoc
   function openFile(file) {
     if (!file) return;
     setUploadError('');
-    if (file.size > 8 * 1024 * 1024) { setUploadError('The document must be 8 MB or smaller.'); return; }
     const types = { pdf: 'application/pdf', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' };
     const type = types[file.name.split('.').at(-1).toLowerCase()];
     if (!type) { setUploadError('Choose a PDF, PNG, JPEG or WebP file.'); return; }
     const draft = { id: 'local:' + crypto.randomUUID(), name: file.name, type, file };
     setLocal(draft);
     browse(draft.id);
-    void saveFile(draft).catch(error => {
-      setUploadError('Local preview is available. Saving this document to the room failed. ' + error.message);
-    });
+    setUploading(true);
+    void saveFile(draft)
+      .catch(error => setUploadError('Local preview is available. Saving this document to the room failed. ' + error.message))
+      .finally(() => setUploading(false));
   }
   function browse(id, next = 1) {
     setFollow(false); setSelected(id); setOwnPage(next); setZoom(1);

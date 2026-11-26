@@ -34,11 +34,12 @@ export function shareUrl(room) {
   return url.href;
 }
 
-export async function request(path, { auth, method = 'GET', body, signal, keepalive, binary, output } = {}) {
+export async function request(path, { auth, method = 'GET', body, signal, keepalive, binary, output, headers: extraHeaders } = {}) {
   const headers = {};
   if (auth) headers.Authorization = 'Bearer ' + auth;
   if (binary) headers['Content-Type'] = 'application/octet-stream';
   else if (body !== undefined) headers['Content-Type'] = 'application/json';
+  Object.assign(headers, extraHeaders);
   let response;
   try {
     response = await fetch(new URL('/api/tadabbur' + path, roomApiBase), {
@@ -51,7 +52,7 @@ export async function request(path, { auth, method = 'GET', body, signal, keepal
   }
   const type = response.headers.get('content-type') || '';
   if (response.ok && output === 'buffer' && /^(application\/pdf|image\/(png|jpeg|webp))(?:;|$)/i.test(type)) return response.arrayBuffer();
-  if (!response.ok && response.status === 413) throw new Error('The server rejected the upload size. Choose a smaller file or ask the site administrator to check the upload limit.');
+  if (!response.ok && response.status === 413) throw new Error('The hosting service rejected this upload because of its request-size limit.');
   const data = type.includes('json') ? await response.json().catch(() => null) : null;
   if (!response.ok || output === 'buffer' || data === null) {
     throw new Error(data?.message || (response.ok ? 'The Mauiza API sent an unexpected response.' : 'The Mauiza API request failed (HTTP ' + response.status + ').'));
