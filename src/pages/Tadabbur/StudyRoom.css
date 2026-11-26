@@ -118,6 +118,11 @@
 .qs-bottom > p { display: flex; flex: 1; align-items: center; gap: 7px; font-size: .89em; color: var(--qs-muted); }
 .qs-tiles { display: flex; gap: 7px; min-width: 0; }
 .qs-strip { flex: 1; overflow-x: auto; scrollbar-width: thin; scrollbar-color: #355d4b transparent; }
+.qs-share-participants-panel { display: flex; flex-direction: column; gap: 9px; min-height: 0; padding: 10px; border: 1px solid var(--qs-line); border-radius: 10px; background: var(--qs-panel); }
+.qs-share-participants-panel h3 { flex: none; font-size: .95em; }
+.qs-share-research-participants { flex: none; width: 100%; max-height: 66px; overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: #355d4b transparent; }
+.qs-share-research-participants .qs-tile { box-sizing: border-box; flex: 0 0 calc((100% - 21px) / 4); min-width: 64px; max-width: none; height: 58px; min-height: 58px; padding: 4px; }
+.qs-share-footer-spacer { flex: 1; }
 .qs-tile { position: relative; overflow: hidden; min-width: 100px; min-height: 51px; max-width: 150px; background: #19352b; border: 1px solid var(--qs-line); border-radius: 10px; display: flex; align-items: center; gap: 7px; padding: 7px; }
 .qs-tile.is-active { border-color: var(--qs-mint); }
 .qs-tile > div { display: grid; min-width: 0; }
@@ -444,7 +449,6 @@
 .qs-studio[data-share="true"] .qs-private-wrap { flex: none; }
 .qs-studio[data-share="true"] .qs-notes textarea { height: min(var(--qs-note-height, 165px), 28dvh); }
 .qs-share-video,.qs-share-frame { min-width: 0; }
-.qs-sharing-strip .qs-tile { min-width: 72px; }
 @media (min-width: 761px) {
   .qs-research-desktop > .qs-research-workspace { height: var(--qs-research-panel-height, clamp(190px, 36dvh, 375px)); overflow: hidden; }
   .qs-right[data-side-view="web"] { overflow: hidden; }
@@ -459,7 +463,6 @@
   .qs-web-research-handle { display: none; }
   .qs-change-passage { font-size: .86em; }
   .qs-bottom { flex-wrap: wrap; }
-  .qs-studio[data-share="true"] .qs-sharing-strip { display: flex; order: -1; width: 100%; max-height: 52px; }
   .qs-studio[data-share="true"] .qs-research-desktop:not([hidden]) { display: grid; }
   .qs-studio[data-share="true"] .qs-research-workspace { height: var(--qs-research-panel-height, 250px); }
   .qs-studio .qs-more { position: fixed; inset: auto 8px calc(65px + env(safe-area-inset-bottom)) auto; max-width: calc(100% - 16px); }

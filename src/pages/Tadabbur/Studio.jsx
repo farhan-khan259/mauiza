@@ -241,7 +241,10 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
         {sideView === 'web' && !(discussing && tab === 'docs' && !showShare) && <ResizeHandle className="qs-height-handle qs-web-research-handle" label="Resize Web and Research panels" axis="y" reverse value={researchPanelHeight || 240} minimum={130} maximum={650}
           onChange={value => resize('research-panel-height', setResearchPanelHeight, value)} />}
         <div className="qs-research-desktop" hidden={discussing && tab === 'docs' && !showShare}>
-          <Research {...researchProps} />
+          {showShare ? <section className="qs-share-participants-panel" aria-label="Participants">
+            <h3>Participants</h3>
+            {tiles(ordered, 'qs-share-research-participants', layout === 'audio')}
+          </section> : <Research {...researchProps} />}
           {sideView === 'notes' && <ResizeHandle className="qs-height-handle" label="Research panel height" axis="y" value={researchPanelHeight || 240} minimum={130} maximum={650}
             onChange={value => resize('research-panel-height', setResearchPanelHeight, value)} />}
         </div>
@@ -259,7 +262,7 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
     </main>
     <button type="button" className="qs-mobile-research" onClick={() => setResearchOpen(true)}><span />Research <small>Word, root, tafsir or topic</small></button>
     <footer className="qs-bottom">
-      {showShare ? tiles(ordered, 'qs-strip qs-sharing-strip', layout === 'audio') : layout === 'strip' || layout === 'audio' ? tiles(room.members, 'qs-strip', layout === 'audio') : <span />}
+      {showShare ? <span className="qs-share-footer-spacer" aria-hidden="true" /> : layout === 'strip' || layout === 'audio' ? tiles(room.members, 'qs-strip', layout === 'audio') : <span />}
       <CallControls rtc={rtc} settings={settings} shareMenu={shareMenu} onShareMenu={() => setShareMenu(open => !open)} documentReady={documentReady}
         onDocumentShare={() => { setShareMenu(false); setTab('docs'); void documentControls.current?.present(); }}
         onDocumentStop={study.document && (host || study.document.presenter === room.me.id) ? () => {
