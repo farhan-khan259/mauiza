@@ -250,7 +250,7 @@ export function WebSearch({ call }) {
   const settings = usePanelAppearance('web');
   const result = useStudyData(call, searchQuery && '/research?q=' + encodeURIComponent(searchQuery));
   return <section className="qs-panel qs-research">
-    <div className="qs-line qs-detail-heading"><h2>Web</h2><TextControls panel="web" settings={settings} /></div>
+    <div className="qs-line qs-detail-heading"><h2>Web</h2><div className="qs-actions qs-web-heading-actions"><button className="qs-pill" type="button" aria-label="Reset web search" onClick={() => { setQuery(''); search(''); setPreview(null); }}>Reset</button><TextControls panel="web" settings={settings} /></div></div>
     <form className="qs-search" onSubmit={event => { event.preventDefault(); if (query.trim().length >= 2) search(query.trim()); setPreview(null); }}><input aria-label="Web search query" type="search" required value={query} onChange={event => setQuery(event.target.value)} placeholder="Search the web" minLength={2} maxLength={180} /><button className="qs-link" type="submit">Search</button></form>
     <div className="qs-research-content" style={{ fontSize: settings.appearance.size + 'em' }}>
       {preview ? <div className="qs-web-preview">

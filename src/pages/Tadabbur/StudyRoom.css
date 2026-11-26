@@ -349,6 +349,7 @@
 /* Study workspace and independent reading preferences */
 .qs-detail-heading { flex-wrap: wrap; align-items: center; }
 .qs-text-controls { flex-wrap: wrap; }
+.qs-web-heading-actions { margin-left: auto; justify-content: flex-end; }
 .qs-resource-chooser { width: min(92vw, 470px); padding: 16px; margin: 9dvh auto auto; }
 .qs-resource-chooser input { width: 100%; margin-block: 10px; }
 .qs-resource-list { display: grid; gap: 4px; overflow: auto; max-height: 58dvh; }
