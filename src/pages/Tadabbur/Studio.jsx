@@ -286,7 +286,6 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
 
 function Passage({ ayah, close, save }) {
   const [chapter, verse] = ayah.split(':');
-  const [last, setLast] = useState(verse);
   const dialog = useRef(null);
   useEffect(() => { dialog.current.showModal(); }, []);
   return <dialog className="qs-modal qs-passage" ref={dialog} onCancel={event => { event.preventDefault(); close(); }}>
@@ -294,12 +293,11 @@ function Passage({ ayah, close, save }) {
     <form className="qs-translation-fields" onSubmit={event => {
       event.preventDefault();
       const values = new FormData(event.currentTarget);
-      save({ kind: 'range', chapter: values.get('chapter'), first: values.get('first'), last: values.get('last') });
+      save({ chapter: values.get('chapter'), first: values.get('first') });
     }}>
       <label>Surah number<input name="chapter" type="number" min="1" max="114" defaultValue={chapter} required /></label>
-      <label>First ayah<input name="first" type="number" min="1" max="286" defaultValue={verse} onChange={event => setLast(event.target.value)} required /></label>
-      <label>Last ayah<input name="last" type="number" min="1" max="286" value={last} onChange={event => setLast(event.target.value)} required /></label>
-      <button className="qs-button qs-primary" type="submit">Set passage for everyone</button>
+      <label>First ayah<input name="first" type="number" min="1" max="286" defaultValue={verse} required /></label>
+      <button className="qs-button qs-primary" type="submit">Set ayah for everyone</button>
     </form>
   </dialog>;
 }
