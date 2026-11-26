@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { BookOpen, ChevronLeft, ChevronRight, FileDown, FileText, LockKeyhole, Play, Search, Square } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, FileDown, FileText, LockKeyhole, Play, Square } from 'lucide-react';
 import { plainText, safeLink } from './client';
 import { TextControls, ResourceChooser, usePanelAppearance } from './StudyControls';
 import { NotePreview, printNotes } from './Notes';
@@ -251,7 +251,7 @@ export function WebSearch({ call }) {
   const result = useStudyData(call, searchQuery && '/research?q=' + encodeURIComponent(searchQuery));
   return <section className="qs-panel qs-research">
     <div className="qs-line qs-detail-heading"><h2>Web</h2><TextControls panel="web" settings={settings} /></div>
-    <form className="qs-search" onSubmit={event => { event.preventDefault(); if (query.trim().length >= 2) search(query.trim()); setPreview(null); }}><Search size={16} /><input aria-label="Web search query" type="search" required value={query} onChange={event => setQuery(event.target.value)} placeholder="Search the web" minLength={2} maxLength={180} /><button className="qs-link" type="submit">Search</button></form>
+    <form className="qs-search" onSubmit={event => { event.preventDefault(); if (query.trim().length >= 2) search(query.trim()); setPreview(null); }}><input aria-label="Web search query" type="search" required value={query} onChange={event => setQuery(event.target.value)} placeholder="Search the web" minLength={2} maxLength={180} /><button className="qs-link" type="submit">Search</button></form>
     <div className="qs-research-content" style={{ fontSize: settings.appearance.size + 'em' }}>
       {preview ? <div className="qs-web-preview">
         <button className="qs-link" type="button" onClick={() => setPreview(null)}>Back to results</button><a href={preview.url} target="_blank" rel="noopener noreferrer">{preview.title}</a><p>{preview.text}</p>

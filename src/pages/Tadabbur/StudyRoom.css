@@ -86,8 +86,8 @@
 .qs-word-chip { color: #9ef1d9; padding: 0 7px; border-radius: 12px; background: #1e4c3c; }
 .qs-notes textarea { resize: vertical; width: 100%; min-height: clamp(125px,24vh,245px); font-size: max(13px, 1em); line-height: 1.5; }
 .qs-search { display: flex; align-items: center; gap: 6px; background: var(--qs-bg); border: 1px solid var(--qs-line); border-radius: 10px; padding: 1px 8px; }
-.qs-search > svg { flex: none; color: var(--qs-muted); }
 .qs-search input { flex: 1; width: 100%; min-width: 0; background: transparent !important; border: 0 !important; }
+.qs-search input:focus-visible { outline: none; }
 .qs-result,.qs-shared-note { display: flex; justify-content: space-between; align-items: start; gap: 8px; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--qs-line); background: #19352b; overflow-wrap: anywhere; }
 .qs-result small { display: block; margin-top: 2px; }
 .qs-research-desktop { flex: 1 0 auto; display: grid; }
@@ -200,6 +200,7 @@
 .qs-translation-fields { display: grid; gap: 10px; padding: 14px 18px; }
 .qs-translation-fields label:not(.qs-switch) { display: grid; gap: 5px; }
 .qs-research-sheet { display: none; }
+.qs-research-sheet .qs-text-controls { padding: 6px 0 3px; }
 .qs-ended-picker { display: flex; align-items: center; gap: 10px; }
 .qs-workspace .td-live-sidebar, .qs-workspace .td-ready-popup, .qs-workspace .td-reminder-popup, .qs-workspace .td-join-alert, .qs-workspace .td-floating-panel {
   background: var(--qs-panel); border-color: var(--qs-line); color: var(--qs-text);
