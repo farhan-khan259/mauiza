@@ -47,6 +47,9 @@
 .td-platform-header-inner { width: min(100%, 1320px); height: 100%; margin-inline: auto; padding-inline: clamp(16px, 4vw, 36px); display: flex; align-items: center; gap: 14px; }
 .td-platform-brand { min-width: 0; display: flex; align-items: center; gap: 14px; color: #63c6a8; font-size: clamp(15px, 1.8vw, 20px); font-weight: 750; line-height: 1.2; }
 .td-platform-brand .td-brand-mark { width: 52px; height: 52px; flex: none; border-radius: 12px; }
+.td-platform-back { margin-inline-start: auto; flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 13px; border: 1px solid #37574e; border-radius: 10px; background: #233b35; color: #d7eee8; font-size: .9rem; font-weight: 750; text-decoration: none; white-space: nowrap; }
+.td-platform-back:hover { background: #29473f; color: #fff; }
+.td-platform-back:focus-visible { outline: 2px solid #d2a952; outline-offset: 3px; }
 .td-platform-theme-toggle { width: 58px; height: 50px; margin-inline-start: auto; display: grid; place-items: center; flex: none; border: 1px solid #37574e; border-radius: 14px; background: #233b35; color: #63c6a8; cursor: pointer; }
 .td-platform-theme-toggle:hover { background: #29473f; }
 .td-platform-theme-toggle:focus-visible { outline: 2px solid #d2a952; outline-offset: 3px; }
@@ -468,6 +471,7 @@ p.td-source { text-decoration: none; color: var(--muted); }
   .td-platform-header-inner { padding-inline: 14px; gap: 8px; }
   .td-platform-brand { gap: 9px; font-size: clamp(14px, 4vw, 16px); }
   .td-platform-brand .td-brand-mark { width: 42px; height: 42px; border-radius: 10px; }
+  .td-platform-back { gap: 5px; padding: 8px 10px; font-size: .84rem; }
   .td-platform-theme-toggle { width: 46px; height: 44px; border-radius: 12px; }
   .td-live-topbar { min-height: 58px; padding: 7px 10px; }
   .td-live-brand .td-brand-mark { width: 34px; height: 34px; border-radius: 11px; }
@@ -518,6 +522,9 @@ p.td-source { text-decoration: none; color: var(--muted); }
   .td-platform-header-inner { padding-inline: 10px; }
   .td-platform-brand { font-size: 14px; gap: 7px; }
   .td-platform-brand .td-brand-mark { width: 40px; height: 40px; }
+  .td-platform-brand > span { max-width: 39vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .td-platform-back { gap: 4px; padding: 6px 7px; font-size: .78rem; }
+  .td-platform-back svg { width: 14px; height: 14px; }
   .td-live-topbar { gap: 6px; padding-inline: 7px; }
   .td-live-brand { gap: 7px; }
   .td-live-brand strong { max-width: 42vw; }

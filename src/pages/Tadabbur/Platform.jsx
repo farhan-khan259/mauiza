@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Camera, CameraOff, Mic, MicOff, Video } from 'lucide-react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, Camera, CameraOff, Mic, MicOff, Video } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { remember, request, platformPath, storedAuth } from './client';
 import BrandLogo from './BrandLogo';
@@ -19,6 +19,7 @@ function PlatformHeader() {
   return <header className="td-platform-header">
     <div className="td-platform-header-inner">
       <div className="td-platform-brand"><BrandLogo alt="Mauiza" /><span>{t('Live Quran Contemplation')}</span></div>
+      <Link className="td-platform-back" to="/"><ArrowLeft size={16} aria-hidden="true" /> Main website</Link>
     </div>
   </header>;
 }
