@@ -89,14 +89,21 @@ export function Reader({ call, study, reading, language, setLanguage, word, setW
   const [highlight, setHighlight] = useState(true);
   const [translationRetry, setTranslationRetry] = useState(0);
   const translations = useStudyData(call, '/study/translations', translationRetry);
+  const chapterList = useStudyData(call, '/study/chapters');
   const key = study.selection.keys[study.index];
+  const [chapterNumber, verseNumber] = key.split(':').map(Number);
+  const currentChapter = chapterList.data?.find(chapter => chapter.id === chapterNumber);
+  const finalChapter = chapterList.data?.at(-1);
+  const previousDisabled = chapterNumber === 1 && verseNumber === 1;
+  const nextDisabled = Boolean(currentChapter && finalChapter &&
+    chapterNumber === finalChapter.id && verseNumber === currentChapter.count);
   const time = (playback?.currentTime || 0) * 1000;
   const spoken = highlight && study.recitation?.segments?.find(segment => time >= segment[2] && time < segment[3])?.[0];
   return <section className="qs-panel qs-reader" aria-label="Shared Quran">
     <header className="qs-toolbar">
       <div className="qs-actions"><button className="qs-button qs-tab-selected" type="button"><BookOpen size={16} /> Quran</button><button className="qs-button qs-subtle" type="button" onClick={openDocs}><FileText size={16} /> Documents <span className="qs-count">{documentCount}</span></button></div>
       <div className="qs-actions qs-reader-controls">
-        {host && <><button className="qs-button qs-change-passage" type="button" onClick={onPassage}>Change ayah</button><button className="qs-icon" type="button" aria-label="Previous ayah" disabled={study.index === 0} onClick={() => lead('ayah', study.index - 1)}><ChevronLeft size={17} /></button><small>Host moves everyone</small><button className="qs-icon qs-primary" type="button" aria-label="Next ayah" disabled={study.index >= study.selection.keys.length - 1} onClick={() => lead('ayah', study.index + 1)}><ChevronRight size={17} /></button></>}
+        {host && <><button className="qs-button qs-change-passage" type="button" onClick={onPassage}>Change ayah</button><button className="qs-icon" type="button" aria-label="Previous ayah" disabled={previousDisabled} onClick={() => lead('ayah-step', -1)}><ChevronLeft size={17} /></button><small>Host moves everyone</small><button className="qs-icon qs-primary" type="button" aria-label="Next ayah" disabled={nextDisabled} onClick={() => lead('ayah-step', 1)}><ChevronRight size={17} /></button></>}
       </div>
     </header>
     <div className="qs-reading-scroll">
