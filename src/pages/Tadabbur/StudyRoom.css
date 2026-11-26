@@ -238,6 +238,7 @@
   .qs-left,.qs-right { overflow: visible; }
   .qs-studio[data-tab="notes"] .qs-left,.qs-studio[data-tab="people"] .qs-left,.qs-studio[data-tab="notes"] .qs-discussion,.qs-studio[data-tab="people"] .qs-private-wrap { display: none; }
   .qs-studio[data-tab="ayah"] .qs-right,.qs-studio[data-tab="docs"] .qs-private-wrap { display: none; }
+  .qs-studio[data-tab="docs"] .qs-sidebar-tabs { display: none; }
   .qs-studio[data-tab="ayah"][data-share="true"] .qs-right { display: flex; margin-top: 9px; }
   .qs-studio[data-tab="docs"] .qs-discussion { margin-top: 9px; }
   .qs-studio[data-tab="notes"] .qs-private-wrap { display: block; }
