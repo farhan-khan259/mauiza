@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Camera, CameraOff, Mic, MicOff, Video } from 'lucide-react';
-import { useLanguage } from '../../context/LanguageContext';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Camera, CameraOff, Mic, MicOff, Video } from 'lucide-react';
 import { remember, request, platformPath, storedAuth } from './client';
-import BrandLogo from './BrandLogo';
+import Navbar from '../../components/Navbar/Navbar';
 import Workspace from './Workspace';
 import './Tadabbur.css';
 
@@ -14,18 +13,8 @@ export default function Platform() {
   </main>;
 }
 
-function PlatformHeader() {
-  const { t } = useLanguage();
-  return <header className="td-platform-header">
-    <div className="td-platform-header-inner">
-      <div className="td-platform-brand"><BrandLogo alt="Mauiza" /><span>{t('Live Quran Contemplation')}</span></div>
-      <Link className="td-platform-back" to="/"><ArrowLeft size={16} aria-hidden="true" /> Main website</Link>
-    </div>
-  </header>;
-}
-
 function EntryPage({ children }) {
-  return <div className="td-entry-page"><PlatformHeader />{children}</div>;
+  return <div className="td-entry-page"><Navbar />{children}</div>;
 }
 
 function PlatformHome() {
@@ -72,7 +61,7 @@ function PlatformHome() {
   return <EntryPage>
     <div className="td-create-shell">
       <header className="td-create-heading">
-        <h1>{mode === 'start' ? 'Start a meeting' : 'Join a meeting'}</h1>
+        <h1>Quran Contemplation</h1>
         <p>{mode === 'start' ? 'Create a private space for your circle. Guests will request entry using your invitation link.' : 'Enter the invitation link and the name you want the meeting creator to see.'}</p>
       </header>
       <div className="td-platform-panel">

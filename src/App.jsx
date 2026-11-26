@@ -40,7 +40,8 @@ const pageTitles = {
 function getPageTitle(pathname) {
   const normalizedPath = pathname.replace(/\/+$/, "") || "/";
   if (normalizedPath.startsWith(`${platformPath}/room/`)) return "Live Study Room";
-  if (normalizedPath === platformPath || normalizedPath.startsWith(`${platformPath}/`)) return "Research";
+  if (normalizedPath === platformPath) return "Quran Contemplation";
+  if (normalizedPath.startsWith(`${platformPath}/`)) return "Research";
   return pageTitles[normalizedPath] || "Page Not Found";
 }
 
