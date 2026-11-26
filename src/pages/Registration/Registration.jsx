@@ -8,6 +8,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { countryCodes } from "../../data/countries";
 import instructionLanguages from "../../data/languages";
 import { apiUrl } from "../../utils/api";
+import WhatsAppPhoneField from "../../components/WhatsAppPhoneField/WhatsAppPhoneField";
 import "./Registration.css";
 
 const timezones = getTimeZones({ includeUtc: true });
@@ -103,6 +104,9 @@ export default function Registration() {
 		const payload = {
 			fullName: String(formData.get("name") || "").trim(),
 			email: String(formData.get("email") || "").trim(),
+			phoneCountryCode: String(formData.get("phoneCountryCode") || "").trim(),
+			phoneNumber: String(formData.get("phoneNumber") || "").trim(),
+			phone: String(formData.get("phone") || "").trim(),
 			country: String(formData.get("country") || "").trim(),
 			ageGroup: String(formData.get("ageGroup") || "").trim(),
 			gender: String(formData.get("gender") || "").trim(),
@@ -187,6 +191,7 @@ export default function Registration() {
 									{countryCodes.map((code) => <option key={code} value={code}>{countryDisplayNames.of(code) || code}</option>)}
 								</select>
 							</label>
+							<WhatsAppPhoneField label="Contact Number" placeholder="Your contact number" />
 						</div>
 						<div className="form-row">
 							<label>

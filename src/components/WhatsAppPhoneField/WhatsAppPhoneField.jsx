@@ -1,11 +1,11 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { getCountries, getCountryCallingCode, isValidPhoneNumber, parsePhoneNumberFromString } from "libphonenumber-js/min";
+import { getCountries, getCountryCallingCode, parsePhoneNumberFromString } from "libphonenumber-js/min";
 import { useLanguage } from "../../context/LanguageContext";
 import "./WhatsAppPhoneField.css";
 
 const supportedCountries = getCountries();
 
-export default function WhatsAppPhoneField() {
+export default function WhatsAppPhoneField({ label = "WhatsApp Number", placeholder = "Your WhatsApp number" }) {
 	const { language, t } = useLanguage();
 	const fieldId = useId();
 	const phoneRef = useRef(null);
@@ -37,19 +37,20 @@ export default function WhatsAppPhoneField() {
 	const parsedPhone = selectedCountry && phoneNumber
 		? parsePhoneNumberFromString(phoneNumber, selectedCountry)
 		: undefined;
-	const completePhoneNumber = parsedPhone?.isValid() ? parsedPhone.number : "";
+	const validPhone = parsedPhone?.isValid() && parsedPhone.country === selectedCountry;
+	const completePhoneNumber = validPhone ? parsedPhone.number : "";
 
 	useEffect(() => {
 		const input = phoneRef.current;
 		if (!input) return;
 		if (!selectedCountry) {
 			input.setCustomValidity(t("Please select a country code."));
-		} else if (phoneNumber && !isValidPhoneNumber(phoneNumber, selectedCountry)) {
+		} else if (phoneNumber && !validPhone) {
 			input.setCustomValidity(t("Enter a valid phone number for the selected country code."));
 		} else {
 			input.setCustomValidity("");
 		}
-	}, [phoneNumber, selectedCountry, t]);
+	}, [phoneNumber, selectedCountry, t, validPhone]);
 
 	useEffect(() => {
 		const input = countryRef.current;
@@ -70,7 +71,7 @@ export default function WhatsAppPhoneField() {
 
 	return (
 		<div className="whatsapp-phone-field" data-translation-owned="true">
-			<label htmlFor={`${fieldId}-number`}>{t("WhatsApp Number")}</label>
+			<label htmlFor={`${fieldId}-number`}>{t(label)}</label>
 			<div className="whatsapp-phone-control">
 				<input
 					ref={countryRef}
@@ -104,9 +105,9 @@ export default function WhatsAppPhoneField() {
 					required
 					inputMode="tel"
 					autoComplete="tel-national"
-					placeholder={t("Your WhatsApp number")}
+					placeholder={t(placeholder)}
 					aria-label={t("Phone number without country code")}
-					aria-invalid={Boolean(phoneNumber && selectedCountry && !isValidPhoneNumber(phoneNumber, selectedCountry))}
+					aria-invalid={Boolean(phoneNumber && selectedCountry && !validPhone)}
 					onChange={(event) => setPhoneNumber(event.target.value)}
 				/>
 				<input type="hidden" name="phone" value={completePhoneNumber} />

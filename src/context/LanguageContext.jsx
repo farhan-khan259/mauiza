@@ -982,19 +982,19 @@ Object.entries(homeCopyTranslations).forEach(([language, values]) => {
 });
 
 const phoneFieldTranslations = {
-  ur: ["براہ کرم ملک کا کوڈ منتخب کریں۔", "منتخب ملک کے کوڈ کے لیے درست فون نمبر درج کریں۔", "ملکی کالنگ کوڈ منتخب کریں", "کوڈ منتخب کریں", "ملکی کوڈ کے بغیر فون نمبر", "ملک یا کالنگ کوڈ تلاش کریں", "کوئی ملک نہیں ملا"],
-  ar: ["يرجى اختيار رمز الدولة.", "أدخل رقم هاتف صالحًا لرمز الدولة المحدد.", "اختر رمز الاتصال الدولي", "اختر الرمز", "رقم الهاتف بدون رمز الدولة", "ابحث عن دولة أو رمز اتصال", "لم يتم العثور على دول"],
-  sv: ["Välj en landskod.", "Ange ett giltigt telefonnummer för den valda landskoden.", "Välj landsnummer", "Välj kod", "Telefonnummer utan landskod", "Sök land eller landsnummer", "Inga länder hittades"],
-  tr: ["Lütfen bir ülke kodu seçin.", "Seçilen ülke kodu için geçerli bir telefon numarası girin.", "Ülke arama kodunu seçin", "Kod seçin", "Ülke kodu olmadan telefon numarası", "Ülke veya arama kodu ara", "Ülke bulunamadı"],
-  fr: ["Veuillez sélectionner un indicatif de pays.", "Saisissez un numéro valide pour l’indicatif sélectionné.", "Sélectionner un indicatif", "Choisir un indicatif", "Numéro sans indicatif de pays", "Rechercher un pays ou un indicatif", "Aucun pays trouvé"],
-  es: ["Selecciona un prefijo de país.", "Introduce un número válido para el prefijo seleccionado.", "Selecciona el prefijo del país", "Seleccionar prefijo", "Número sin prefijo de país", "Buscar país o prefijo", "No se encontraron países"],
-  "zh-CN": ["请选择国家代码。", "请输入与所选国家代码相符的有效电话号码。", "选择国家区号", "选择区号", "不含国家代码的电话号码", "搜索国家或区号", "未找到国家"],
-  pt: ["Selecione um indicativo de país.", "Introduza um número válido para o indicativo selecionado.", "Selecione o indicativo do país", "Selecionar indicativo", "Número sem indicativo do país", "Pesquisar país ou indicativo", "Não foram encontrados países"],
-  fil: ["Pumili ng country code.", "Maglagay ng wastong numero para sa napiling country code.", "Pumili ng country calling code", "Pumili ng code", "Numero ng telepono na walang country code", "Maghanap ng bansa o calling code", "Walang nahanap na bansa"],
-  hi: ["कृपया देश कोड चुनें।", "चुने गए देश कोड के लिए मान्य फ़ोन नंबर दर्ज करें।", "देश का कॉलिंग कोड चुनें", "कोड चुनें", "देश कोड के बिना फ़ोन नंबर", "देश या कॉलिंग कोड खोजें", "कोई देश नहीं मिला"],
-  ru: ["Выберите код страны.", "Введите действительный номер для выбранного кода страны.", "Выберите телефонный код страны", "Выбрать код", "Номер телефона без кода страны", "Поиск страны или кода", "Страны не найдены"]
+  ur: ["براہ کرم ملک کا کوڈ منتخب کریں۔", "منتخب ملک کے کوڈ کے لیے درست فون نمبر درج کریں۔", "ملکی کالنگ کوڈ منتخب کریں", "کوڈ منتخب کریں", "ملکی کوڈ کے بغیر فون نمبر", "ملک یا کالنگ کوڈ تلاش کریں", "کوئی ملک نہیں ملا", "رابطہ نمبر", "اپنا رابطہ نمبر درج کریں"],
+  ar: ["يرجى اختيار رمز الدولة.", "أدخل رقم هاتف صالحًا لرمز الدولة المحدد.", "اختر رمز الاتصال الدولي", "اختر الرمز", "رقم الهاتف بدون رمز الدولة", "ابحث عن دولة أو رمز اتصال", "لم يتم العثور على دول", "رقم التواصل", "أدخل رقم التواصل"],
+  sv: ["Välj en landskod.", "Ange ett giltigt telefonnummer för den valda landskoden.", "Välj landsnummer", "Välj kod", "Telefonnummer utan landskod", "Sök land eller landsnummer", "Inga länder hittades", "Kontaktnummer", "Ange ditt kontaktnummer"],
+  tr: ["Lütfen bir ülke kodu seçin.", "Seçilen ülke kodu için geçerli bir telefon numarası girin.", "Ülke arama kodunu seçin", "Kod seçin", "Ülke kodu olmadan telefon numarası", "Ülke veya arama kodu ara", "Ülke bulunamadı", "İletişim numarası", "İletişim numaranızı girin"],
+  fr: ["Veuillez sélectionner un indicatif de pays.", "Saisissez un numéro valide pour l’indicatif sélectionné.", "Sélectionner un indicatif", "Choisir un indicatif", "Numéro sans indicatif de pays", "Rechercher un pays ou un indicatif", "Aucun pays trouvé", "Numéro de contact", "Saisissez votre numéro de contact"],
+  es: ["Selecciona un prefijo de país.", "Introduce un número válido para el prefijo seleccionado.", "Selecciona el prefijo del país", "Seleccionar prefijo", "Número sin prefijo de país", "Buscar país o prefijo", "No se encontraron países", "Número de contacto", "Introduce tu número de contacto"],
+  "zh-CN": ["请选择国家代码。", "请输入与所选国家代码相符的有效电话号码。", "选择国家区号", "选择区号", "不含国家代码的电话号码", "搜索国家或区号", "未找到国家", "联系电话", "请输入联系电话"],
+  pt: ["Selecione um indicativo de país.", "Introduza um número válido para o indicativo selecionado.", "Selecione o indicativo do país", "Selecionar indicativo", "Número sem indicativo do país", "Pesquisar país ou indicativo", "Não foram encontrados países", "Número de contacto", "Introduza o seu número de contacto"],
+  fil: ["Pumili ng country code.", "Maglagay ng wastong numero para sa napiling country code.", "Pumili ng country calling code", "Pumili ng code", "Numero ng telepono na walang country code", "Maghanap ng bansa o calling code", "Walang nahanap na bansa", "Contact number", "Ilagay ang iyong contact number"],
+  hi: ["कृपया देश कोड चुनें।", "चुने गए देश कोड के लिए मान्य फ़ोन नंबर दर्ज करें।", "देश का कॉलिंग कोड चुनें", "कोड चुनें", "देश कोड के बिना फ़ोन नंबर", "देश या कॉलिंग कोड खोजें", "कोई देश नहीं मिला", "संपर्क नंबर", "अपना संपर्क नंबर दर्ज करें"],
+  ru: ["Выберите код страны.", "Введите действительный номер для выбранного кода страны.", "Выберите телефонный код страны", "Выбрать код", "Номер телефона без кода страны", "Поиск страны или кода", "Страны не найдены", "Контактный номер", "Введите контактный номер"]
 };
-const phoneFieldKeys = ["Please select a country code.", "Enter a valid phone number for the selected country code.", "Select country calling code", "Select code", "Phone number without country code", "Search country or calling code", "No countries found"];
+const phoneFieldKeys = ["Please select a country code.", "Enter a valid phone number for the selected country code.", "Select country calling code", "Select code", "Phone number without country code", "Search country or calling code", "No countries found", "Contact Number", "Your contact number"];
 Object.entries(phoneFieldTranslations).forEach(([language, values]) => {
   Object.assign(translations[language], Object.fromEntries(phoneFieldKeys.map((key, index) => [key, values[index]])));
 });

@@ -8,6 +8,7 @@ import instructionLanguages from "../../data/languages";
 import { useLanguage, translations } from "../../context/LanguageContext";
 import { getTimeZones } from "@vvo/tzdb";
 import { apiUrl } from "../../utils/api";
+import WhatsAppPhoneField from "../../components/WhatsAppPhoneField/WhatsAppPhoneField";
 import "./Volunteers.css";
 
 const roles = ["Teacher", "Video Editor", "Media Manager"];
@@ -166,6 +167,9 @@ export default function Volunteers() {
     const payload = {
       fullName: String(data.get("fullName") || "").trim(),
       email: String(data.get("email") || "").trim(),
+      phoneCountryCode: String(data.get("phoneCountryCode") || "").trim(),
+      phoneNumber: String(data.get("phoneNumber") || "").trim(),
+      phone: String(data.get("phone") || "").trim(),
       country: String(data.get("country") || "").trim(),
       profession: String(data.get("profession") || "").trim(),
       designation: String(data.get("designation") || "").trim(),
@@ -187,6 +191,7 @@ export default function Volunteers() {
     const requiredFields = [
       ["fullName", "Full name"],
       ["email", "Email"],
+      ["phone", "Contact Number"],
       ["country", "Country"],
       ["profession", "Profession"],
       ["designation", "Volunteer role"],
@@ -333,6 +338,7 @@ export default function Volunteers() {
                       {countryCodes.map((code) => <option key={code} value={code}>{countryDisplayNames.of(code) || code}</option>)}
                     </select>
                   </label>
+                  <WhatsAppPhoneField label="Contact Number" placeholder="Your contact number" />
                 </div>
                 <label>{t("Profession")}<input required name="profession" placeholder={t("Your current profession")} /></label>
                 <div className="volunteer-form-row">
