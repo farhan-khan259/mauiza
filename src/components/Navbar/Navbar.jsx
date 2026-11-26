@@ -14,10 +14,12 @@ import { platformPath } from "../../pages/Tadabbur/client";
 import "./Navbar.css";
 
 const navLinks = [
+  { to: "/", label: "Home", mobileOnly: true },
   { to: "/courses", label: "Courses" },
   { to: "/resources", label: "Resources" },
   { to: "/volunteers", label: "Volunteers" },
   { to: platformPath, label: "Research" },
+  { to: "/contact", label: "Contact Us", mobileOnly: true },
 ];
 
 export default function Navbar() {
@@ -183,7 +185,7 @@ export default function Navbar() {
           <div className="nav-center">
             <ul className={mobileMenuOpen ? "mobile-nav-list" : "nav-links"}>
               {navLinks.map((link, idx) => (
-                <li key={link.to} className="nav-item">
+                <li key={link.to} className={`nav-item ${link.mobileOnly ? "mobile-only" : ""}`}>
                   <NavLink
                     to={link.to}
                     className={() => {

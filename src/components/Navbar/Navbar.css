@@ -90,6 +90,10 @@ html[data-theme="dark"] .navbar.scrolled {
   flex: 0 0 auto;
 }
 
+.nav-item.mobile-only {
+  display: none;
+}
+
 .nav-link,
 .mobile-nav-link {
   position: relative;
@@ -521,6 +525,10 @@ html[data-theme="dark"] .menu-button {
 
   .nav-item {
     width: 100%;
+  }
+
+  .nav-item.mobile-only {
+    display: block;
   }
 
   .mobile-nav-link {
