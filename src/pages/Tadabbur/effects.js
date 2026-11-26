@@ -78,7 +78,10 @@ export function cameraProcessor(initialSettings, { preview = false, onError = ()
       if (settings.autoFrame && typeof globalThis.FaceDetector === 'function') {
         try { detector = new globalThis.FaceDetector({ fastMode: true, maxDetectedFaces: 2 }); } catch {}
       }
-      const confidenceAlpha = value => Math.round(Math.max(0, Math.min(1, (value - .19) / .62)) * 255);
+      const confidenceAlpha = value => {
+        const normalized = Math.max(0, Math.min(1, (value - .18) / .62));
+        return Math.round(normalized * normalized * (3 - 2 * normalized) * 255);
+      };
       let pixels, opacity;
       let lastVideoTime = -1;
       function paint() {
@@ -97,7 +100,7 @@ export function cameraProcessor(initialSettings, { preview = false, onError = ()
         }
         segmenter.segmentForVideo(video, now, result => {
           const person = result.confidenceMasks?.at(-1);
-          if (!person) { ctx.drawImage(video, 0, 0, width, height); return; }
+          if (!person) return;
           const data = person.getAsFloat32Array();
           if (mask.width !== person.width || mask.height !== person.height) {
             mask.width = person.width; mask.height = person.height;
@@ -111,8 +114,9 @@ export function cameraProcessor(initialSettings, { preview = false, onError = ()
           for (let i = 0; i < data.length; ++i) {
             const confidence = data[i];
             const previous = opacity[i];
-            // Damp small edge flicker but follow deliberate motion quickly.
-            opacity[i] = previous < 0 ? confidence : previous + (confidence - previous) * (Math.abs(previous - confidence) > .35 ? .9 : .55);
+            const change = confidence - previous;
+            const smoothing = previous < 0 ? 1 : Math.abs(change) > .45 ? .78 : .4;
+            opacity[i] = previous < 0 ? confidence : previous + change * smoothing;
             pixels.data[i * 4 + 3] = confidenceAlpha(opacity[i]);
             if (settings.autoFrame && confidence > .8) {
               const x = i % mask.width, y = Math.floor(i / mask.width);
@@ -147,7 +151,7 @@ export function cameraProcessor(initialSettings, { preview = false, onError = ()
           draw(fctx, video);
           fctx.filter = 'none';
           fctx.globalCompositeOperation = 'destination-in';
-          fctx.filter = 'blur(1px)';
+          fctx.filter = 'blur(1.5px)';
           draw(fctx, mask);
           fctx.filter = 'none';
           fctx.globalCompositeOperation = 'source-over';

@@ -61,11 +61,13 @@ export default function Workspace({ id, auth, initialAudio = false, initialVideo
   const [dismissedReminder, setDismissedReminder] = useState(0);
   const [extendMinutes, setExtendMinutes] = useState('10');
   const [extensionOpen, setExtensionOpen] = useState(false);
+  const [endConfirmOpen, setEndConfirmOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [meetingBusy, setMeetingBusy] = useState(false);
   const [joinNotifications, setJoinNotifications] = useState([]);
   const offset = useRef(0);
   const root = useRef(null);
+  const endConfirmDialog = useRef(null);
   const notificationSnapshot = useRef(null);
   const notificationAudio = useRef(null);
   const navigate = useNavigate();
@@ -153,6 +155,13 @@ export default function Workspace({ id, auth, initialAudio = false, initialVideo
   }, []);
 
   useEffect(() => {
+    const dialog = endConfirmDialog.current;
+    if (!dialog) return;
+    if (endConfirmOpen && !dialog.open) dialog.showModal();
+    else if (!endConfirmOpen && dialog.open) dialog.close();
+  }, [endConfirmOpen]);
+
+  useEffect(() => {
     if (live && endAt && remaining <= Math.min(5 * 60000, room.duration * 60000) && dismissedReminder !== endAt) {
       setReminderEnd(endAt);
     }
@@ -178,6 +187,15 @@ export default function Workspace({ id, auth, initialAudio = false, initialVideo
     if (await action(type, alert.requestId)) {
       setJoinNotifications(current => current.filter(item => item.id !== alert.id));
     }
+  }
+
+  function requestEndMeeting() {
+    setEndConfirmOpen(true);
+  }
+
+  async function confirmEndMeeting() {
+    setEndConfirmOpen(false);
+    await action('end');
   }
 
   async function toggleFullscreen() {
@@ -254,7 +272,7 @@ export default function Workspace({ id, auth, initialAudio = false, initialVideo
           onInvite={() => { setDetailsOpen(!detailsOpen); setParticipantsOpen(false); setExtensionOpen(false); }}
           onExtend={() => { setExtensionOpen(true); setDetailsOpen(false); setParticipantsOpen(false); }}
           onOpenNotes={() => setNotesOpen(true)} onError={setActionError}
-          onEnd={() => { if (window.confirm('End this meeting for everyone?')) void action('end'); }}
+          onEnd={requestEndMeeting}
         />
         {joinNotifications.some(alert => alert.type !== 'request' || room.pending?.some(person => person.id === alert.requestId)) && <div className="td-join-alerts" aria-live="polite">
           {joinNotifications.filter(alert => alert.type !== 'request' || room.pending?.some(person => person.id === alert.requestId)).map(alert => <section className="td-join-alert" key={alert.id}>
@@ -302,11 +320,23 @@ export default function Workspace({ id, auth, initialAudio = false, initialVideo
         {isHost && <div className="td-details-invite"><h3>Invite guests</h3><p>Guests need your approval before they can enter.</p><label>Invitation link<input readOnly value={shareUrl(room)} onFocus={event => event.target.select()} /></label>
           <div className="td-invite-actions">
             <button className="td-button" type="button" onClick={() => void copyLink()}>{copied === true ? <Check size={17} /> : <Copy size={17} />}{copied === 'failed' ? 'Copy manually' : copied ? 'Copied' : 'Copy Link'}</button>
-            <button className="td-quiet td-danger td-end-button" type="button" disabled={meetingBusy} onClick={() => { if (window.confirm('End this meeting for everyone?')) void action('end'); }}>End for Everyone</button>
+            <button className="td-quiet td-danger td-end-button" type="button" disabled={meetingBusy} onClick={requestEndMeeting}>End for Everyone</button>
           </div>
         </div>}
       </aside>}
     </div>
+    <dialog className="qs-modal qs-confirm-dialog" ref={endConfirmDialog} aria-labelledby="end-meeting-title" aria-describedby="end-meeting-description"
+      onCancel={event => { event.preventDefault(); setEndConfirmOpen(false); }}>
+      <header className="qs-confirm-header">
+        <h2 id="end-meeting-title">End meeting for everyone?</h2>
+        <button className="qs-icon" type="button" aria-label="Close confirmation" onClick={() => setEndConfirmOpen(false)}><X size={17} /></button>
+      </header>
+      <p className="qs-confirm-description" id="end-meeting-description">Everyone will be disconnected from this meeting.</p>
+      <footer className="qs-confirm-actions">
+        <button className="qs-button" type="button" disabled={meetingBusy} onClick={() => setEndConfirmOpen(false)}>Cancel</button>
+        <button className="qs-button qs-confirm-danger" type="button" disabled={meetingBusy} onClick={() => void confirmEndMeeting()}>End for everyone</button>
+      </footer>
+    </dialog>
   </div>;
 }
 
