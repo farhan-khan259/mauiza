@@ -446,10 +446,16 @@
 .qs-sharing-strip .qs-tile { min-width: 72px; }
 @media (min-width: 761px) {
   .qs-research-desktop > .qs-research-workspace { height: var(--qs-research-panel-height, clamp(190px, 36dvh, 375px)); overflow: hidden; }
+  .qs-right[data-side-view="web"] { overflow: hidden; }
+  .qs-right[data-side-view="web"] > .qs-web-wrap { flex: 1 1 0; min-height: 100px; overflow-y: auto; }
+  .qs-right[data-side-view="web"] > .qs-research-desktop { flex: 0 0 auto; overflow: hidden; }
+  .qs-right[data-side-view="web"] > .qs-research-desktop > .qs-research-workspace { height: var(--qs-research-panel-height, clamp(190px, 36dvh, 375px)); }
+  .qs-web-research-handle { flex: none; min-height: 10px; }
 }
 @media (max-width: 760px) {
   .qs-studio { max-width: 100%; }
   .qs-docs .qs-toolbar .qs-actions,.qs-reader-controls,.qs-detail-heading .qs-actions { flex-wrap: wrap; }
+  .qs-web-research-handle { display: none; }
   .qs-change-passage { font-size: .86em; }
   .qs-bottom { flex-wrap: wrap; }
   .qs-studio[data-share="true"] .qs-sharing-strip { display: flex; order: -1; width: 100%; max-height: 52px; }

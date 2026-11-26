@@ -19,7 +19,7 @@ function writeSetting(name, value) {
   try { localStorage.setItem('mauiza-study-' + name, value); } catch { /* Private storage may be disabled. */ }
 }
 
-function ResizeHandle({ className, label, axis, value, minimum, maximum, onChange }) {
+function ResizeHandle({ className, label, axis, value, minimum, maximum, reverse = false, onChange }) {
   const drag = useRef(null);
   const point = event => axis === 'x' ? event.clientX : event.clientY;
   const update = next => onChange(Math.min(maximum, Math.max(minimum, Math.round(next))));
@@ -35,13 +35,13 @@ function ResizeHandle({ className, label, axis, value, minimum, maximum, onChang
     onPointerMove={event => {
       if (!drag.current) return;
       const offset = point(event) - drag.current.point;
-      const delta = axis === 'x' ? -offset * 100 / drag.current.size : axis === 'up' ? -offset * 100 / window.innerHeight : offset;
+      const delta = axis === 'x' ? -offset * 100 / drag.current.size : axis === 'up' ? -offset * 100 / window.innerHeight : offset * (reverse ? -1 : 1);
       update(drag.current.value + delta);
     }}
     onLostPointerCapture={() => { drag.current = null; }}
     onKeyDown={event => {
-      const increase = axis === 'x' ? 'ArrowLeft' : axis === 'up' ? 'ArrowUp' : 'ArrowDown';
-      const decrease = axis === 'x' ? 'ArrowRight' : axis === 'up' ? 'ArrowDown' : 'ArrowUp';
+      const increase = axis === 'x' ? 'ArrowLeft' : axis === 'up' || reverse ? 'ArrowUp' : 'ArrowDown';
+      const decrease = axis === 'x' ? 'ArrowRight' : axis === 'up' || reverse ? 'ArrowDown' : 'ArrowUp';
       if (![increase, decrease, 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
       const step = axis === 'y' ? 20 : 2;
@@ -224,7 +224,7 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
       </div>
       <ResizeHandle className="qs-width-handle" label="Sidebar width" axis="x" value={paneWidth} minimum={24} maximum={54}
         onChange={value => resize('pane-width', setPaneWidth, value)} />
-      <aside className="qs-right" aria-label={discussing && !showShare ? 'Discussion notes and speaking queue' : 'Private notes and research'}>
+      <aside className="qs-right" data-side-view={sideView} aria-label={discussing && !showShare ? 'Discussion notes and speaking queue' : 'Private notes and research'}>
         <div className="qs-actions qs-sidebar-tabs" role="group" aria-label="Notes and Web">
           <button className="qs-button" type="button" aria-pressed={sideView === 'notes'} onClick={() => setSideView('notes')}>Notes</button>
           <button className="qs-button" type="button" aria-pressed={sideView === 'web'} onClick={() => setSideView('web')}>Web</button>
@@ -233,10 +233,12 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
         <div className="qs-web-wrap" hidden={sideView !== 'web'}><WebSearch call={call} /></div>
         {sideView === 'notes' && <ResizeHandle className="qs-height-handle" label="Notes height" axis="y" value={noteHeight || 220} minimum={120} maximum={Math.min(580, Math.max(180, window.innerHeight - 220))}
           onChange={value => resize('note-height', setNoteHeight, value)} />}
+        {sideView === 'web' && !(discussing && tab === 'docs' && !showShare) && <ResizeHandle className="qs-height-handle qs-web-research-handle" label="Resize Web and Research panels" axis="y" reverse value={researchPanelHeight || 240} minimum={130} maximum={650}
+          onChange={value => resize('research-panel-height', setResearchPanelHeight, value)} />}
         <div className="qs-research-desktop" hidden={discussing && tab === 'docs' && !showShare}>
           <Research {...researchProps} />
-          <ResizeHandle className="qs-height-handle" label="Research panel height" axis="y" value={researchPanelHeight || 240} minimum={130} maximum={650}
-            onChange={value => resize('research-panel-height', setResearchPanelHeight, value)} />
+          {sideView === 'notes' && <ResizeHandle className="qs-height-handle" label="Research panel height" axis="y" value={researchPanelHeight || 240} minimum={130} maximum={650}
+            onChange={value => resize('research-panel-height', setResearchPanelHeight, value)} />}
         </div>
         {sideView === 'notes' && discussing && tab === 'docs' && !showShare && <div className="qs-discussion">
           <section className="qs-panel qs-revealed"><div className="qs-line"><h2>Everyone’s notes</h2><small>Revealed together</small></div>
