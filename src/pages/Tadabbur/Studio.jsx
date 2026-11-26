@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { BookOpen, Check, Hand, LockKeyhole, Maximize, MonitorUp, Pin, PinOff, X } from 'lucide-react';
+import { BookOpen, Check, Hand, LockKeyhole, Maximize, MonitorUp, Pin, PinOff, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { Documents } from './Documents';
 import { PrivateNotes, Reader, Research, WebSearch, useVerse } from './Reader';
 import { CallControls, MediaTrack, ParticipantTile, RoomAudio, useDeviceSettings, useRoomCall } from './Media';
@@ -107,6 +107,7 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
   const [researchPanelHeight, setResearchPanelHeight] = useState(() => Number(readSetting('research-panel-height', 0)) || 0);
   const [noteHeight, setNoteHeight] = useState(() => Number(readSetting('note-height', 0)) || 0);
   const [selectedShare, setSelectedShare] = useState('');
+  const [shareZoom, setShareZoom] = useState(1);
   const [playback, setPlayback] = useState({});
   const shareFrame = useRef(null);
   const researchDialog = useRef(null);
@@ -137,6 +138,7 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
   useEffect(() => { if (study.document?.id) setTab('docs'); }, [study.document?.id]);
   useEffect(() => { if (study.phase === 'Discuss') setTab(current => current === 'ayah' ? 'docs' : current); }, [study.phase]);
   useEffect(() => { if (share) { setOpenShare(true); setTab('ayah'); } }, [share?.id]);
+  useEffect(() => { setShareZoom(1); }, [share?.id]);
   useEffect(() => {
     if (researchOpen && !researchDialog.current.open) researchDialog.current.showModal();
     if (!researchOpen && researchDialog.current.open) researchDialog.current.close();
@@ -195,12 +197,15 @@ export default function Studio({ room, call, noteState, initialAudio, initialVid
         {showAyahPin && <section className="qs-line qs-ayah is-current qs-pinned"><strong>Pinned {ayah}</strong><div className="qs-arabic" dir="rtl" lang="ar" translate="no">{reading.data?.arabic || <small dir="ltr">{reading.error ? 'Ayah unavailable' : 'Loading ayah…'}</small>}</div><button className="qs-button" type="button" onClick={toggleAyahPin}>Hide pinned ayah</button></section>}
         <section className="qs-panel qs-share-frame" ref={shareFrame}>
           <div className="qs-share-title"><span /><span /><span /> {share.name || 'Participant'}’s screen</div>
-          <div className="qs-share-video"><MediaTrack track={share.track} />
-            <div className="qs-line qs-share-overlay"><strong>{share.name || 'Participant'} is sharing their screen</strong><div className="qs-actions">
+          <div className="qs-share-video"><div className="qs-share-content" style={{ '--qs-share-zoom': shareZoom }}><MediaTrack track={share.track} /></div>
+            <div className="qs-line qs-share-overlay"><div className="qs-actions">
               {!showAyahPin && <button className="qs-button" type="button" onClick={toggleAyahPin}>Show pinned ayah</button>}
               <button className="qs-button" type="button" onClick={() => setOpenShare(false)}>Back to full ayah</button>
               {rtc.shares.length > 1 && <select aria-label="Shared screen" value={share.id} onChange={event => { setPinned(''); setSelectedShare(event.target.value); }}>{rtc.shares.map(item => <option key={item.id} value={item.id}>{item.name || 'Participant'}</option>)}</select>}
               <button className="qs-button" type="button" aria-pressed={pinned === share.id} onClick={() => setPinned(pinned === share.id ? '' : share.id)}>{pinned === share.id ? <PinOff size={15} /> : <Pin size={15} />}{pinned === share.id ? 'Unpin' : 'Pin'}</button>
+              <button className="qs-icon" type="button" aria-label="Zoom out shared screen" title="Zoom out" disabled={shareZoom <= .5} onClick={() => setShareZoom(value => Math.max(.5, value - .25))}><ZoomOut size={15} /></button>
+              <span className="qs-share-zoom-level" aria-live="polite">{Math.round(shareZoom * 100)}%</span>
+              <button className="qs-icon" type="button" aria-label="Zoom in shared screen" title="Zoom in" disabled={shareZoom >= 3} onClick={() => setShareZoom(value => Math.min(3, value + .25))}><ZoomIn size={15} /></button>
               <button className="qs-button" type="button" onClick={async () => { try { if (document.fullscreenElement === shareFrame.current) await document.exitFullscreen(); else if (shareFrame.current?.requestFullscreen) await shareFrame.current.requestFullscreen(); else onFullscreen(); } catch (error) { onError(error.message); } }}><Maximize size={15} /> Full screen</button>
             </div></div>
           </div>
